@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AmroyanAI</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#070910;
+    color:#fff;
+    min-height:100vh;
+}
+
+.app{display:flex;min-height:100vh}
+
+.sidebar{
+    width:260px;
+    background:#0d1019;
+    border-right:1px solid #252a39;
+    padding:20px 14px;
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    overflow-y:auto;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:800;
+    margin-bottom:5px;
+}
+
+.logo span{color:#7667ff}
+
+.subtitle{
+    color:#858c9e;
+    font-size:12px;
+    margin-bottom:22px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.nav button{
+    border:0;
+    background:transparent;
+    color:#aeb4c3;
+    padding:11px 12px;
+    border-radius:11px;
+    text-align:left;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.nav button:hover,
+.nav button.active{
+    background:#1c2030;
+    color:white;
+}
+
+.main{
+    margin-left:260px;
+    width:calc(100% - 260px);
+    padding:28px;
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.top h1{font-size:28px}
+
+.badge{
+    background:#151925;
+    border:1px solid #2b3040;
+    color:#9ca3b4;
+    padding:8px 13px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+.page{
+    display:none;
+    animation:fade .2s ease;
+}
+
+.page.active{display:block}
+
+@keyframes fade{
+    from{opacity:0;transform:translateY(5px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+.hero{
+    padding:30px;
+    border:1px solid #292e40;
+    border-radius:22px;
+    background:linear-gradient(135deg,#171b2b,#10131d);
+    margin-bottom:20px;
+}
+
+.hero h2{
+    font-size:28px;
+    margin-bottom:9px;
+}
+
+.hero p{color:#9299aa}
+
+.card{
+    background:#10131d;
+    border:1px solid #292e3d;
+    border-radius:19px;
+    padding:22px;
+    margin-bottom:18px;
+}
+
+.card h3{
+    margin-bottom:7px;
+    font-size:19px;
+}
+
+.card p{
+    color:#9097a8;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.tool-card{
+    background:#121621;
+    border:1px solid #292e3d;
+    border-radius:17px;
+    padding:19px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.tool-card:hover{
+    transform:translateY(-3px);
+    border-color:#6e61ed;
+}
+
+.icon{
+    font-size:27px;
+    margin-bottom:10px;
+}
+
+.tool-card h3{
+    font-size:15px;
+    margin-bottom:6px;
+}
+
+.tool-card p{
+    color:#8d94a5;
+    font-size:12px;
+    line-height:1.5;
+}
+
+textarea,
+input,
+select{
+    width:100%;
+    background:#090c13;
+    color:white;
+    border:1px solid #303649;
+    border-radius:12px;
+    padding:13px;
+    outline:none;
+    font-size:14px;
+    margin-bottom:11px;
+}
+
+textarea{
+    min-height:145px;
+    resize:vertical;
+}
+
+textarea:focus,
+input:focus,
+select:focus{
+    border-color:#6e61ed;
+}
+
+.btn{
+    border:0;
+    background:#695be6;
+    color:white;
+    padding:12px 18px;
+    border-radius:11px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn:hover{background:#7b6df4}
+
+.btn.gray{background:#202536}
+
+.result{
+    margin-top:15px;
+    padding:17px;
+    min-height:60px;
+    background:#090c13;
+    border:1px solid #292e3e;
+    border-radius:13px;
+    white-space:pre-wrap;
+    line-height:1.65;
+    color:#dfe3ed;
+}
+
+.chat{
+    height:420px;
+    overflow-y:auto;
+    background:#090c13;
+    border:1px solid #292e3e;
+    border-radius:16px;
+    padding:15px;
+    margin-bottom:12px;
+}
+
+.msg{
+    max-width:80%;
+    padding:12px 15px;
+    border-radius:15px;
+    margin-bottom:10px;
+    white-space:pre-wrap;
+}
+
+.msg.user{
+    background:#5d50d6;
+    margin-left:auto;
+}
+
+.msg.ai{
+    background:#191d29;
+}
+
+.chatbar{
+    display:flex;
+    gap:8px;
+}
+
+.chatbar input{margin:0}
+
+@media(max-width:1000px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:750px){
+    .sidebar{
+        width:72px;
+        padding:15px 7px;
+    }
+
+    .logo{
+        font-size:15px;
+        text-align:center;
+    }
+
+    .subtitle{display:none}
+
+    .nav button{
+        font-size:0;
+        text-align:center;
+    }
+
+    .nav button::first-letter{font-size:19px}
+
+    .main{
+        margin-left:72px;
+        width:calc(100% - 72px);
+        padding:14px;
+    }
+
+    .grid{grid-template-columns:1fr}
+
+    .top h1{font-size:21px}
+
+    .badge{display:none}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<div class="logo">Amroyan<span>AI</span></div>
+<div class="subtitle">Personal AI Workspace</div>
+
+<div class="nav">
+
+<button class="active" onclick="openPage('home',this)">🏠 Home</button>
+<button onclick="openPage('chat',this)">🤖 AI Chat</button>
+
+<button onclick="openPage('ideas',this)">💡 Ideas</button>
+<button onclick="openPage('style',this)">✍️ Style</button>
+<button onclick="openPage('cv',this)">📄 CV</button>
+<button onclick="openPage('social',this)">📱 Social</button>
+<button onclick="openPage('translator',this)">🌍 Translator</button>
+<button onclick="openPage('study',this)">📚 Study</button>
+<button onclick="openPage('summary',this)">📑 Summarizer</button>
+<button onclick="openPage('brand',this)">🏷️ Brand</button>
+<button onclick="openPage('daily',this)">🗓️ Daily</button>
+
+<hr style="border-color:#252a38;margin:8px 0">
+
+<button onclick="openPage('imageprompt',this)">🖼️ Image Prompt</button>
+<button onclick="openPage('videoprompt',this)">🎬 Video Prompt</button>
+<button onclick="openPage('song',this)">🎵 Song Idea</button>
+<button onclick="openPage('code',this)">🧑‍💻 Code Helper</button>
+<button onclick="openPage('presentation',this)">📊 Presentation</button>
+<button onclick="openPage('project',this)">🏫 Project Maker</button>
+<button onclick="openPage('quiz',this)">🧠 Quiz</button>
+<button onclick="openPage('trip',this)">🗺️ Trip Planner</button>
+<button onclick="openPage('email',this)">📧 Email Writer</button>
+<button onclick="openPage('research',this)">🔍 Research</button>
+
+<button onclick="openPage('voice',this)">🔊 Text to Voice</button>
+
+</div>
+</aside>
+
+<main class="main">
+
+<div class="top">
+<h1 id="title">AmroyanAI</h1>
+<div class="badge">AI Workspace</div>
+</div>
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+<div class="hero">
+<h2>Welcome to AmroyanAI 🚀</h2>
+<p>Your personal AI workspace for study, projects, creativity and everyday work.</p>
+</div>
+
+<div class="grid">
+
+<div class="tool-card" onclick="openPage('chat')">
+<div class="icon">🤖</div>
+<h3>AI Chat</h3>
+<p>Chat with AmroyanAI.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('imageprompt')">
+<div class="icon">🖼️</div>
+<h3>Image Prompt</h3>
+<p>Create professional image prompts.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('videoprompt')">
+<div class="icon">🎬</div>
+<h3>Video Prompt</h3>
+<p>Create cinematic video prompts.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('song')">
+<div class="icon">🎵</div>
+<h3>Song Idea</h3>
+<p>Create song concepts and structures.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('code')">
+<div class="icon">🧑‍💻</div>
+<h3>Code Helper</h3>
+<p>Explain and improve code.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('presentation')">
+<div class="icon">📊</div>
+<h3>Presentation Maker</h3>
+<p>Create a complete presentation structure.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('project')">
+<div class="icon">🏫</div>
+<h3>Project Maker</h3>
+<p>Create school project plans.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('quiz')">
+<div class="icon">🧠</div>
+<h3>Quiz Generator</h3>
+<p>Generate questions and answers.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('trip')">
+<div class="icon">🗺️</div>
+<h3>Trip Planner</h3>
+<p>Plan a trip with activities.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('email')">
+<div class="icon">📧</div>
+<h3>Email Writer</h3>
+<p>Write professional emails.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('research')">
+<div class="icon">🔍</div>
+<h3>Research Assistant</h3>
+<p>Build research questions and structure.</p>
+</div>
+
+<div class="tool-card" onclick="openPage('ideas')">
+<div class="icon">💡</div>
+<h3>Idea Generator</h3>
+<p>Generate creative ideas.</p>
+</div>
+
+</div>
+</section>
+
+<!-- CHAT -->
+
+<section id="chat" class="page">
+
+<div class="card">
+<h3>🤖 AI Chat</h3>
+<p>Հայերեն, English կամ Русский — գրիր ինչպես ուզում ես։</p>
+
+<div class="chat" id="chatBox">
+<div class="msg ai">Բարև 👋 Ես AmroyanAI-ն եմ։ Ինչո՞վ կարող եմ օգնել։</div>
+</div>
+
+<div class="chatbar">
+<input id="chatInput" placeholder="Գրիր հաղորդագրություն...">
+<button class="btn" onclick="sendChat()">Send</button>
+</div>
+</div>
+
+</section>
+
+<!-- OLD TOOLS -->
+
+<section id="ideas" class="page">
+<div class="card">
+<h3>💡 AI Idea Generator</h3>
+<p>Գրիր ոլորտը կամ թեման։</p>
+<input id="idea" placeholder="Օրինակ՝ AI նախագիծ դպրոցականների համար">
+<button class="btn" onclick="runTool('idea','ideaResult')">Generate</button>
+<div class="result" id="ideaResult"></div>
+</div>
+</section>
+
+<section id="style" class="page">
+<div class="card">
+<h3>✍️ Text Style Changer</h3>
+<select id="styleType">
+<option>Պաշտոնական</option>
+<option>Ընկերական</option>
+<option>Հումորային</option>
+<option>Ակադեմիական</option>
+<option>Վաճառքային</option>
+<option>Սոցիալական ցանցերի համար</option>
+</select>
+<textarea id="style" placeholder="Տեղադրիր տեքստը..."></textarea>
+<button class="btn" onclick="runTool('style','styleResult')">Change Style</button>
+<div class="result" id="styleResult"></div>
+</div>
+</section>
+
+<section id="cv" class="page">
+<div class="card">
+<h3>📄 CV Creator</h3>
+<input id="cv" placeholder="Անուն, պաշտոն, հմտություններ, փորձ...">
+<textarea id="cvExtra" placeholder="Լրացուցիչ տեղեկություններ"></textarea>
+<button class="btn" onclick="runTool('cv','cvResult')">Create CV</button>
+<div class="result" id="cvResult"></div>
+</div>
+</section>
+
+<section id="social" class="page">
+<div class="card">
+<h3>📱 Social Media Content</h3>
+<textarea id="social" placeholder="Թեմա կամ երկար տեքստ..."></textarea>
+<button class="btn" onclick="runTool('social','socialResult')">Generate</button>
+<div class="result" id="socialResult"></div>
+</div>
+</section>
+
+<section id="translator" class="page">
+<div class="card">
+<h3>🌍 Smart Translator</h3>
+<input id="language" placeholder="Թարգմանել՝ English">
+<textarea id="translator" placeholder="Տեքստ..."></textarea>
+<button class="btn" onclick="runTool('translator','translatorResult')">Translate</button>
+<div class="result" id="translatorResult"></div>
+</div>
+</section>
+
+<section id="study" class="page">
+<div class="card">
+<h3>📚 Study Planner</h3>
+<input id="study" placeholder="Առարկա / թեմա / մակարդակ / ժամանակ">
+<button class="btn" onclick="runTool('study','studyResult')">Create Plan</button>
+<div class="result" id="studyResult"></div>
+</div>
+</section>
+
+<section id="summary" class="page">
+<div class="card">
+<h3>📑 AI Summarizer</h3>
+<textarea id="summary" placeholder="Տեղադրիր երկար տեքստը..."></textarea>
+<button class="btn" onclick="runTool('summary','summaryResult')">Summarize</button>
+<div class="result" id="summaryResult"></div>
+</div>
+</section>
+
+<section id="brand" class="page">
+<div class="card">
+<h3>🏷️ Brand Generator</h3>
+<input id="brand" placeholder="Բիզնեսի ոլորտ / լսարան / ոճ">
+<button class="btn" onclick="runTool('brand','brandResult')">Generate</button>
+<div class="result" id="brandResult"></div>
+</div>
+</section>
+
+<section id="daily" class="page">
+<div class="card">
+<h3>🗓️ Daily Assistant</h3>
+<textarea id="daily" placeholder="Այսօր ինչ գործեր ունես..."></textarea>
+<button class="btn" onclick="runTool('daily','dailyResult')">Plan My Day</button>
+<div class="result" id="dailyResult"></div>
+</div>
+</section>
+
+<!-- NEW TOOLS -->
+
+<section id="imageprompt" class="page">
+<div class="card">
+<h3>🖼️ AI Image Prompt Generator</h3>
+<p>Ստեղծիր մանրամասն prompt նկար գեներացնող AI-ի համար։</p>
+<textarea id="imagepromptInput" placeholder="Օրինակ՝ futuristic Armenian city at night"></textarea>
+<button class="btn" onclick="runTool('imageprompt','imagepromptResult')">Create Prompt</button>
+<div class="result" id="imagepromptResult"></div>
+</div>
+</section>
+
+<section id="videoprompt" class="page">
+<div class="card">
+<h3>🎬 AI Video Prompt Generator</h3>
+<p>Ստեղծիր cinematic video prompt։</p>
+<textarea id="videopromptInput" placeholder="Գրիր տեսանյութի գաղափարը..."></textarea>
+<button class="btn" onclick="runTool('videoprompt','videopromptResult')">Create Video Prompt</button>
+<div class="result" id="videopromptResult"></div>
+</div>
+</section>
+
+<section id="song" class="page">
+<div class="card">
+<h3>🎵 AI Song & Lyrics Idea</h3>
+<p>Ստեղծիր երգի թեմա, կառուցվածք և ստեղծագործական գաղափարներ։</p>
+<input id="songInput" placeholder="Թեմա / mood / genre">
+<button class="btn" onclick="runTool('song','songResult')">Create Song Idea</button>
+<div class="result" id="songResult"></div>
+</div>
+</section>
+
+<section id="code" class="page">
+<div class="card">
+<h3>🧑‍💻 AI Code Helper</h3>
+<p>Տեղադրիր կոդը և խնդրիր բացատրել կամ ուղղել այն։</p>
+<textarea id="codeInput" placeholder="Paste your code here..."></textarea>
+<button class="btn" onclick="runTool('code','codeResult')">Analyze Code</button>
+<div class="result" id="codeResult"></div>
+</div>
+</section>
+
+<section id="presentation" class="page">
+<div class="card">
+<h3>📊 Presentation Maker</h3>
+<p>Ստեղծիր ամբողջական սլայդների կառուցվածք։</p>
+<input id="presentationInput" placeholder="Թեմա, դասարան, սլայդների քանակ">
+<button class="btn" onclick="runTool('presentation','presentationResult')">Create Presentation</button>
+<div class="result" id="presentationResult"></div>
+</div>
+</section>
+
+<section id="project" class="page">
+<div class="card">
+<h3>🏫 Project Maker</h3>
+<p>Ստեղծիր դպրոցական կամ նախագծային աշխատանքի ամբողջ կառուցվածքը։</p>
+<textarea id="projectInput" placeholder="Նախագծի թեման, դասարանը, առարկան..."></textarea>
+<button class="btn" onclick="runTool('project','projectResult')">Create Project</button>
+<div class="result" id="projectResult"></div>
+</div>
+</section>
+
+<section id="quiz" class="page">
+<div class="card">
+<h3>🧠 Quiz Generator</h3>
+<p>Ստեղծիր հարցեր, պատասխաններ և թեստ։</p>
+<input id="quizInput" placeholder="Թեմա + մակարդակ + հարցերի քանակ">
+<button class="btn" onclick="runTool('quiz','quizResult')">Generate Quiz</button>
+<div class="result" id="quizResult"></div>
+</div>
+</section>
+
+<section id="trip" class="page">
+<div class="card">
+<h3>🗺️ Trip Planner</h3>
+<p>Կազմիր ճանապարհորդության ծրագիր։</p>
+<textarea id="tripInput" placeholder="Քաղաք/երկիր, օրերի քանակ, հետաքրքրություններ, բյուջե..."></textarea>
+<button class="btn" onclick="runTool('trip','tripResult')">Plan Trip</button>
+<div class="result" id="tripResult"></div>
+</div>
+</section>
+
+<section id="email" class="page">
+<div class="card">
+<h3>📧 Email Writer</h3>
+<p>Ստեղծիր պաշտոնական կամ ընկերական նամակ։</p>
+<textarea id="emailInput" placeholder="Ում, ինչի մասին, ինչ նպատակով..."></textarea>
+<button class="btn" onclick="runTool('email','emailResult')">Write Email</button>
+<div class="result" id="emailResult"></div>
+</div>
+</section>
+
+<section id="research" class="page">
+<div class="card">
+<h3>🔍 AI Research Assistant</h3>
+<p>Ստեղծիր հետազոտության հարցեր, ենթաթեմաներ և աշխատանքի կառուցվածք։</p>
+<textarea id="researchInput" placeholder="Հետազոտության թեման..."></textarea>
+<button class="btn" onclick="runTool('research','researchResult')">Start Research</button>
+<div class="result" id="researchResult"></div>
+</div>
+</section>
+
+<!-- VOICE -->
+
+<section id="voice" class="page">
+<div class="card">
+<h3>🔊 Text to Voice</h3>
+<textarea id="voiceText" placeholder="Գրիր տեքստը..."></textarea>
+<button class="btn" onclick="speak()">🔊 Speak</button>
+<button class="btn gray" onclick="stopSpeak()">⏹ Stop</button>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+
+var titles={
+home:"AmroyanAI",
+chat:"AI Chat",
+ideas:"Idea Generator",
+style:"Text Style Changer",
+cv:"CV Creator",
+social:"Social Media",
+translator:"Smart Translator",
+study:"Study Planner",
+summary:"Summarizer",
+brand:"Brand Generator",
+daily:"Daily Assistant",
+imageprompt:"AI Image Prompt",
+videoprompt:"AI Video Prompt",
+song:"Song & Lyrics Idea",
+code:"AI Code Helper",
+presentation:"Presentation Maker",
+project:"Project Maker",
+quiz:"Quiz Generator",
+trip:"Trip Planner",
+email:"Email Writer",
+research:"AI Research Assistant",
+voice:"Text to Voice"
+};
+
+function openPage(id,button){
+
+document.querySelectorAll(".page").forEach(function(p){
+p.classList.remove("active");
+});
+
+var page=document.getElementById(id);
+
+if(page) page.classList.add("active");
+
+document.querySelectorAll(".nav button").forEach(function(b){
+b.classList.remove("active");
+});
+
+if(button) button.classList.add("active");
+
+document.getElementById("title").textContent=titles[id]||"AmroyanAI";
+}
+
+async function askAI(prompt){
+
+try{
+
+var response=await fetch("/api/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:prompt
+})
+});
+
+var data=await response.json();
+
+if(!response.ok){
+throw new Error(data.error||"AI error");
+}
+
+return data.reply||data.output_text||data.text||"No response.";
+
+}catch(error){
+
+console.error(error);
+
+return "Չհաջողվեց ստանալ AI պատասխանը։ Ստուգիր server-ը։";
+}
+}
+
+async function sendChat(){
+
+var input=document.getElementById("chatInput");
+var message=input.value.trim();
+
+if(!message)return;
+
+var box=document.getElementById("chatBox");
+
+var user=document.createElement("div");
+user.className="msg user";
+user.textContent=message;
+box.appendChild(user);
+
+input.value="";
+
+var ai=document.createElement("div");
+ai.className="msg ai";
+ai.textContent="AmroyanAI-ը մտածում է...";
+box.appendChild(ai);
+
+box.scrollTop=box.scrollHeight;
+
+ai.textContent=await askAI(message);
+
+box.scrollTop=box.scrollHeight;
+}
+
+document.getElementById("chatInput").addEventListener("keydown",function(e){
+if(e.key==="Enter")sendChat();
+});
+
+var prompts={
+
+idea:
+function(v){
+return "Generate 10 creative and realistic ideas about this topic: "+v+
+". Include a name and short description for each. Answer in the same language as the user.";
+},
+
+style:
+function(v){
+return "Rewrite the following text in this style: "+document.getElementById("styleType").value+
+". Preserve the original meaning and answer in the same language.\n\n"+v;
+},
+
+cv:
+function(v){
+return "Create a professional CV from these details. Include profile, skills, education, experience and achievements. Also create a short motivation letter.\n\n"+v+
+"\n\nAdditional information:\n"+document.getElementById("cvExtra").value;
+},
+
+social:
+function(v){
+return "Create social media content from this text. Give Facebook post, Instagram caption, TikTok short script, LinkedIn post and hashtags.\n\n"+v;
+},
+
+translator:
+function(v){
+return "Translate this text into "+document.getElementById("language").value+
+". Preserve meaning, tone, humor and natural style.\n\n"+v;
+},
+
+study:
+function(v){
+return "Create a practical personalized study plan based on:\n"+v+
+"\nInclude goals, daily tasks, practice, revision and a final test.";
+},
+
+summary:
+function(v){
+return "Summarize this text. Give a short summary, main points, important facts and conclusion.\n\n"+v;
+},
+
+brand:
+function(v){
+return "Create 10 brand concepts from these details:\n"+v+
+"\nFor each include brand name, slogan, visual identity, colors and logo concept.";
+},
+
+daily:
+function(v){
+return "Create a realistic daily schedule from these tasks. Include priorities, breaks, study/work and free time.\n\n"+v;
+},
+
+imageprompt:
+function(v){
+return "Create a highly detailed professional AI image-generation prompt for this idea: "+v+
+". Include subject, environment, composition, lighting, camera, colors, atmosphere, details and visual style. Return the final prompt in English.";
+},
+
+videoprompt:
+function(v){
+return "Create a detailed cinematic AI video-generation prompt for this idea: "+v+
+". Include scene, characters, movement, camera movement, lighting, environment, atmosphere, duration and visual style. Return the final prompt in English.";
+},
+
+song:
+function(v){
+return "Create an original song concept from this idea: "+v+
+". Give title, theme, mood, genre, verse/chorus structure and creative direction. Do not copy existing copyrighted lyrics.";
+},
+
+code:
+function(v){
+return "Analyze the following code. Explain what it does, identify errors or risks, and provide corrected code when necessary. Keep the explanation clear.\n\n"+v;
+},
+
+presentation:
+function(v){
+return "Create a complete presentation plan from this topic: "+v+
+". Give slide-by-slide titles, key points, suggested visuals and a conclusion.";
+},
+
+project:
+function(v){
+return "Create a complete school/project-work structure from this topic: "+v+
+". Include title, relevance, goal, research question, objectives, methodology, main sections, expected results, conclusion and sources to investigate.";
+},
+
+quiz:
+function(v){
+return "Create a quiz from this topic: "+v+
+". Include questions, multiple-choice options, correct answers and a final answer key.";
+},
+
+trip:
+function(v){
+return "Create a practical trip plan from these details: "+v+
+". Include a day-by-day itinerary, activities, transportation considerations, estimated categories of expenses and useful preparation tips. Do not invent live prices.";
+},
+
+email:
+function(v){
+return "Write a polished email from these details: "+v+
+". Make it clear, natural and appropriate for the intended recipient. Provide a suitable subject line.";
+},
+
+research:
+function(v){
+return "Act as a research planning assistant. For this topic: "+v+
+", create a research question, subquestions, objectives, structure, possible sources to investigate, methodology and expected findings. Clearly distinguish facts from hypotheses."
+}
+
+};
+
+async function runTool(type,resultId){
+
+var inputId=type+"Input";
+
+var element=document.getElementById(inputId);
+
+if(!element){
+element=document.getElementById(type);
+}
+
+if(!element)return;
+
+var value=element.value.trim();
+
+if(!value)return;
+
+var result=document.getElementById(resultId);
+
+result.textContent="AmroyanAI-ը աշխատում է...";
+
+var prompt=prompts[type](value);
+
+result.textContent=await askAI(prompt);
+}
+
+function speak(){
+
+var text=document.getElementById("voiceText").value.trim();
+
+if(!text)return;
+
+if(!("speechSynthesis" in window)){
+alert("Text to Voice is not supported by this browser.");
+return;
+}
+
+speechSynthesis.cancel();
+
+var u=new SpeechSynthesisUtterance(text);
+
+speechSynthesis.speak(u);
+}
+
+function stopSpeak(){
+
+if("speechSynthesis" in window){
+speechSynthesis.cancel();
+}
+}
+
+</script>
+
+</body>
+</html>
