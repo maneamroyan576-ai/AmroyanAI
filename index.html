@@ -1,90 +1,65 @@
 <!DOCTYPE html>
 <html lang="hy">
 <head>
-<meta name="google-site-verification" content="7SJAB2vZITq4ORsFvXOm_KxSOAHpo6K5vsqk_Og9Ygo">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AmroyanAI</title>
+<meta name="google-site-verification"
+content="7SJAB2vZITq4ORsFvXOm_KxSOAHpo6K5vsqk_Og9Ygo">
+
+<title>AmroyanAI — AI Tools</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 *{
+    box-sizing:border-box;
     margin:0;
     padding:0;
-    box-sizing:border-box;
 }
 
 :root{
-    --bg:#06070b;
-    --bg2:#0b0d13;
-    --panel:rgba(17,19,28,.82);
-    --panel-solid:#11131c;
-    --panel-hover:#171a25;
-    --border:rgba(255,255,255,.08);
-    --border2:rgba(255,255,255,.13);
-    --text:#f7f8fc;
-    --muted:#8f96a8;
-    --accent:#7c5cff;
-    --accent2:#a68bff;
-    --cyan:#38d9ff;
-    --green:#35d69a;
-    --red:#ff5f72;
-    --shadow:0 20px 60px rgba(0,0,0,.35);
+    --bg:#070b16;
+    --card:#10182b;
+    --card2:#151f35;
+    --text:#f5f7ff;
+    --muted:#98a5bc;
+    --border:rgba(255,255,255,.09);
+    --accent:#7657ff;
+    --accent2:#00cfff;
+    --green:#42e59a;
+    --red:#ff667d;
 }
 
 body.light{
-    --bg:#f5f7fb;
-    --bg2:#eef1f7;
-    --panel:rgba(255,255,255,.86);
-    --panel-solid:#fff;
-    --panel-hover:#f3f5fa;
-    --border:rgba(20,25,40,.09);
-    --border2:rgba(20,25,40,.16);
-    --text:#151823;
-    --muted:#697186;
-    --shadow:0 20px 50px rgba(40,50,80,.12);
-}
-
-html{
-    scroll-behavior:smooth;
+    --bg:#eef2f8;
+    --card:#ffffff;
+    --card2:#f4f6fb;
+    --text:#111827;
+    --muted:#687386;
+    --border:rgba(0,0,0,.1);
 }
 
 body{
     min-height:100vh;
     background:
-        radial-gradient(circle at 15% 10%,rgba(124,92,255,.15),transparent 28%),
-        radial-gradient(circle at 85% 80%,rgba(56,217,255,.08),transparent 25%),
+        radial-gradient(circle at 10% 10%,rgba(118,87,255,.18),transparent 30%),
+        radial-gradient(circle at 90% 15%,rgba(0,207,255,.12),transparent 28%),
         var(--bg);
     color:var(--text);
-    font-family:Inter,Arial,sans-serif;
-    overflow-x:hidden;
-    transition:.3s;
-}
-
-body:before{
-    content:"";
-    position:fixed;
-    width:420px;
-    height:420px;
-    border-radius:50%;
-    background:rgba(124,92,255,.08);
-    filter:blur(100px);
-    top:-160px;
-    right:-120px;
-    pointer-events:none;
+    font-family:Arial,Segoe UI,sans-serif;
 }
 
 button,
-input,
 textarea,
 select{
-    font:inherit;
+    font-family:inherit;
 }
 
 button{
     cursor:pointer;
+}
+
+.app{
+    min-height:100vh;
 }
 
 /* SIDEBAR */
@@ -94,662 +69,466 @@ button{
     left:0;
     top:0;
     bottom:0;
-    width:270px;
-    z-index:50;
-    padding:22px 15px;
-    background:rgba(8,9,14,.82);
-    backdrop-filter:blur(22px);
-    -webkit-backdrop-filter:blur(22px);
+    width:260px;
+    padding:22px 16px;
+    background:rgba(8,13,25,.9);
+    backdrop-filter:blur(20px);
     border-right:1px solid var(--border);
-    overflow-y:auto;
+    z-index:100;
 }
 
 body.light .sidebar{
-    background:rgba(255,255,255,.82);
+    background:rgba(255,255,255,.92);
 }
 
-.brand{
+.logo{
     display:flex;
     align-items:center;
-    gap:11px;
-    padding:3px 8px 25px;
+    gap:12px;
+    margin-bottom:30px;
 }
 
-.brand-logo{
-    width:42px;
-    height:42px;
-    border-radius:13px;
-    display:grid;
-    place-items:center;
-    font-weight:800;
-    font-size:18px;
+.logoIcon{
+    width:46px;
+    height:46px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:bold;
     color:white;
-    background:linear-gradient(135deg,#7256ff,#35cfff);
-    box-shadow:0 10px 30px rgba(124,92,255,.3);
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
 }
 
-.brand-name{
+.logoName{
     font-size:20px;
     font-weight:800;
-    letter-spacing:-.6px;
 }
 
-.brand-name span{
-    color:var(--accent2);
-}
-
-.brand-sub{
+.logoSmall{
     color:var(--muted);
     font-size:10px;
-    margin-top:2px;
+    margin-top:3px;
 }
 
-.nav-title{
-    color:#626a7e;
-    font-size:10px;
-    font-weight:700;
-    letter-spacing:1.2px;
+.menuTitle{
+    color:var(--muted);
+    font-size:11px;
     text-transform:uppercase;
-    padding:13px 10px 7px;
+    letter-spacing:1px;
+    margin:18px 10px 9px;
 }
 
 .nav{
     display:flex;
     flex-direction:column;
-    gap:3px;
+    gap:5px;
 }
 
 .nav button{
     width:100%;
-    display:flex;
-    align-items:center;
-    gap:11px;
-    border:1px solid transparent;
-    background:transparent;
-    color:var(--muted);
-    padding:10px 11px;
-    border-radius:11px;
+    padding:11px 12px;
     text-align:left;
-    font-size:12px;
-    transition:.2s;
+    color:var(--muted);
+    background:transparent;
+    border:1px solid transparent;
+    border-radius:11px;
 }
 
-.nav button:hover{
-    color:var(--text);
-    background:var(--panel-hover);
-}
-
+.nav button:hover,
 .nav button.active{
-    color:white;
-    background:linear-gradient(100deg,rgba(124,92,255,.22),rgba(124,92,255,.06));
-    border-color:rgba(124,92,255,.25);
+    color:var(--text);
+    background:rgba(118,87,255,.14);
+    border-color:var(--border);
 }
 
-body.light .nav button.active{
-    color:#4733b9;
+.icon{
+    display:inline-block;
+    width:27px;
 }
 
-.nav-icon{
-    width:23px;
-    text-align:center;
-    font-size:16px;
+.bottom{
+    position:absolute;
+    left:16px;
+    right:16px;
+    bottom:18px;
 }
 
-.sidebar-bottom{
-    margin-top:18px;
-    padding-top:13px;
-    border-top:1px solid var(--border);
+.theme{
+    width:100%;
+    padding:11px;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:var(--card);
+    color:var(--text);
 }
 
 /* MAIN */
 
 .main{
-    margin-left:270px;
+    margin-left:260px;
     min-height:100vh;
-    padding:28px 34px 50px;
+    padding:28px;
 }
 
-.topbar{
-    height:54px;
+.top{
     display:flex;
-    align-items:center;
     justify-content:space-between;
+    align-items:center;
     margin-bottom:25px;
 }
 
-.page-title{
-    font-size:23px;
+.title{
+    font-size:30px;
     font-weight:800;
-    letter-spacing:-.7px;
 }
 
-.top-actions{
-    display:flex;
-    align-items:center;
-    gap:9px;
-}
-
-.status{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    border:1px solid var(--border);
-    background:var(--panel);
-    padding:8px 12px;
-    border-radius:30px;
-    font-size:11px;
+.subtitle{
     color:var(--muted);
+    margin-top:5px;
 }
 
-.status-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--green);
-    box-shadow:0 0 12px var(--green);
-}
-
-.icon-btn{
-    width:38px;
-    height:38px;
-    border:1px solid var(--border);
-    border-radius:11px;
-    background:var(--panel);
-    color:var(--text);
-    transition:.2s;
-}
-
-.icon-btn:hover{
-    transform:translateY(-2px);
-    border-color:var(--accent);
-}
-
-/* PAGES */
-
-.page{
-    display:none;
-    animation:pageIn .28s ease;
-}
-
-.page.active{
-    display:block;
-}
-
-@keyframes pageIn{
-    from{
-        opacity:0;
-        transform:translateY(7px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+.online{
+    color:var(--green);
+    padding:8px 13px;
+    border-radius:30px;
+    background:rgba(66,229,154,.08);
+    border:1px solid rgba(66,229,154,.18);
+    font-size:13px;
 }
 
 /* HOME */
 
 .hero{
-    position:relative;
-    overflow:hidden;
-    padding:36px;
-    border:1px solid var(--border2);
-    border-radius:25px;
-    background:
-        radial-gradient(circle at 85% 25%,rgba(56,217,255,.13),transparent 25%),
-        radial-gradient(circle at 65% 100%,rgba(124,92,255,.18),transparent 35%),
-        var(--panel);
-    box-shadow:var(--shadow);
-    margin-bottom:20px;
-}
-
-.hero:after{
-    content:"";
-    position:absolute;
-    width:180px;
-    height:180px;
-    border:1px solid rgba(124,92,255,.15);
-    border-radius:50%;
-    right:-70px;
-    top:-60px;
-}
-
-.hero-label{
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
-    padding:7px 11px;
-    border-radius:20px;
-    background:rgba(124,92,255,.1);
-    border:1px solid rgba(124,92,255,.2);
-    color:var(--accent2);
-    font-size:10px;
-    font-weight:700;
-    margin-bottom:16px;
+    padding:30px;
+    border:1px solid var(--border);
+    border-radius:24px;
+    background:linear-gradient(
+        135deg,
+        rgba(118,87,255,.15),
+        rgba(0,207,255,.04)
+    ),var(--card);
+    margin-bottom:22px;
 }
 
 .hero h1{
-    max-width:700px;
-    font-size:39px;
-    line-height:1.08;
-    letter-spacing:-1.5px;
-    margin-bottom:13px;
-}
-
-.hero h1 span{
-    background:linear-gradient(90deg,#a98fff,#42d9ff);
-    -webkit-background-clip:text;
-    color:transparent;
+    font-size:38px;
+    margin-bottom:12px;
 }
 
 .hero p{
-    max-width:650px;
     color:var(--muted);
     line-height:1.7;
-    font-size:13px;
+    max-width:750px;
 }
 
-.hero-actions{
-    display:flex;
-    gap:9px;
-    margin-top:23px;
+.tools{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
 }
 
-.primary-btn{
-    border:0;
-    padding:12px 17px;
-    border-radius:11px;
-    color:white;
-    font-weight:700;
-    font-size:12px;
-    background:linear-gradient(135deg,#7256ff,#5d46d9);
-    box-shadow:0 10px 28px rgba(103,79,230,.25);
+.tool{
+    padding:21px;
+    border:1px solid var(--border);
+    border-radius:19px;
+    background:var(--card);
     transition:.2s;
 }
 
-.primary-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 14px 32px rgba(103,79,230,.35);
+.tool:hover{
+    transform:translateY(-3px);
+    border-color:rgba(118,87,255,.4);
 }
 
-.secondary-btn{
-    border:1px solid var(--border2);
-    padding:11px 16px;
-    border-radius:11px;
-    color:var(--text);
-    background:var(--panel);
-    font-weight:600;
+.toolTop{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:13px;
+}
+
+.toolIcon{
+    width:43px;
+    height:43px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(118,87,255,.13);
+    font-size:20px;
+}
+
+.number{
+    color:var(--muted);
     font-size:12px;
 }
 
-.section-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:end;
-    margin:28px 2px 12px;
+.tool h3{
+    margin-bottom:7px;
 }
 
-.section-head h2{
-    font-size:16px;
-}
-
-.section-head p{
+.tool p{
     color:var(--muted);
-    font-size:11px;
+    font-size:14px;
+    line-height:1.5;
 }
 
-/* TOOL GRID */
-
-.tool-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-}
-
-.tool-card{
-    position:relative;
-    overflow:hidden;
-    min-height:145px;
-    padding:18px;
-    background:var(--panel);
+.open{
+    margin-top:15px;
+    padding:9px 14px;
     border:1px solid var(--border);
-    border-radius:17px;
-    cursor:pointer;
-    transition:.25s;
+    border-radius:9px;
+    color:var(--text);
+    background:var(--card2);
 }
 
-.tool-card:before{
-    content:"";
-    position:absolute;
-    width:80px;
-    height:80px;
-    right:-35px;
-    top:-35px;
-    background:rgba(124,92,255,.12);
-    border-radius:50%;
-    filter:blur(4px);
+.open:hover{
+    background:var(--accent);
+    color:white;
 }
 
-.tool-card:hover{
-    transform:translateY(-4px);
-    border-color:rgba(124,92,255,.45);
-    box-shadow:0 16px 35px rgba(0,0,0,.18);
+/* WORKSPACE */
+
+.workspace{
+    display:none;
 }
 
-.tool-icon{
-    width:39px;
-    height:39px;
-    display:grid;
-    place-items:center;
-    border-radius:11px;
-    background:linear-gradient(135deg,rgba(124,92,255,.18),rgba(56,217,255,.08));
-    border:1px solid rgba(124,92,255,.14);
-    font-size:19px;
-    margin-bottom:14px;
+.workspace.active{
+    display:block;
 }
 
-.tool-card h3{
-    font-size:13px;
+.back{
+    margin-bottom:15px;
+    padding:9px 14px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    color:var(--text);
+    background:var(--card);
+}
+
+.box{
+    padding:25px;
+    border:1px solid var(--border);
+    border-radius:22px;
+    background:var(--card);
+}
+
+.box h2{
+    font-size:26px;
     margin-bottom:6px;
 }
 
-.tool-card p{
+.description{
     color:var(--muted);
-    font-size:10px;
-    line-height:1.55;
+    margin-bottom:20px;
 }
 
-/* CARDS */
-
-.card{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:21px;
-    padding:24px;
-    box-shadow:var(--shadow);
-}
-
-.card-head{
-    display:flex;
-    align-items:center;
-    gap:13px;
-    margin-bottom:19px;
-}
-
-.card-icon{
-    width:45px;
-    height:45px;
-    display:grid;
-    place-items:center;
-    border-radius:13px;
-    background:linear-gradient(135deg,rgba(124,92,255,.2),rgba(56,217,255,.08));
-    font-size:22px;
-}
-
-.card h2{
-    font-size:20px;
-    letter-spacing:-.4px;
-}
-
-.card-description{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:4px;
-}
-
-.input-label{
+label{
     display:block;
     color:var(--muted);
-    font-size:11px;
-    font-weight:600;
-    margin:14px 0 7px;
-}
-
-textarea,
-input,
-select{
-    width:100%;
-    border:1px solid var(--border2);
-    background:var(--bg2);
-    color:var(--text);
-    border-radius:13px;
-    padding:13px 14px;
-    outline:none;
-    font-size:12px;
-    transition:.2s;
+    font-size:13px;
+    margin-bottom:8px;
 }
 
 textarea{
-    min-height:165px;
+    width:100%;
+    min-height:220px;
     resize:vertical;
+    padding:16px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    outline:none;
+    background:var(--card2);
+    color:var(--text);
+    font-size:15px;
     line-height:1.6;
 }
 
-input,
-select{
-    height:45px;
-}
-
-textarea:focus,
-input:focus,
-select:focus{
-    border-color:rgba(124,92,255,.65);
-    box-shadow:0 0 0 3px rgba(124,92,255,.08);
+textarea:focus{
+    border-color:var(--accent);
 }
 
 .actions{
     display:flex;
-    gap:8px;
-    margin-top:11px;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:12px;
 }
 
-.btn{
+.primary{
+    padding:11px 18px;
     border:0;
-    padding:11px 17px;
     border-radius:11px;
-    background:linear-gradient(135deg,#7256ff,#5c47d6);
     color:white;
-    font-size:11px;
-    font-weight:700;
-    transition:.2s;
+    font-weight:bold;
+    background:linear-gradient(135deg,var(--accent),#4e7cff);
 }
 
-.btn:hover{
-    transform:translateY(-1px);
-}
-
-.btn.gray{
-    background:var(--panel-hover);
+.secondary{
+    padding:11px 18px;
     border:1px solid var(--border);
+    border-radius:11px;
     color:var(--text);
+    background:var(--card2);
+}
+
+.primary:disabled{
+    opacity:.6;
+    cursor:not-allowed;
 }
 
 .result{
-    min-height:70px;
-    margin-top:16px;
-    padding:17px;
+    margin-top:18px;
+    padding:18px;
+    min-height:80px;
     border:1px solid var(--border);
     border-radius:14px;
-    background:var(--bg2);
-    color:var(--text);
-    font-size:12px;
-    line-height:1.75;
+    background:var(--card2);
     white-space:pre-wrap;
+    line-height:1.65;
+}
+
+.result:empty{
+    display:none;
+}
+
+.loading{
+    color:var(--muted);
+}
+
+.error{
+    color:var(--red);
+}
+
+/* TRANSLATOR */
+
+.selects{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:13px;
+}
+
+select{
+    padding:12px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--card2);
+    color:var(--text);
 }
 
 /* CHAT */
 
-.chat-box{
-    height:500px;
+.chatMessages{
+    height:480px;
     overflow-y:auto;
-    padding:18px;
+    padding:12px;
     border:1px solid var(--border);
-    border-radius:17px;
-    background:var(--bg2);
-    margin-bottom:11px;
+    border-radius:14px;
+    background:var(--card2);
 }
 
-.message{
-    max-width:78%;
+.msg{
+    max-width:82%;
     padding:12px 15px;
     border-radius:15px;
     margin-bottom:10px;
-    font-size:12px;
-    line-height:1.65;
     white-space:pre-wrap;
+    line-height:1.5;
 }
 
-.message.user{
-    margin-left:auto;
-    color:white;
-    background:linear-gradient(135deg,#7056ee,#5944c9);
-    border-bottom-right-radius:5px;
-}
-
-.message.ai{
-    background:var(--panel-hover);
+.msg.ai{
+    background:var(--card);
     border:1px solid var(--border);
-    border-bottom-left-radius:5px;
 }
 
-.chat-input{
+.msg.user{
+    margin-left:auto;
+    background:linear-gradient(135deg,var(--accent),#4e7cff);
+    color:white;
+}
+
+.chatRow{
     display:flex;
-    gap:8px;
+    gap:10px;
+    margin-top:12px;
 }
 
-.chat-input input{
-    flex:1;
+.chatRow textarea{
+    min-height:60px;
+    max-height:150px;
 }
 
-/* SETTINGS */
-
-.setting{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 0;
-    border-bottom:1px solid var(--border);
-}
-
-.setting:last-child{
-    border-bottom:0;
-}
-
-.setting-title{
-    font-size:13px;
-    font-weight:700;
-}
-
-.setting-description{
-    color:var(--muted);
-    font-size:10px;
-    margin-top:4px;
-}
-
-.setting select{
-    width:180px;
-    margin:0;
+.chatRow button{
+    min-width:110px;
 }
 
 /* MOBILE */
 
-.mobile-menu{
+.mobile{
     display:none;
 }
 
-@media(max-width:1200px){
-    .tool-grid{
-        grid-template-columns:repeat(3,1fr);
-    }
-}
+@media(max-width:900px){
 
-@media(max-width:950px){
     .sidebar{
-        width:235px;
+        transform:translateX(-100%);
+        transition:.25s;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
     }
 
     .main{
-        margin-left:235px;
+        margin-left:0;
+        padding:18px;
     }
 
-    .tool-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media(max-width:700px){
-
-    .sidebar{
-        width:70px;
-        padding:15px 7px;
+    .mobile{
+        display:block;
+        margin-bottom:8px;
+        padding:8px 11px;
+        border:1px solid var(--border);
+        border-radius:9px;
+        color:var(--text);
+        background:var(--card);
     }
 
-    .brand{
-        justify-content:center;
-        padding:3px 0 20px;
-    }
-
-    .brand-logo{
-        width:42px;
-        height:42px;
-    }
-
-    .brand-info,
-    .nav-title{
-        display:none;
-    }
-
-    .nav button{
-        justify-content:center;
-        padding:11px 5px;
-    }
-
-    .nav button span:last-child{
-        display:none;
-    }
-
-    .nav-icon{
-        font-size:18px;
-    }
-
-    .main{
-        margin-left:70px;
-        padding:18px 12px 35px;
-    }
-
-    .status{
-        display:none;
-    }
-
-    .page-title{
-        font-size:19px;
-    }
-
-    .hero{
-        padding:25px 20px;
-    }
-
-    .hero h1{
-        font-size:29px;
-    }
-
-    .hero-actions{
-        flex-direction:column;
-    }
-
-    .tool-grid{
+    .tools{
         grid-template-columns:1fr;
     }
 
-    .card{
+    .hero h1{
+        font-size:30px;
+    }
+}
+
+@media(max-width:600px){
+
+    .online{
+        display:none;
+    }
+
+    .hero{
+        padding:21px;
+    }
+
+    .box{
         padding:17px;
     }
 
-    .chat-input{
+    .selects{
+        grid-template-columns:1fr;
+    }
+
+    .chatRow{
         flex-direction:column;
     }
 
-    .message{
-        max-width:90%;
+    .chatRow button{
+        width:100%;
     }
 }
 </style>
@@ -757,625 +536,682 @@ select:focus{
 
 <body>
 
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
 
-    <div class="brand">
-        <div class="brand-logo">A</div>
-        <div class="brand-info">
-            <div class="brand-name">Amroyan<span>AI</span></div>
-            <div class="brand-sub">PERSONAL AI WORKSPACE</div>
+    <div class="logo">
+
+        <div class="logoIcon">A</div>
+
+        <div>
+            <div class="logoName">AmroyanAI</div>
+            <div class="logoSmall">AI TOOLS PLATFORM</div>
         </div>
+
     </div>
+
+    <div class="menuTitle">AI Tools</div>
 
     <div class="nav">
 
-        <div class="nav-title">Workspace</div>
-
-        <button class="active" onclick="openPage('home',this)">
-            <span class="nav-icon">⌂</span><span>Գլխավոր</span>
+        <button data-tool="chat" class="active">
+            <span class="icon">💬</span> AI Chat
         </button>
 
-        <button onclick="openPage('chat',this)">
-            <span class="nav-icon">✦</span><span>AI Chat</span>
+        <button data-tool="summarizer">
+            <span class="icon">📝</span> AI Summarizer
         </button>
 
-        <div class="nav-title">AI Tools</div>
-
-        <button onclick="openPage('summary',this)">
-            <span class="nav-icon">▤</span><span>AI Summarizer</span>
+        <button data-tool="simple">
+            <span class="icon">💡</span> Explain Simply
         </button>
 
-        <button onclick="openPage('explain',this)">
-            <span class="nav-icon">◉</span><span>Explain Simply</span>
+        <button data-tool="research">
+            <span class="icon">🔎</span> Research Assistant
         </button>
 
-        <button onclick="openPage('research',this)">
-            <span class="nav-icon">⌕</span><span>Research Assistant</span>
+        <button data-tool="homework">
+            <span class="icon">🎓</span> Homework Helper
         </button>
 
-        <button onclick="openPage('problem',this)">
-            <span class="nav-icon">?</span><span>Problem Solver</span>
+        <button data-tool="project">
+            <span class="icon">📊</span> Project Builder
         </button>
 
-        <div class="nav-title">Study</div>
-
-        <button onclick="openPage('homework',this)">
-            <span class="nav-icon">▣</span><span>Homework Helper</span>
+        <button data-tool="ideas">
+            <span class="icon">✨</span> Idea Generator
         </button>
 
-        <button onclick="openPage('quiz',this)">
-            <span class="nav-icon">☷</span><span>Quiz Generator</span>
+        <button data-tool="code">
+            <span class="icon">💻</span> Code Helper
         </button>
 
-        <button onclick="openPage('flashcards',this)">
-            <span class="nav-icon">▤</span><span>Flashcards</span>
+        <button data-tool="translator">
+            <span class="icon">🌍</span> Translator
         </button>
 
-        <button onclick="openPage('study',this)">
-            <span class="nav-icon">◷</span><span>Study Planner</span>
-        </button>
-
-        <button onclick="openPage('presentation',this)">
-            <span class="nav-icon">▤</span><span>Presentation Coach</span>
-        </button>
-
-        <button onclick="openPage('essay',this)">
-            <span class="nav-icon">✎</span><span>Essay & Report</span>
-        </button>
-
-        <div class="nav-title">Projects</div>
-
-        <button onclick="openPage('project',this)">
-            <span class="nav-icon">◆</span><span>Project Builder</span>
-        </button>
-
-        <button onclick="openPage('ideas',this)">
-            <span class="nav-icon">✦</span><span>Idea Generator</span>
-        </button>
-
-        <button onclick="openPage('goal',this)">
-            <span class="nav-icon">◎</span><span>Goal Planner</span>
-        </button>
-
-        <button onclick="openPage('projectstudio',this)">
-            <span class="nav-icon">▦</span><span>AI Project Studio</span>
-        </button>
-
-        <div class="nav-title">Creative</div>
-
-        <button onclick="openPage('video',this)">
-            <span class="nav-icon">▶</span><span>Video Prompt</span>
-        </button>
-
-        <button onclick="openPage('song',this)">
-            <span class="nav-icon">♫</span><span>Song Idea</span>
-        </button>
-
-        <button onclick="openPage('style',this)">
-            <span class="nav-icon">✧</span><span>Text Improver</span>
-        </button>
-
-        <div class="nav-title">Coding</div>
-
-        <button onclick="openPage('code',this)">
-            <span class="nav-icon">&lt;/&gt;</span><span>Code Helper</span>
-        </button>
-
-        <button onclick="openPage('codeexplain',this)">
-            <span class="nav-icon">⌘</span><span>Code Explainer</span>
-        </button>
-
-        <button onclick="openPage('bug',this)">
-            <span class="nav-icon">!</span><span>Bug Finder</span>
-        </button>
-
-        <div class="nav-title">Language</div>
-
-        <button onclick="openPage('translator',this)">
-            <span class="nav-icon">文</span><span>Translator</span>
-        </button>
-
-        <button onclick="openPage('grammar',this)">
-            <span class="nav-icon">A</span><span>Grammar Helper</span>
-        </button>
-
-        <button onclick="openPage('voice',this)">
-            <span class="nav-icon">◖</span><span>Text to Voice</span>
+        <button data-tool="voice">
+            <span class="icon">🔊</span> Text → Voice
         </button>
 
     </div>
 
-    <div class="sidebar-bottom">
-        <button class="nav button" onclick="openPage('settings',this)" style="width:100%;display:flex;align-items:center;gap:11px;border:0;background:transparent;color:var(--muted);padding:10px 11px;border-radius:11px;text-align:left;font-size:12px;">
-            <span class="nav-icon">⚙</span><span>Settings</span>
+    <div class="bottom">
+
+        <button class="theme" id="theme">
+            🌙 Dark / ☀️ Light
         </button>
+
     </div>
 
 </aside>
 
+
 <main class="main">
 
-    <header class="topbar">
-        <div class="page-title" id="pageTitle">AmroyanAI</div>
+    <div class="top">
 
-        <div class="top-actions">
-            <div class="status">
-                <span class="status-dot"></span>
-                AI Online
+        <div>
+
+            <button class="mobile" id="mobile">
+                ☰ Menu
+            </button>
+
+            <div class="title">AmroyanAI</div>
+
+            <div class="subtitle">
+                Your personal AI workspace
             </div>
 
-            <button class="icon-btn" onclick="toggleTheme()" title="Theme">◐</button>
         </div>
-    </header>
+
+        <div class="online">
+            ● AI Online
+        </div>
+
+    </div>
+
 
     <!-- HOME -->
 
-    <section id="home" class="page active">
+    <section id="home">
 
         <div class="hero">
 
-            <div class="hero-label">
-                <span>✦</span>
-                AMROYANAI WORKSPACE
-            </div>
-
             <h1>
-                Your ideas.<br>
-                <span>Powered by AI.</span>
+                Create smarter.<br>
+                Work faster.
             </h1>
 
             <p>
-                AmroyanAI is your personal AI workspace for studying,
-                projects, coding, creativity and everyday tasks.
+                Ten useful AI tools in one modern workspace.
+                Chat, research, projects, homework, coding,
+                translation and more.
             </p>
 
-            <div class="hero-actions">
-                <button class="primary-btn" onclick="openPage('chat')">
-                    ✦ Start AI Chat
-                </button>
-
-                <button class="secondary-btn" onclick="openPage('project')">
-                    Build a Project →
-                </button>
-            </div>
-
         </div>
 
-        <div class="section-head">
-            <div>
-                <h2>AI Workspace</h2>
-                <p>Choose a tool and start creating.</p>
-            </div>
-        </div>
 
-        <div class="tool-grid">
+        <div class="tools">
 
-            <div class="tool-card" onclick="openPage('chat')">
-                <div class="tool-icon">✦</div>
+            <div class="tool">
+                <div class="toolTop">
+                    <div class="toolIcon">💬</div>
+                    <div class="number">01</div>
+                </div>
                 <h3>AI Chat</h3>
-                <p>Talk with AmroyanAI in Armenian, Russian or English.</p>
+                <p>Chat with AmroyanAI in your language.</p>
+                <button class="open" data-open="chat">Open Tool</button>
             </div>
 
-            <div class="tool-card" onclick="openPage('summary')">
-                <div class="tool-icon">▤</div>
+
+            <div class="tool">
+                <div class="toolTop">
+                    <div class="toolIcon">📝</div>
+                    <div class="number">02</div>
+                </div>
                 <h3>AI Summarizer</h3>
-                <p>Turn long texts into clear useful summaries.</p>
+                <p>Summarize long texts quickly.</p>
+                <button class="open" data-open="summarizer">Open Tool</button>
             </div>
 
-            <div class="tool-card" onclick="openPage('explain')">
-                <div class="tool-icon">◉</div>
+
+            <div class="tool">
+                <div class="toolTop">
+                    <div class="toolIcon">💡</div>
+                    <div class="number">03</div>
+                </div>
                 <h3>Explain Simply</h3>
-                <p>Understand difficult topics more easily.</p>
+                <p>Understand complicated topics easily.</p>
+                <button class="open" data-open="simple">Open Tool</button>
             </div>
 
-            <div class="tool-card" onclick="openPage('research')">
-                <div class="tool-icon">⌕</div>
+
+            <div class="tool">
+                <div class="toolTop">
+                    <div class="toolIcon">🔎</div>
+                    <div class="number">04</div>
+                </div>
                 <h3>Research Assistant</h3>
-                <p>Plan research questions and project structure.</p>
+                <p>Build organized research answers.</p>
+                <button class="open" data-open="research">Open Tool</button>
             </div>
 
-            <div class="tool-card" onclick="openPage('homework')">
-                <div class="tool-icon">▣</div>
+
+            <div class="tool">
+                <div class="toolTop">
+                    <div class="toolIcon">🎓</div>
+                    <div class="number">05</div>
+                </div>
                 <h3>Homework Helper</h3>
-                <p>Understand and solve school exercises.</p>
+                <p>Get step-by-step help with schoolwork.</p>
+                <button class="open" data-open="homework">Open Tool</button>
             </div>
 
-            <div class="tool-card" onclick="openPage('quiz')">
-                <div class="tool-icon">☷</div>
-                <h3>Quiz Generator</h3>
-                <p>Create quizzes for any school topic.</p>
-            </div>
 
-            <div class="tool-card" onclick="openPage('flashcards')">
-                <div class="tool-icon">▤</div>
-                <h3>Flashcards</h3>
-                <p>Turn study material into flashcards.</p>
-            </div>
-
-            <div class="tool-card" onclick="openPage('study')">
-                <div class="tool-icon">◷</div>
-                <h3>Study Planner</h3>
-                <p>Create an organized study schedule.</p>
-            </div>
-
-            <div class="tool-card" onclick="openPage('presentation')">
-                <div class="tool-icon">▤</div>
-                <h3>Presentation Coach</h3>
-                <p>Build slides and speaking notes.</p>
-            </div>
-
-            <div class="tool-card" onclick="openPage('essay')">
-                <div class="tool-icon">✎</div>
-                <h3>Essay & Report</h3>
-                <p>Structure school essays and reports.</p>
-            </div>
-
-            <div class="tool-card" onclick="openPage('project')">
-                <div class="tool-icon">◆</div>
+            <div class="tool">
+                <div class="toolTop">
+                    <div class="toolIcon">📊</div>
+                    <div class="number">06</div>
+                </div>
                 <h3>Project Builder</h3>
-                <p>Create a complete project plan.</p>
+                <p>Create complete school project structures.</p>
+                <button class="open" data-open="project">Open Tool</button>
             </div>
 
-            <div class="tool-card" onclick="openPage('projectstudio')">
-                <div class="tool-icon">▦</div>
-                <h3>AI Project Studio</h3>
-                <p>Build an entire project workflow.</p>
+
+            <div class="tool">
+                <div class="toolTop">
+                    <div class="toolIcon">✨</div>
+                    <div class="number">07</div>
+                </div>
+                <h3>Idea Generator</h3>
+                <p>Generate creative project and content ideas.</p>
+                <button class="open" data-open="ideas">Open Tool</button>
+            </div>
+
+
+            <div class="tool">
+                <div class="toolTop">
+                    <div class="toolIcon">💻</div>
+                    <div class="number">08</div>
+                </div>
+                <h3>Code Helper</h3>
+                <p>Get help with programming and code.</p>
+                <button class="open" data-open="code">Open Tool</button>
+            </div>
+
+
+            <div class="tool">
+                <div class="toolTop">
+                    <div class="toolIcon">🌍</div>
+                    <div class="number">09</div>
+                </div>
+                <h3>Translator</h3>
+                <p>Translate text between languages.</p>
+                <button class="open" data-open="translator">Open Tool</button>
+            </div>
+
+
+            <div class="tool">
+                <div class="toolTop">
+                    <div class="toolIcon">🔊</div>
+                    <div class="number">10</div>
+                </div>
+                <h3>Text → Voice</h3>
+                <p>Turn written text into speech.</p>
+                <button class="open" data-open="voice">Open Tool</button>
             </div>
 
         </div>
 
     </section>
+
 
     <!-- CHAT -->
 
-    <section id="chat" class="page">
+    <section class="workspace" id="chat">
 
-        <div class="card">
+        <button class="back">← Back</button>
 
-            <div class="card-head">
-                <div class="card-icon">✦</div>
-                <div>
-                    <h2>AI Chat</h2>
-                    <div class="card-description">
-                        Your personal AmroyanAI assistant
-                    </div>
-                </div>
+        <div class="box">
+
+            <h2>💬 AI Chat</h2>
+
+            <div class="description">
+                Ask AmroyanAI anything.
             </div>
 
-            <div class="chat-box" id="chatBox">
-                <div class="message ai">
-                    Բարև 👋 Ես AmroyanAI-ն եմ։ Գրիր ինչի մասին ուզում ես խոսել։
-                </div>
-            </div>
+            <div class="chatMessages" id="chatMessages">
 
-            <div class="chat-input">
-                <input id="chatInput" placeholder="Գրիր հաղորդագրություն...">
-                <button class="btn" onclick="sendChat()">Send ✦</button>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- GENERIC TOOL PAGES -->
-
-    <section id="summary" class="page">
-        <div class="card">
-            <ToolHeader icon="▤" title="AI Summarizer" desc="Summarize long texts into useful information." />
-            <textarea id="summaryInput" placeholder="Տեղադրիր երկար տեքստը այստեղ..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('summary','summaryResult')">Summarize ✦</button>
-            </div>
-            <div class="result" id="summaryResult">Արդյունքը կհայտնվի այստեղ։</div>
-        </div>
-    </section>
-
-    <section id="explain" class="page">
-        <div class="card">
-            <ToolHeader icon="◉" title="Explain Simply" desc="Make complicated topics easy to understand." />
-            <textarea id="explainInput" placeholder="Օրինակ՝ Quantum Physics, Photosynthesis..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('explain','explainResult')">Explain ✦</button>
-            </div>
-            <div class="result" id="explainResult"></div>
-        </div>
-    </section>
-
-    <section id="research" class="page">
-        <div class="card">
-            <ToolHeader icon="⌕" title="Research Assistant" desc="Create a structured research plan." />
-            <textarea id="researchInput" placeholder="Գրիր հետազոտության թեման..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('research','researchResult')">Start Research ✦</button>
-            </div>
-            <div class="result" id="researchResult"></div>
-        </div>
-    </section>
-
-    <section id="problem" class="page">
-        <div class="card">
-            <ToolHeader icon="?" title="Problem Solver" desc="Analyze a problem and create practical solutions." />
-            <textarea id="problemInput" placeholder="Գրիր խնդիրը..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('problem','problemResult')">Solve ✦</button>
-            </div>
-            <div class="result" id="problemResult"></div>
-        </div>
-    </section>
-
-    <section id="homework" class="page">
-        <div class="card">
-            <ToolHeader icon="▣" title="Homework Helper" desc="Understand your homework step by step." />
-            <textarea id="homeworkInput" placeholder="Տեղադրիր առաջադրանքը..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('homework','homeworkResult')">Help Me ✦</button>
-            </div>
-            <div class="result" id="homeworkResult"></div>
-        </div>
-    </section>
-
-    <section id="quiz" class="page">
-        <div class="card">
-            <ToolHeader icon="☷" title="Quiz Generator" desc="Generate an educational quiz." />
-            <textarea id="quizInput" placeholder="Օրինակ՝ Biology — 10 questions — 9th grade"></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('quiz','quizResult')">Generate Quiz ✦</button>
-            </div>
-            <div class="result" id="quizResult"></div>
-        </div>
-    </section>
-
-    <section id="flashcards" class="page">
-        <div class="card">
-            <ToolHeader icon="▤" title="Flashcards" desc="Create study flashcards from any topic." />
-            <textarea id="flashcardsInput" placeholder="Գրիր թեման..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('flashcards','flashcardsResult')">Create Cards ✦</button>
-            </div>
-            <div class="result" id="flashcardsResult"></div>
-        </div>
-    </section>
-
-    <section id="study" class="page">
-        <div class="card">
-            <ToolHeader icon="◷" title="Study Planner" desc="Build a realistic study plan." />
-            <textarea id="studyInput" placeholder="Առարկա, թեմաներ, օրերի քանակ, օրական ժամանակ..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('study','studyResult')">Create Plan ✦</button>
-            </div>
-            <div class="result" id="studyResult"></div>
-        </div>
-    </section>
-
-    <section id="presentation" class="page">
-        <div class="card">
-            <ToolHeader icon="▤" title="Presentation Coach" desc="Create slides and speaking notes." />
-            <textarea id="presentationInput" placeholder="Թեմա, դասարան, սլայդների քանակ..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('presentation','presentationResult')">Create Presentation ✦</button>
-            </div>
-            <div class="result" id="presentationResult"></div>
-        </div>
-    </section>
-
-    <section id="essay" class="page">
-        <div class="card">
-            <ToolHeader icon="✎" title="Essay & Report Writer" desc="Create structured school writing." />
-            <textarea id="essayInput" placeholder="Թեմա, դասարան, երկարություն, պահանջներ..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('essay','essayResult')">Write ✦</button>
-            </div>
-            <div class="result" id="essayResult"></div>
-        </div>
-    </section>
-
-    <section id="project" class="page">
-        <div class="card">
-            <ToolHeader icon="◆" title="Project Builder" desc="Create a complete school project structure." />
-            <textarea id="projectInput" placeholder="Նախագծի թեման, դասարանը, առարկան..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('project','projectResult')">Build Project ✦</button>
-            </div>
-            <div class="result" id="projectResult"></div>
-        </div>
-    </section>
-
-    <section id="ideas" class="page">
-        <div class="card">
-            <ToolHeader icon="✦" title="Idea Generator" desc="Generate creative and useful ideas." />
-            <textarea id="ideasInput" placeholder="Գրիր ոլորտը կամ թեման..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('ideas','ideasResult')">Generate Ideas ✦</button>
-            </div>
-            <div class="result" id="ideasResult"></div>
-        </div>
-    </section>
-
-    <section id="goal" class="page">
-        <div class="card">
-            <ToolHeader icon="◎" title="Goal Planner" desc="Turn a goal into an actionable plan." />
-            <textarea id="goalInput" placeholder="Ի՞նչ նպատակ ես ուզում հասնել..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('goal','goalResult')">Create Plan ✦</button>
-            </div>
-            <div class="result" id="goalResult"></div>
-        </div>
-    </section>
-
-    <section id="projectstudio" class="page">
-        <div class="card">
-            <ToolHeader icon="▦" title="AI Project Studio" desc="Build a complete project workflow." />
-            <textarea id="projectstudioInput" placeholder="Նախագծի թեման..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('projectstudio','projectstudioResult')">Build Studio Project ✦</button>
-            </div>
-            <div class="result" id="projectstudioResult"></div>
-        </div>
-    </section>
-
-    <section id="video" class="page">
-        <div class="card">
-            <ToolHeader icon="▶" title="Video Prompt Generator" desc="Create detailed prompts for AI video tools." />
-            <textarea id="videoInput" placeholder="Տեսանյութի գաղափարը..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('video','videoResult')">Create Prompt ✦</button>
-            </div>
-            <div class="result" id="videoResult"></div>
-        </div>
-    </section>
-
-    <section id="song" class="page">
-        <div class="card">
-            <ToolHeader icon="♫" title="Song Idea Generator" desc="Create original song concepts." />
-            <textarea id="songInput" placeholder="Թեմա, mood, genre, style..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('song','songResult')">Create Idea ✦</button>
-            </div>
-            <div class="result" id="songResult"></div>
-        </div>
-    </section>
-
-    <section id="style" class="page">
-        <div class="card">
-            <ToolHeader icon="✧" title="Text Improver" desc="Rewrite text with better clarity and style." />
-
-            <select id="styleType">
-                <option>Պաշտոնական</option>
-                <option>Ընկերական</option>
-                <option>Ակադեմիական</option>
-                <option>Պարզ և հասկանալի</option>
-                <option>Սոցիալական ցանցերի համար</option>
-            </select>
-
-            <textarea id="styleInput" placeholder="Տեղադրիր տեքստը..."></textarea>
-
-            <div class="actions">
-                <button class="btn" onclick="runTool('style','styleResult')">Improve ✦</button>
-            </div>
-
-            <div class="result" id="styleResult"></div>
-        </div>
-    </section>
-
-    <section id="code" class="page">
-        <div class="card">
-            <ToolHeader icon="&lt;/&gt;" title="Code Helper" desc="Build, improve and understand code." />
-            <textarea id="codeInput" placeholder="Տեղադրիր կոդը կամ գրիր ինչ ես ուզում ստեղծել..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('code','codeResult')">Help With Code ✦</button>
-            </div>
-            <div class="result" id="codeResult"></div>
-        </div>
-    </section>
-
-    <section id="codeexplain" class="page">
-        <div class="card">
-            <ToolHeader icon="⌘" title="Code Explainer" desc="Understand what your code does." />
-            <textarea id="codeexplainInput" placeholder="Տեղադրիր կոդը..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('codeexplain','codeexplainResult')">Explain Code ✦</button>
-            </div>
-            <div class="result" id="codeexplainResult"></div>
-        </div>
-    </section>
-
-    <section id="bug" class="page">
-        <div class="card">
-            <ToolHeader icon="!" title="Bug Finder" desc="Find possible problems in your code." />
-            <textarea id="bugInput" placeholder="Տեղադրիր կոդը և սխալի հաղորդագրությունը, եթե կա..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('bug','bugResult')">Find Bugs ✦</button>
-            </div>
-            <div class="result" id="bugResult"></div>
-        </div>
-    </section>
-
-    <section id="translator" class="page">
-        <div class="card">
-            <ToolHeader icon="文" title="Translator" desc="Translate text naturally between languages." />
-
-            <label class="input-label">Target language</label>
-
-            <input id="translatorLanguage" placeholder="English / Հայերեն / Русский">
-
-            <textarea id="translatorInput" placeholder="Տեղադրիր տեքստը..."></textarea>
-
-            <div class="actions">
-                <button class="btn" onclick="runTool('translator','translatorResult')">Translate ✦</button>
-            </div>
-
-            <div class="result" id="translatorResult"></div>
-        </div>
-    </section>
-
-    <section id="grammar" class="page">
-        <div class="card">
-            <ToolHeader icon="A" title="Grammar Helper" desc="Check grammar, spelling and punctuation." />
-            <textarea id="grammarInput" placeholder="Տեղադրիր նախադասությունը կամ տեքստը..."></textarea>
-            <div class="actions">
-                <button class="btn" onclick="runTool('grammar','grammarResult')">Check Grammar ✦</button>
-            </div>
-            <div class="result" id="grammarResult"></div>
-        </div>
-    </section>
-
-    <section id="voice" class="page">
-        <div class="card">
-            <ToolHeader icon="◖" title="Text to Voice" desc="Listen to your text using your browser voice." />
-
-            <textarea id="voiceText" placeholder="Գրիր տեքստը..."></textarea>
-
-            <div class="actions">
-                <button class="btn" onclick="speak()">🔊 Speak</button>
-                <button class="btn gray" onclick="stopSpeak()">■ Stop</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- SETTINGS -->
-
-    <section id="settings" class="page">
-
-        <div class="card">
-
-            <div class="card-head">
-                <div class="card-icon">⚙</div>
-                <div>
-                    <h2>Settings</h2>
-                    <div class="card-description">
-                        Customize your AmroyanAI workspace.
-                    </div>
-                </div>
-            </div>
-
-            <div class="setting">
-
-                <div>
-                    <div class="setting-title">Interface Language</div>
-                    <div class="setting-description">
-                        Change the website interface language.
-                    </div>
+                <div class="msg ai">
+                    Բարև 👋 Ես AmroyanAI-ն եմ։ Ինչո՞վ կարող եմ օգնել։
                 </div>
 
-                <select id="languageSelect" onchange="changeLanguage(this.value)">
-                    <option value="hy">Հայերեն</option>
-                    <option value="ru">Русский</option>
-                    <option value="en">English</option>
+            </div>
+
+            <div class="chatRow">
+
+                <textarea
+                    id="chatInput"
+                    placeholder="Գրիր քո հարցը այստեղ..."
+                ></textarea>
+
+                <button class="primary" id="sendChat">
+                    Send
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUMMARIZER -->
+
+    <section class="workspace" id="summarizer">
+
+        <button class="back">← Back</button>
+
+        <div class="box">
+
+            <h2>📝 AI Summarizer</h2>
+
+            <div class="description">
+                Տեղադրիր ցանկացած երկար տեքստ։
+            </div>
+
+            <label>Text to summarize</label>
+
+            <textarea
+                id="summarizerInput"
+                placeholder="Գրիր կամ տեղադրիր տեքստը այստեղ..."
+            ></textarea>
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    data-action="summarizer"
+                >
+                    ✨ Summarize
+                </button>
+
+            </div>
+
+            <div
+                class="result"
+                id="summarizerResult"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SIMPLE -->
+
+    <section class="workspace" id="simple">
+
+        <button class="back">← Back</button>
+
+        <div class="box">
+
+            <h2>💡 Explain Simply</h2>
+
+            <div class="description">
+                Գրիր այն թեման, որը ցանկանում ես պարզ հասկանալ։
+            </div>
+
+            <label>Topic or question</label>
+
+            <textarea
+                id="simpleInput"
+                placeholder="Օրինակ՝ Ի՞նչ է գրավիտացիան..."
+            ></textarea>
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    data-action="simple"
+                >
+                    💡 Explain
+                </button>
+
+            </div>
+
+            <div
+                class="result"
+                id="simpleResult"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESEARCH -->
+
+    <section class="workspace" id="research">
+
+        <button class="back">← Back</button>
+
+        <div class="box">
+
+            <h2>🔎 Research Assistant</h2>
+
+            <div class="description">
+                Գրիր հետազոտության թեման։
+            </div>
+
+            <label>Research topic</label>
+
+            <textarea
+                id="researchInput"
+                placeholder="Օրինակ՝ Դվին քաղաքի պատմությունը..."
+            ></textarea>
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    data-action="research"
+                >
+                    🔎 Research
+                </button>
+
+            </div>
+
+            <div
+                class="result"
+                id="researchResult"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOMEWORK -->
+
+    <section class="workspace" id="homework">
+
+        <button class="back">← Back</button>
+
+        <div class="box">
+
+            <h2>🎓 Homework Helper</h2>
+
+            <div class="description">
+                Գրիր առաջադրանքը կամ հարցը։
+            </div>
+
+            <label>Homework question</label>
+
+            <textarea
+                id="homeworkInput"
+                placeholder="Օրինակ՝ Լուծիր այս հավասարումը..."
+            ></textarea>
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    data-action="homework"
+                >
+                    🎓 Help Me
+                </button>
+
+            </div>
+
+            <div
+                class="result"
+                id="homeworkResult"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROJECT BUILDER -->
+
+    <section class="workspace" id="project">
+
+        <button class="back">← Back</button>
+
+        <div class="box">
+
+            <h2>📊 Project Builder</h2>
+
+            <div class="description">
+                Գրիր քո նախագծի թեման, և AmroyanAI-ն կստեղծի նախագծի կառուցվածք։
+            </div>
+
+            <label>Project topic</label>
+
+            <textarea
+                id="projectInput"
+                placeholder="Օրինակ՝ Դվին և Տրիեր"
+            ></textarea>
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    data-action="project"
+                >
+                    📊 Build Project
+                </button>
+
+                <button
+                    class="secondary"
+                    id="projectClear"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+            <div
+                class="result"
+                id="projectResult"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- IDEAS -->
+
+    <section class="workspace" id="ideas">
+
+        <button class="back">← Back</button>
+
+        <div class="box">
+
+            <h2>✨ Idea Generator</h2>
+
+            <div class="description">
+                Գրիր՝ ինչի համար են պետք գաղափարները։
+            </div>
+
+            <label>What do you need ideas for?</label>
+
+            <textarea
+                id="ideasInput"
+                placeholder="Օրինակ՝ դպրոցական նախագծի համար..."
+            ></textarea>
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    data-action="ideas"
+                >
+                    ✨ Generate Ideas
+                </button>
+
+            </div>
+
+            <div
+                class="result"
+                id="ideasResult"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CODE -->
+
+    <section class="workspace" id="code">
+
+        <button class="back">← Back</button>
+
+        <div class="box">
+
+            <h2>💻 Code Helper</h2>
+
+            <div class="description">
+                Տեղադրիր կոդը կամ նկարագրիր՝ ինչ ես ուզում ստեղծել։
+            </div>
+
+            <label>Code or programming question</label>
+
+            <textarea
+                id="codeInput"
+                placeholder="Օրինակ՝ Գրիր JavaScript calculator..."
+            ></textarea>
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    data-action="code"
+                >
+                    💻 Help With Code
+                </button>
+
+            </div>
+
+            <div
+                class="result"
+                id="codeResult"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TRANSLATOR -->
+
+    <section class="workspace" id="translator">
+
+        <button class="back">← Back</button>
+
+        <div class="box">
+
+            <h2>🌍 Translator</h2>
+
+            <div class="description">
+                Ընտրիր լեզուները և գրիր տեքստը։
+            </div>
+
+            <div class="selects">
+
+                <select id="fromLang">
+
+                    <option>Auto Detect</option>
+                    <option>Armenian</option>
+                    <option>English</option>
+                    <option>Russian</option>
+                    <option>German</option>
+                    <option>French</option>
+                    <option>Spanish</option>
+
+                </select>
+
+                <select id="toLang">
+
+                    <option>Armenian</option>
+                    <option>English</option>
+                    <option>Russian</option>
+                    <option>German</option>
+                    <option>French</option>
+                    <option>Spanish</option>
+
                 </select>
 
             </div>
 
-            <div class="setting">
+            <label>Text</label>
 
-                <div>
-                    <div class="setting-title">Appearance</div>
-                    <div class="setting-description">
-                        Switch between dark and light mode.
-                    </div>
-                </div>
+            <textarea
+                id="translatorInput"
+                placeholder="Գրիր թարգմանելու տեքստը..."
+            ></textarea>
 
-                <button class="btn" onclick="toggleTheme()">
-                    Toggle Theme
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    id="translateBtn"
+                >
+                    🌍 Translate
+                </button>
+
+            </div>
+
+            <div
+                class="result"
+                id="translatorResult"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TEXT TO VOICE -->
+
+    <section class="workspace" id="voice">
+
+        <button class="back">← Back</button>
+
+        <div class="box">
+
+            <h2>🔊 Text → Voice</h2>
+
+            <div class="description">
+                Գրիր տեքստը և լսիր այն ձայնով։
+            </div>
+
+            <label>Text</label>
+
+            <textarea
+                id="voiceInput"
+                placeholder="Գրիր տեքստը այստեղ..."
+            ></textarea>
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    id="speakBtn"
+                >
+                    🔊 Speak
+                </button>
+
+                <button
+                    class="secondary"
+                    id="stopBtn"
+                >
+                    ⏹ Stop
                 </button>
 
             </div>
@@ -1386,679 +1222,882 @@ select:focus{
 
 </main>
 
+
 <script>
 
-/* TOOL HEADER */
+/* =========================
+   NAVIGATION
+========================= */
 
-function ToolHeader(props){
+const home =
+    document.getElementById("home");
 
-    return `
-        <div class="card-head">
-            <div class="card-icon">${props.icon}</div>
-            <div>
-                <h2>${props.title}</h2>
-                <div class="card-description">${props.desc}</div>
-            </div>
-        </div>
-    `;
-}
+const workspaces =
+    document.querySelectorAll(".workspace");
 
-/*
-Important:
-The browser does not understand <ToolHeader ... />
-as a real component.
-This small replacement runs before the page is used.
-*/
+const nav =
+    document.querySelectorAll(".nav button");
 
-document.querySelectorAll("ToolHeader").forEach(function(el){
+const openButtons =
+    document.querySelectorAll(".open");
 
-    var icon=el.getAttribute("icon")||"✦";
-    var title=el.getAttribute("title")||"AI Tool";
-    var desc=el.getAttribute("desc")||"";
+const backButtons =
+    document.querySelectorAll(".back");
 
-    el.outerHTML=ToolHeader({
-        icon:icon,
-        title:title,
-        desc:desc
-    });
-});
+function openTool(name){
 
+    home.style.display="none";
 
-/* PAGE NAVIGATION */
+    workspaces.forEach(function(section){
 
-var pageTitles={
-    home:"AmroyanAI",
-    chat:"AI Chat",
-    summary:"AI Summarizer",
-    explain:"Explain Simply",
-    research:"Research Assistant",
-    problem:"Problem Solver",
-    homework:"Homework Helper",
-    quiz:"Quiz Generator",
-    flashcards:"Flashcards",
-    study:"Study Planner",
-    presentation:"Presentation Coach",
-    essay:"Essay & Report",
-    project:"Project Builder",
-    ideas:"Idea Generator",
-    goal:"Goal Planner",
-    projectstudio:"AI Project Studio",
-    video:"Video Prompt",
-    song:"Song Idea",
-    style:"Text Improver",
-    code:"Code Helper",
-    codeexplain:"Code Explainer",
-    bug:"Bug Finder",
-    translator:"Translator",
-    grammar:"Grammar Helper",
-    voice:"Text to Voice",
-    settings:"Settings"
-};
+        section.classList.remove("active");
 
-function openPage(id,button){
-
-    document.querySelectorAll(".page").forEach(function(page){
-        page.classList.remove("active");
     });
 
-    var target=document.getElementById(id);
+    const section =
+        document.getElementById(name);
 
-    if(target){
-        target.classList.add("active");
+    if(section){
+        section.classList.add("active");
     }
 
-    document.querySelectorAll(".nav button").forEach(function(btn){
-        btn.classList.remove("active");
+    nav.forEach(function(button){
+
+        button.classList.toggle(
+            "active",
+            button.dataset.tool===name
+        );
+
     });
-
-    if(button){
-        button.classList.add("active");
-    }
-
-    document.getElementById("pageTitle").textContent=
-        pageTitles[id]||"AmroyanAI";
 
     window.scrollTo({
         top:0,
         behavior:"smooth"
     });
+
+    document
+        .getElementById("sidebar")
+        .classList.remove("open");
 }
 
 
-/* AI REQUEST */
+function showHome(){
 
-async function askAI(prompt){
+    workspaces.forEach(function(section){
+
+        section.classList.remove("active");
+
+    });
+
+    home.style.display="block";
+
+    nav.forEach(function(button){
+
+        button.classList.remove("active");
+
+    });
+
+    nav[0].classList.add("active");
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+nav.forEach(function(button){
+
+    button.addEventListener(
+        "click",
+        function(){
+
+            openTool(
+                button.dataset.tool
+            );
+
+        }
+    );
+
+});
+
+
+openButtons.forEach(function(button){
+
+    button.addEventListener(
+        "click",
+        function(){
+
+            openTool(
+                button.dataset.open
+            );
+
+        }
+    );
+
+});
+
+
+backButtons.forEach(function(button){
+
+    button.addEventListener(
+        "click",
+        showHome
+    );
+
+});
+
+
+/* =========================
+   MOBILE
+========================= */
+
+document
+.getElementById("mobile")
+.addEventListener(
+    "click",
+    function(){
+
+        document
+            .getElementById("sidebar")
+            .classList.toggle("open");
+
+    }
+);
+
+
+/* =========================
+   THEME
+========================= */
+
+document
+.getElementById("theme")
+.addEventListener(
+    "click",
+    function(){
+
+        document.body.classList.toggle("light");
+
+        localStorage.setItem(
+            "amroyan-theme",
+            document.body.classList.contains("light")
+            ? "light"
+            : "dark"
+        );
+
+    }
+);
+
+
+if(
+    localStorage.getItem(
+        "amroyan-theme"
+    )==="light"
+){
+
+    document.body.classList.add("light");
+
+}
+
+
+/* =========================
+   AI REQUEST
+========================= */
+
+async function askAI(message){
+
+    const response =
+        await fetch(
+            "/api/chat",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body:JSON.stringify({
+                    message:message
+                })
+            }
+        );
+
+
+    const raw =
+        await response.text();
+
+
+    let data;
 
     try{
 
-        var response=await fetch("/api/chat",{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                message:prompt
-            })
-        });
+        data =
+            JSON.parse(raw);
 
-        var data=await response.json();
+    }catch(e){
 
-        if(!response.ok){
-            throw new Error(data.error||"AI request failed");
-        }
+        console.error(raw);
 
-        return data.reply||
-               data.output_text||
-               "AI-ը պատասխան չվերադարձավ։";
+        throw new Error(
+            "Server returned invalid data."
+        );
 
-    }catch(error){
-
-        console.error(error);
-
-        return "❌ Չհաջողվեց միանալ AmroyanAI-ին։ Ստուգիր, որ server-ը աշխատում է։";
     }
+
+
+    if(!response.ok){
+
+        throw new Error(
+            data.details ||
+            data.error ||
+            "AI server error."
+        );
+
+    }
+
+
+    if(!data.reply){
+
+        throw new Error(
+            "AI returned an empty response."
+        );
+
+    }
+
+
+    return data.reply;
+
 }
 
 
-/* CHAT */
+/* =========================
+   TOOL CONFIGURATION
+========================= */
 
-async function sendChat(){
+const configs={
 
-    var input=document.getElementById("chatInput");
-    var message=input.value.trim();
+    summarizer:{
+        input:"summarizerInput",
+        result:"summarizerResult",
+        prompt:function(text){
 
-    if(!message){
-        return;
+            return `
+You are AmroyanAI Summarizer.
+
+Summarize the user's text.
+Keep the important information.
+Remove repetition.
+Use clear sections or bullet points when useful.
+
+Answer in the same language as the user's text.
+
+TEXT:
+${text}
+`;
+
+        }
+    },
+
+
+    simple:{
+        input:"simpleInput",
+        result:"simpleResult",
+        prompt:function(text){
+
+            return `
+You are AmroyanAI Explain Simply.
+
+Explain the following topic in a simple,
+clear and understandable way.
+
+Use examples if useful.
+Answer in the same language as the user.
+
+TOPIC:
+${text}
+`;
+
+        }
+    },
+
+
+    research:{
+        input:"researchInput",
+        result:"researchResult",
+        prompt:function(text){
+
+            return `
+You are AmroyanAI Research Assistant.
+
+Create a structured research response.
+
+Include:
+1. Introduction
+2. Main information
+3. Important facts
+4. Key points
+5. Conclusion
+
+Do not claim that you searched the internet.
+Answer in the same language as the user.
+
+RESEARCH TOPIC:
+${text}
+`;
+
+        }
+    },
+
+
+    homework:{
+        input:"homeworkInput",
+        result:"homeworkResult",
+        prompt:function(text){
+
+            return `
+You are AmroyanAI Homework Helper.
+
+Help the student solve or understand the following
+school exercise.
+
+Give step-by-step reasoning and a clear answer.
+Use the same language as the user.
+
+HOMEWORK:
+${text}
+`;
+
+        }
+    },
+
+
+    project:{
+        input:"projectInput",
+        result:"projectResult",
+        prompt:function(text){
+
+            return `
+You are AmroyanAI Project Builder.
+
+Create a complete school project structure.
+
+Include:
+- Project title
+- Aim
+- Relevance
+- Research question
+- Tasks
+- Main sections
+- Research ideas
+- Expected results
+- Conclusion
+- Presentation ideas
+
+Make the project detailed and useful.
+Answer in the same language as the user.
+
+PROJECT TOPIC:
+${text}
+`;
+
+        }
+    },
+
+
+    ideas:{
+        input:"ideasInput",
+        result:"ideasResult",
+        prompt:function(text){
+
+            return `
+You are AmroyanAI Idea Generator.
+
+Generate 10 creative and practical ideas
+for the user's request.
+
+Make every idea different.
+Add a short explanation for each.
+
+Answer in the same language as the user.
+
+REQUEST:
+${text}
+`;
+
+        }
+    },
+
+
+    code:{
+        input:"codeInput",
+        result:"codeResult",
+        prompt:function(text){
+
+            return `
+You are AmroyanAI Code Helper.
+
+Help the user with this programming request.
+
+Explain the solution clearly.
+If code is needed, provide complete code.
+Point out important errors or improvements.
+
+Answer in the same language as the user.
+
+PROGRAMMING REQUEST:
+${text}
+`;
+
+        }
     }
 
-    var box=document.getElementById("chatBox");
+};
 
-    var user=document.createElement("div");
-    user.className="message user";
-    user.textContent=message;
 
-    box.appendChild(user);
+/* =========================
+   AI TOOLS
+========================= */
 
-    input.value="";
+document
+.querySelectorAll("[data-action]")
+.forEach(function(button){
 
-    var ai=document.createElement("div");
-    ai.className="message ai";
-    ai.textContent="AmroyanAI-ը մտածում է...";
+    button.addEventListener(
+        "click",
+        async function(){
 
-    box.appendChild(ai);
+            const type =
+                button.dataset.action;
 
-    box.scrollTop=box.scrollHeight;
+            const config =
+                configs[type];
 
-    var answer=await askAI(
-        "You are AmroyanAI. " +
-        "Answer the user in the same language they used. " +
-        "Be helpful, clear and friendly.\n\n"+
-        "User:\n"+
-        message
+            const input =
+                document.getElementById(
+                    config.input
+                );
+
+            const result =
+                document.getElementById(
+                    config.result
+                );
+
+
+            const text =
+                input.value.trim();
+
+
+            if(!text){
+
+                result.className =
+                    "result error";
+
+                result.textContent =
+                    "⚠️ Նախ գրիր թեման կամ տեքստը։";
+
+                input.focus();
+
+                return;
+
+            }
+
+
+            button.disabled=true;
+
+            result.className =
+                "result loading";
+
+            result.textContent =
+                "⏳ AmroyanAI-ն աշխատում է...";
+
+
+            try{
+
+                const answer =
+                    await askAI(
+                        config.prompt(text)
+                    );
+
+
+                result.className =
+                    "result";
+
+                result.textContent =
+                    answer;
+
+            }catch(error){
+
+                console.error(error);
+
+                result.className =
+                    "result error";
+
+                result.textContent =
+                    "⚠️ Սխալ․ " +
+                    error.message;
+
+            }finally{
+
+                button.disabled=false;
+
+            }
+
+        }
     );
 
-    ai.textContent=answer;
+});
 
-    box.scrollTop=box.scrollHeight;
-}
 
-document.getElementById("chatInput").addEventListener(
-    "keydown",
-    function(e){
+/* =========================
+   PROJECT CLEAR
+========================= */
 
-        if(e.key==="Enter"){
-            e.preventDefault();
-            sendChat();
+document
+.getElementById("projectClear")
+.addEventListener(
+    "click",
+    function(){
+
+        document
+            .getElementById("projectInput")
+            .value="";
+
+        document
+            .getElementById("projectResult")
+            .textContent="";
+
+        document
+            .getElementById("projectResult")
+            .className="result";
+
+    }
+);
+
+
+/* =========================
+   TRANSLATOR
+========================= */
+
+document
+.getElementById("translateBtn")
+.addEventListener(
+    "click",
+    async function(){
+
+        const input =
+            document.getElementById(
+                "translatorInput"
+            );
+
+        const result =
+            document.getElementById(
+                "translatorResult"
+            );
+
+        const from =
+            document.getElementById(
+                "fromLang"
+            ).value;
+
+        const to =
+            document.getElementById(
+                "toLang"
+            ).value;
+
+
+        const text =
+            input.value.trim();
+
+
+        if(!text){
+
+            result.className =
+                "result error";
+
+            result.textContent =
+                "⚠️ Գրիր տեքստը։";
+
+            input.focus();
+
+            return;
+
+        }
+
+
+        const button =
+            document.getElementById(
+                "translateBtn"
+            );
+
+        button.disabled=true;
+
+        result.className =
+            "result loading";
+
+        result.textContent =
+            "⏳ Թարգմանվում է...";
+
+
+        try{
+
+            const answer =
+                await askAI(`
+
+You are the Translator tool of AmroyanAI.
+
+Translate the text below.
+
+Source language: ${from}
+Target language: ${to}
+
+Preserve the meaning and natural style.
+Return only the translation.
+
+TEXT:
+${text}
+
+`);
+
+
+            result.className =
+                "result";
+
+            result.textContent =
+                answer;
+
+        }catch(error){
+
+            result.className =
+                "result error";
+
+            result.textContent =
+                "⚠️ Սխալ․ " +
+                error.message;
+
+        }finally{
+
+            button.disabled=false;
+
         }
 
     }
 );
 
 
-/* TOOL PROMPTS */
+/* =========================
+   CHAT
+========================= */
 
-var prompts={
+const chatInput =
+    document.getElementById(
+        "chatInput"
+    );
 
-homework:function(v){
-return `
-Help the student with this homework exercise.
-Explain the important concept and give clear step-by-step reasoning.
-Provide the final answer when appropriate.
-Answer in the same language as the user.
+const sendChat =
+    document.getElementById(
+        "sendChat"
+    );
 
-HOMEWORK:
-${v}`;
-},
+const chatMessages =
+    document.getElementById(
+        "chatMessages"
+    );
 
-explain:function(v){
-return `
-Explain this topic in a very simple way for a student.
-Use examples, short sections and easy language.
-Answer in the same language as the user.
 
-TOPIC:
-${v}`;
-},
+function addMessage(text,type){
 
-summary:function(v){
-return `
-Summarize the following text.
-Give:
-1. Short summary
-2. Main points
-3. Important facts
-4. Conclusion
+    const message =
+        document.createElement("div");
 
-Preserve important information.
-Answer in the same language as the original text.
+    message.className =
+        "msg " + type;
 
-TEXT:
-${v}`;
-},
+    message.textContent =
+        text;
 
-research:function(v){
-return `
-Act as a research planning assistant.
-Create:
-- Research question
-- Subquestions
-- Goal
-- Objectives
-- Methodology
-- Suggested source types to investigate
-- Structure
-- Expected results
+    chatMessages.appendChild(
+        message
+    );
 
-Do not pretend that you performed live web research.
-Clearly identify information that needs verification.
-Answer in the same language as the user.
+    chatMessages.scrollTop =
+        chatMessages.scrollHeight;
 
-TOPIC:
-${v}`;
-},
-
-problem:function(v){
-return `
-Analyze this problem carefully.
-Explain:
-1. What the problem is
-2. Possible causes
-3. Possible solutions
-4. Step-by-step action plan
-
-Answer in the same language as the user.
-
-PROBLEM:
-${v}`;
-},
-
-quiz:function(v){
-return `
-Create an educational quiz based on this request.
-Include multiple-choice questions with A/B/C/D options,
-correct answers and an answer key.
-Answer in the same language as the user.
-
-REQUEST:
-${v}`;
-},
-
-flashcards:function(v){
-return `
-Create useful study flashcards about this topic.
-Format them as:
-QUESTION:
-ANSWER:
-
-Include important concepts, definitions and facts.
-Answer in the same language as the user.
-
-TOPIC:
-${v}`;
-},
-
-study:function(v){
-return `
-Create a realistic study plan based on these details.
-Include daily tasks, revision, practice, breaks and progress checks.
-Answer in the same language as the user.
-
-DETAILS:
-${v}`;
-},
-
-presentation:function(v){
-return `
-Create a complete presentation plan.
-For every slide provide:
-- Slide title
-- Main points
-- Suggested visual
-- Short speaker notes
-
-Answer in the same language as the user.
-
-REQUEST:
-${v}`;
-},
-
-essay:function(v){
-return `
-Create a well-structured school essay or report.
-Include introduction, main sections and conclusion.
-Follow the requested level and length.
-Do not invent sources.
-Answer in the same language as the user.
-
-REQUIREMENTS:
-${v}`;
-},
-
-project:function(v){
-return `
-Create a complete school project structure.
-Include:
-- Title
-- Relevance
-- Problem
-- Goal
-- Research question
-- Research questions
-- Objectives
-- Methodology
-- Main sections
-- Practical part
-- Expected results
-- Conclusion
-- Sources to investigate
-- SWOT analysis
-
-Answer in the same language as the user.
-
-PROJECT:
-${v}`;
-},
-
-ideas:function(v){
-return `
-Generate 10 creative and realistic ideas about this topic.
-For each idea give a name and short explanation.
-Answer in the same language as the user.
-
-TOPIC:
-${v}`;
-},
-
-goal:function(v){
-return `
-Turn this goal into a practical action plan.
-Include milestones, tasks, timeline, obstacles and progress checks.
-Answer in the same language as the user.
-
-GOAL:
-${v}`;
-},
-
-projectstudio:function(v){
-return `
-Create a complete project workflow from this topic.
-
-Include:
-1. Project title
-2. Relevance
-3. Problem
-4. Research question
-5. Goal
-6. Objectives
-7. Research questions
-8. Methodology
-9. Information structure
-10. Practical part
-11. Expected results
-12. SWOT
-13. Conclusion
-14. Sources to investigate
-15. Presentation structure
-16. Speaking notes
-
-Answer in the same language as the user.
-
-PROJECT TOPIC:
-${v}`;
-},
-
-video:function(v){
-return `
-Create a detailed cinematic AI video prompt.
-Include:
-- Scene
-- Characters
-- Action
-- Environment
-- Camera
-- Lighting
-- Atmosphere
-- Motion
-- Visual style
-- Duration
-
-Return a polished prompt.
-If no language is requested, make the actual video prompt in English.
-
-IDEA:
-${v}`;
-},
-
-song:function(v){
-return `
-Create an ORIGINAL song concept.
-Include:
-- Title
-- Theme
-- Mood
-- Genre
-- Tempo
-- Instrumentation
-- Verse/chorus structure
-- Creative direction
-
-Do not reproduce or imitate copyrighted lyrics.
-Answer in the same language as the user.
-
-IDEA:
-${v}`;
-},
-
-style:function(v){
-return `
-Improve and rewrite the following text.
-Style:
-${document.getElementById("styleType").value}
-
-Preserve the original meaning.
-Improve grammar, clarity and structure.
-Answer in the same language as the original text.
-
-TEXT:
-${v}`;
-},
-
-code:function(v){
-return `
-Act as a programming assistant.
-Analyze the request or code.
-Explain the solution clearly.
-If code is needed, provide clean corrected code.
-Identify important errors when present.
-
-REQUEST OR CODE:
-${v}`;
-},
-
-codeexplain:function(v){
-return `
-Explain this code section by section.
-Explain what it does, important concepts,
-data flow and possible problems.
-Answer in the same language as the user.
-
-CODE:
-${v}`;
-},
-
-bug:function(v){
-return `
-Find possible bugs and technical problems in this code.
-For every real issue:
-- Explain the problem
-- Explain why it happens
-- Show how to fix it
-
-Do not invent errors.
-
-CODE:
-${v}`;
-},
-
-translator:function(v){
-return `
-Translate the following text into:
-${document.getElementById("translatorLanguage").value}
-
-Preserve meaning, tone and natural wording.
-Return the translation.
-
-TEXT:
-${v}`;
-},
-
-grammar:function(v){
-return `
-Check the grammar, spelling and punctuation.
-Give:
-1. Corrected version
-2. Important corrections and explanations
-
-Answer in the same language as the text.
-
-TEXT:
-${v}`;
-}
-
-};
-
-
-/* RUN TOOL */
-
-async function runTool(type,resultId){
-
-    var input=document.getElementById(type+"Input");
-
-    if(!input){
-        return;
-    }
-
-    var value=input.value.trim();
-
-    if(!value){
-
-        alert("Գրիր կամ տեղադրիր տեքստ։");
-
-        return;
-    }
-
-    var result=document.getElementById(resultId);
-
-    result.textContent="⏳ AmroyanAI-ը աշխատում է...";
-
-    var answer=await askAI(prompts[type](value));
-
-    result.textContent=answer;
 }
 
 
-/* TEXT TO VOICE */
+async function sendMessage(){
 
-function detectLanguage(text){
+    const text =
+        chatInput.value.trim();
 
-    if(/[ա-ֆԱ-Ֆևև]/.test(text)){
-        return "hy-AM";
-    }
-
-    if(/[а-яА-ЯёЁ]/.test(text)){
-        return "ru-RU";
-    }
-
-    return "en-US";
-}
-
-function speak(){
-
-    var text=document.getElementById("voiceText").value.trim();
 
     if(!text){
         return;
     }
 
-    if(!("speechSynthesis" in window)){
 
-        alert("Այս browser-ը Text to Voice չի աջակցում։");
+    addMessage(
+        text,
+        "user"
+    );
 
-        return;
+
+    chatInput.value="";
+
+
+    const loading =
+        document.createElement("div");
+
+    loading.className =
+        "msg ai";
+
+    loading.textContent =
+        "⏳ AmroyanAI-ն մտածում է...";
+
+    chatMessages.appendChild(
+        loading
+    );
+
+
+    sendChat.disabled=true;
+
+
+    try{
+
+        const answer =
+            await askAI(text);
+
+        loading.textContent =
+            answer;
+
+    }catch(error){
+
+        loading.className =
+            "msg ai";
+
+        loading.textContent =
+            "⚠️ Սխալ․ " +
+            error.message;
+
+    }finally{
+
+        sendChat.disabled=false;
+
+        chatInput.focus();
+
     }
 
-    speechSynthesis.cancel();
-
-    var utterance=new SpeechSynthesisUtterance(text);
-
-    utterance.lang=detectLanguage(text);
-
-    utterance.rate=.95;
-    utterance.pitch=1;
-
-    speechSynthesis.speak(utterance);
 }
 
-function stopSpeak(){
 
-    if("speechSynthesis" in window){
+sendChat.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+chatInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key==="Enter" &&
+            !event.shiftKey
+        ){
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   TEXT TO VOICE
+========================= */
+
+const voiceInput =
+    document.getElementById(
+        "voiceInput"
+    );
+
+document
+.getElementById("speakBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        const text =
+            voiceInput.value.trim();
+
+
+        if(!text){
+
+            alert(
+                "Գրիր տեքստը։"
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !("speechSynthesis" in window)
+        ){
+
+            alert(
+                "Այս browser-ը չի աջակցում Text → Voice-ին։"
+            );
+
+            return;
+
+        }
+
+
         speechSynthesis.cancel();
-    }
-}
 
 
-/* THEME */
-
-function toggleTheme(){
-
-    document.body.classList.toggle("light");
-
-    var theme=document.body.classList.contains("light")
-        ?"light"
-        :"dark";
-
-    localStorage.setItem("amroyan_theme",theme);
-}
-
-function loadTheme(){
-
-    if(localStorage.getItem("amroyan_theme")==="light"){
-        document.body.classList.add("light");
-    }
-}
+        const speech =
+            new SpeechSynthesisUtterance(
+                text
+            );
 
 
-/* LANGUAGE */
+        speech.rate=1;
+        speech.pitch=1;
+        speech.volume=1;
 
-function changeLanguage(lang){
 
-    localStorage.setItem("amroyan_language",lang);
-
-    /*
-      This changes the interface preference.
-      It does NOT force AI answers into another language.
-      AI continues responding according to the user's message.
-    */
-
-    var home=document.querySelector("#home .hero p");
-
-    if(!home){
-        return;
-    }
-
-    if(lang==="hy"){
-
-        home.textContent=
-        "AmroyanAI-ը քո անձնական AI workspace-ն է՝ ուսման, նախագծերի, ծրագրավորման, ստեղծագործության և առօրյա աշխատանքի համար.";
+        speechSynthesis.speak(
+            speech
+        );
 
     }
+);
 
-    if(lang==="ru"){
 
-        home.textContent=
-        "AmroyanAI — ваше персональное AI-пространство для учёбы, проектов, программирования, творчества и повседневных задач.";
+document
+.getElementById("stopBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        if(
+            "speechSynthesis" in window
+        ){
+
+            speechSynthesis.cancel();
+
+        }
 
     }
-
-    if(lang==="en"){
-
-        home.textContent=
-        "AmroyanAI is your personal AI workspace for studying, projects, coding, creativity and everyday tasks.";
-
-    }
-}
-
-
-/* LOAD SETTINGS */
-
-loadTheme();
-
-var savedLanguage=
-    localStorage.getItem("amroyan_language")||"hy";
-
-document.getElementById("languageSelect").value=savedLanguage;
-
-changeLanguage(savedLanguage);
+);
 
 </script>
 
