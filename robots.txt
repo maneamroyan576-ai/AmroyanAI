@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://amroyanai.onrender.com/sitemap.xml
