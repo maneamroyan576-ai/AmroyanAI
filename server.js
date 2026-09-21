@@ -17,6 +17,17 @@ const client = new OpenAI({
 });
 
 app.use(express.json({ limit: "2mb" }));
+
+
+app.get("/sitemap.xml", function(req, res) {
+    res.type("application/xml");
+    res.sendFile(__dirname + "/sitemap.xml");
+});
+
+app.get("/robots.txt", function(req, res) {
+    res.type("text/plain");
+    res.sendFile(__dirname + "/robots.txt");
+});
 app.use(express.static(__dirname));
 
 app.get("/", function(req, res) {
