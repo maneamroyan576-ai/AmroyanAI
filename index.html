@@ -3,23 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>AmroyanAI</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap');
 
 :root{
-    --bg:#05080f;
-    --panel:rgba(10,16,29,.72);
-    --panel2:rgba(15,24,42,.78);
-    --border:rgba(105,220,255,.18);
-    --text:#f5f7ff;
-    --muted:#8994aa;
-    --cyan:#27e7ff;
-    --violet:#a855f7;
-    --green:#58f7b2;
-    --danger:#ff668d;
-    --shadow:0 20px 70px rgba(0,0,0,.45);
+    --bg:#050507;
+    --bg2:#0b0710;
+    --card:rgba(18,12,24,.78);
+    --card2:rgba(28,17,38,.9);
+    --text:#fff;
+    --muted:#aaa0b4;
+    --purple:#9b4dff;
+    --purple2:#6d28d9;
+    --pink:#ff4fa3;
+    --pink2:#ff78bd;
+    --white:#ffffff;
+    --border:rgba(255,255,255,.11);
+    --shadow:0 25px 80px rgba(0,0,0,.5);
 }
 
 *{
@@ -34,22 +37,24 @@ html{
 
 body{
     min-height:100vh;
-    background:
-        radial-gradient(circle at 50% 20%,rgba(40,110,180,.12),transparent 35%),
-        radial-gradient(circle at 80% 60%,rgba(168,85,247,.08),transparent 30%),
-        var(--bg);
     color:var(--text);
+    background:
+        radial-gradient(circle at 15% 10%,rgba(155,77,255,.18),transparent 28%),
+        radial-gradient(circle at 85% 25%,rgba(255,79,163,.13),transparent 28%),
+        radial-gradient(circle at 50% 100%,rgba(109,40,217,.12),transparent 35%),
+        var(--bg);
     font-family:Inter,Arial,sans-serif;
     overflow-x:hidden;
 }
 
 body.light{
-    --bg:#eef3fa;
-    --panel:rgba(255,255,255,.82);
-    --panel2:rgba(255,255,255,.94);
-    --border:rgba(30,80,120,.15);
-    --text:#101827;
-    --muted:#596579;
+    --bg:#f5f2f7;
+    --bg2:#fff;
+    --card:rgba(255,255,255,.82);
+    --card2:#fff;
+    --text:#17121d;
+    --muted:#655c6d;
+    --border:rgba(50,30,70,.12);
 }
 
 button,
@@ -71,8 +76,8 @@ button{
     width:100%;
     height:100%;
     pointer-events:none;
-    opacity:.42;
     z-index:0;
+    opacity:.3;
 }
 
 /* EINSTEIN */
@@ -81,67 +86,32 @@ button{
     position:fixed;
     right:-30px;
     bottom:-20px;
-    width:min(470px,42vw);
+    width:min(470px,40vw);
     max-height:80vh;
     object-fit:contain;
     object-position:center bottom;
-    opacity:.16;
+    opacity:.12;
     filter:
         grayscale(1)
-        contrast(1.25)
-        brightness(.72)
-        drop-shadow(0 0 35px rgba(39,231,255,.15));
+        contrast(1.3)
+        brightness(.7)
+        drop-shadow(0 0 35px rgba(155,77,255,.25));
     z-index:1;
     pointer-events:none;
-    user-select:none;
     mask-image:linear-gradient(
         to bottom,
-        transparent 0%,
-        black 15%,
-        black 80%,
-        transparent 100%
+        transparent,
+        black 18%,
+        black 78%,
+        transparent
     );
     -webkit-mask-image:linear-gradient(
         to bottom,
-        transparent 0%,
-        black 15%,
-        black 80%,
-        transparent 100%
+        transparent,
+        black 18%,
+        black 78%,
+        transparent
     );
-}
-
-/* NEURAL GLOW */
-
-.neural-glow{
-    position:fixed;
-    right:130px;
-    bottom:230px;
-    width:280px;
-    height:280px;
-    border-radius:50%;
-    background:
-        radial-gradient(
-            circle,
-            rgba(39,231,255,.18),
-            rgba(168,85,247,.08) 35%,
-            transparent 70%
-        );
-    filter:blur(18px);
-    animation:breathe 4s ease-in-out infinite;
-    z-index:1;
-    pointer-events:none;
-}
-
-@keyframes breathe{
-    0%,100%{
-        transform:scale(.9);
-        opacity:.5;
-    }
-
-    50%{
-        transform:scale(1.12);
-        opacity:1;
-    }
 }
 
 /* APP */
@@ -156,30 +126,30 @@ button{
 
 .nav{
     position:sticky;
-    top:16px;
+    top:15px;
     z-index:100;
-    width:min(1180px,calc(100% - 30px));
-    margin:16px auto 0;
-    padding:12px 15px;
+    width:min(1200px,calc(100% - 28px));
+    margin:15px auto 0;
+    padding:11px 13px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:20px;
-    background:rgba(7,12,22,.68);
-    backdrop-filter:blur(22px);
+    gap:15px;
     border:1px solid var(--border);
     border-radius:22px;
+    background:rgba(10,7,14,.72);
+    backdrop-filter:blur(25px);
     box-shadow:var(--shadow);
 }
 
 body.light .nav{
-    background:rgba(255,255,255,.72);
+    background:rgba(255,255,255,.78);
 }
 
 .logo{
     border:0;
     background:none;
-    color:white;
+    color:var(--text);
     display:flex;
     align-items:center;
     gap:10px;
@@ -188,49 +158,46 @@ body.light .nav{
     letter-spacing:1px;
 }
 
-body.light .logo{
-    color:var(--text);
-}
-
 .logo-orb{
-    width:34px;
-    height:34px;
+    width:36px;
+    height:36px;
     border-radius:50%;
-    background:linear-gradient(135deg,var(--cyan),var(--violet));
+    background:
+        radial-gradient(circle at 35% 30%,#fff,transparent 12%),
+        linear-gradient(135deg,var(--purple),var(--pink));
     box-shadow:
-        0 0 20px rgba(39,231,255,.45),
-        0 0 35px rgba(168,85,247,.25);
-    position:relative;
-}
-
-.logo-orb:after{
-    content:"";
-    position:absolute;
-    inset:7px;
-    border:2px solid rgba(255,255,255,.8);
-    border-radius:50%;
+        0 0 22px rgba(155,77,255,.6),
+        0 0 35px rgba(255,79,163,.3);
 }
 
 .nav-links{
     display:flex;
-    gap:6px;
-    align-items:center;
+    gap:5px;
 }
 
 .nav-btn{
     border:1px solid transparent;
     background:transparent;
     color:var(--muted);
-    padding:10px 15px;
+    padding:10px 16px;
     border-radius:12px;
     transition:.25s;
 }
 
 .nav-btn:hover,
 .nav-btn.active{
+    color:#fff;
+    background:linear-gradient(
+        135deg,
+        rgba(155,77,255,.18),
+        rgba(255,79,163,.1)
+    );
+    border-color:rgba(255,79,163,.2);
+}
+
+body.light .nav-btn:hover,
+body.light .nav-btn.active{
     color:var(--text);
-    background:rgba(39,231,255,.08);
-    border-color:rgba(39,231,255,.16);
 }
 
 .nav-actions{
@@ -241,23 +208,30 @@ body.light .logo{
 .icon-btn{
     width:42px;
     height:42px;
-    border-radius:12px;
+    border-radius:13px;
     border:1px solid var(--border);
-    background:rgba(255,255,255,.035);
+    background:rgba(255,255,255,.04);
     color:var(--text);
+    transition:.2s;
+}
+
+.icon-btn:hover{
+    transform:translateY(-2px);
+    border-color:var(--pink);
+    box-shadow:0 0 20px rgba(255,79,163,.18);
 }
 
 /* HERO */
 
 .hero{
+    width:min(1200px,calc(100% - 28px));
     min-height:calc(100vh - 100px);
-    width:min(1200px,calc(100% - 30px));
     margin:auto;
     display:grid;
     grid-template-columns:1fr 1fr;
     align-items:center;
-    gap:35px;
-    padding:65px 0 45px;
+    gap:30px;
+    padding:65px 0 50px;
 }
 
 .hero-copy{
@@ -269,15 +243,14 @@ body.light .logo{
     display:inline-flex;
     align-items:center;
     gap:8px;
-    padding:8px 13px;
-    border:1px solid rgba(39,231,255,.2);
+    padding:8px 14px;
+    border:1px solid rgba(255,79,163,.25);
     border-radius:100px;
-    background:rgba(39,231,255,.045);
-    color:var(--cyan);
+    background:rgba(155,77,255,.07);
+    color:var(--pink2);
     font-size:12px;
-    font-weight:700;
-    letter-spacing:1.4px;
-    text-transform:uppercase;
+    font-weight:800;
+    letter-spacing:1.2px;
     margin-bottom:20px;
 }
 
@@ -285,8 +258,8 @@ body.light .logo{
     width:7px;
     height:7px;
     border-radius:50%;
-    background:var(--green);
-    box-shadow:0 0 12px var(--green);
+    background:var(--pink);
+    box-shadow:0 0 13px var(--pink);
 }
 
 h1{
@@ -294,15 +267,15 @@ h1{
     font-size:clamp(40px,5vw,76px);
     line-height:.98;
     letter-spacing:-3px;
-    max-width:760px;
 }
 
 .gradient{
     background:linear-gradient(
         100deg,
         #fff,
-        var(--cyan) 45%,
-        var(--violet)
+        #d9b7ff 35%,
+        var(--pink2) 70%,
+        var(--purple)
     );
     -webkit-background-clip:text;
     background-clip:text;
@@ -319,42 +292,48 @@ h1{
 
 .hero-actions{
     display:flex;
-    gap:12px;
+    gap:11px;
     margin-top:30px;
     flex-wrap:wrap;
 }
 
 .primary{
     border:0;
-    color:#031017;
+    color:#fff;
     font-weight:800;
     padding:14px 22px;
     border-radius:14px;
     background:linear-gradient(
-        100deg,
-        var(--cyan),
-        #72f7ff,
-        var(--violet)
+        110deg,
+        var(--purple2),
+        var(--purple),
+        var(--pink)
     );
     box-shadow:
-        0 0 25px rgba(39,231,255,.18),
-        0 0 35px rgba(168,85,247,.12);
-    transition:.2s;
+        0 0 25px rgba(155,77,255,.25),
+        0 0 35px rgba(255,79,163,.12);
+    transition:.25s;
 }
 
 .primary:hover{
-    transform:translateY(-2px);
+    transform:translateY(-3px);
     box-shadow:
-        0 0 35px rgba(39,231,255,.35),
-        0 0 55px rgba(168,85,247,.2);
+        0 0 35px rgba(155,77,255,.45),
+        0 0 55px rgba(255,79,163,.25);
 }
 
 .secondary{
     border:1px solid var(--border);
     color:var(--text);
-    background:rgba(255,255,255,.04);
+    background:rgba(255,255,255,.045);
     padding:14px 22px;
     border-radius:14px;
+    transition:.25s;
+}
+
+.secondary:hover{
+    border-color:var(--pink);
+    transform:translateY(-2px);
 }
 
 /* SPHERE */
@@ -372,63 +351,47 @@ h1{
     aspect-ratio:1;
     border-radius:50%;
     background:
-        radial-gradient(
-            circle at 38% 30%,
-            rgba(255,255,255,.7),
-            transparent 3%
-        ),
-        radial-gradient(
-            circle at 50% 50%,
-            rgba(39,231,255,.12),
-            rgba(168,85,247,.12) 28%,
-            rgba(4,10,22,.9) 67%,
-            transparent 69%
+        radial-gradient(circle at 35% 28%,rgba(255,255,255,.7),transparent 3%),
+        radial-gradient(circle,
+            rgba(255,79,163,.14),
+            rgba(155,77,255,.16) 30%,
+            rgba(5,5,10,.94) 68%,
+            transparent 70%
         );
     box-shadow:
-        0 0 45px rgba(39,231,255,.16),
-        0 0 100px rgba(168,85,247,.12);
+        0 0 55px rgba(155,77,255,.25),
+        0 0 110px rgba(255,79,163,.1);
     animation:sphereFloat 5s ease-in-out infinite;
 }
 
 @keyframes sphereFloat{
-    0%,100%{
-        transform:translateY(0) rotate(0);
-    }
-
-    50%{
-        transform:translateY(-12px) rotate(2deg);
-    }
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-12px)}
 }
 
 .sphere-ring{
     position:absolute;
     inset:5%;
-    border:1px solid rgba(39,231,255,.25);
+    border:1px solid rgba(255,79,163,.35);
     border-radius:50%;
     animation:spin 12s linear infinite;
 }
 
 .sphere-ring.r2{
-    inset:13%;
-    border-color:rgba(168,85,247,.3);
+    inset:14%;
+    border-color:rgba(155,77,255,.4);
     animation-duration:17s;
     animation-direction:reverse;
 }
 
 .sphere-ring.r3{
-    inset:23%;
-    border-color:rgba(255,255,255,.1);
+    inset:24%;
+    border-color:rgba(255,255,255,.13);
     animation-duration:23s;
 }
 
 @keyframes spin{
-    from{
-        transform:rotate(0);
-    }
-
-    to{
-        transform:rotate(360deg);
-    }
+    to{transform:rotate(360deg)}
 }
 
 .core{
@@ -438,45 +401,40 @@ h1{
     background:
         radial-gradient(
             circle,
-            #dffcff,
-            var(--cyan) 25%,
-            var(--violet) 55%,
-            transparent 72%
+            #fff,
+            #ffc3e1 18%,
+            var(--pink) 40%,
+            var(--purple) 62%,
+            transparent 73%
         );
     filter:blur(2px);
     box-shadow:
-        0 0 35px var(--cyan),
-        0 0 80px rgba(168,85,247,.7);
+        0 0 35px var(--pink),
+        0 0 90px rgba(155,77,255,.8);
     animation:corePulse 2.5s ease-in-out infinite;
 }
 
 @keyframes corePulse{
-    0%,100%{
-        transform:scale(.9);
-    }
-
-    50%{
-        transform:scale(1.12);
-    }
+    0%,100%{transform:scale(.9)}
+    50%{transform:scale(1.12)}
 }
 
 /* SECTIONS */
 
 .section{
-    width:min(1180px,calc(100% - 30px));
-    margin:0 auto;
+    width:min(1200px,calc(100% - 28px));
+    margin:auto;
     padding:45px 0 80px;
 }
 
 .section-title{
     font-family:Syne,sans-serif;
-    font-size:34px;
-    margin-bottom:8px;
+    font-size:36px;
 }
 
 .section-subtitle{
     color:var(--muted);
-    margin-bottom:25px;
+    margin:8px 0 25px;
 }
 
 /* TOOL GRID */
@@ -484,89 +442,130 @@ h1{
 .tools-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:15px;
+    gap:17px;
 }
 
 .tool-card{
-    min-height:190px;
-    padding:22px;
-    border:1px solid var(--border);
-    border-radius:30px 18px 26px 15px;
-    background:linear-gradient(
-        145deg,
-        rgba(255,255,255,.055),
-        rgba(255,255,255,.015)
-    );
-    backdrop-filter:blur(18px);
-    transition:.3s;
     position:relative;
+    min-height:265px;
     overflow:hidden;
-}
-
-.tool-card:nth-child(2n){
-    border-radius:18px 32px 16px 28px;
-}
-
-.tool-card:nth-child(3n){
-    border-radius:28px 15px 31px 18px;
-}
-
-.tool-card:before{
-    content:"";
-    position:absolute;
-    width:130px;
-    height:130px;
-    right:-60px;
-    top:-60px;
-    background:radial-gradient(
-        circle,
-        rgba(39,231,255,.15),
-        transparent 70%
-    );
+    border:1px solid var(--border);
+    border-radius:28px;
+    background:var(--card);
+    backdrop-filter:blur(18px);
+    box-shadow:0 15px 45px rgba(0,0,0,.2);
+    transition:.3s;
 }
 
 .tool-card:hover{
-    transform:translateY(-6px) rotate(.3deg);
-    border-color:rgba(39,231,255,.4);
+    transform:translateY(-8px);
+    border-color:rgba(255,79,163,.4);
     box-shadow:
-        0 15px 50px rgba(0,0,0,.25),
-        0 0 35px rgba(39,231,255,.08);
+        0 20px 55px rgba(0,0,0,.35),
+        0 0 35px rgba(155,77,255,.12);
+}
+
+.tool-image{
+    height:115px;
+    position:relative;
+    overflow:hidden;
+    background-size:cover;
+    background-position:center;
+}
+
+.tool-image:after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            to bottom,
+            transparent,
+            rgba(7,4,10,.9)
+        );
+}
+
+.tool-image.chat{
+    background-image:url("https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80");
+}
+
+.tool-image.translate{
+    background-image:url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80");
+}
+
+.tool-image.homework{
+    background-image:url("https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=900&q=80");
+}
+
+.tool-image.project{
+    background-image:url("https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=900&q=80");
+}
+
+.tool-image.truth{
+    background-image:url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80");
+}
+
+.tool-image.history{
+    background-image:url("https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&w=900&q=80");
+}
+
+.tool-image.quiz{
+    background-image:url("https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=80");
+}
+
+.tool-image.map{
+    background-image:url("https://images.unsplash.com/photo-1524666041070-9f8766a8e4c1?auto=format&fit=crop&w=900&q=80");
+}
+
+.tool-image.settings{
+    background-image:url("https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=900&q=80");
+}
+
+.tool-body{
+    padding:18px 19px 20px;
+}
+
+.tool-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
 }
 
 .tool-icon{
-    width:50px;
-    height:50px;
+    width:46px;
+    height:46px;
     display:grid;
     place-items:center;
-    border-radius:16px;
-    font-size:23px;
+    border-radius:15px;
+    margin-top:-39px;
+    position:relative;
+    z-index:2;
+    font-size:22px;
     background:
-        linear-gradient(
-            135deg,
-            rgba(39,231,255,.13),
-            rgba(168,85,247,.13)
-        );
-    border:1px solid var(--border);
-    margin-bottom:18px;
+        linear-gradient(135deg,var(--purple2),var(--pink));
+    border:2px solid rgba(255,255,255,.15);
+    box-shadow:0 0 22px rgba(155,77,255,.35);
 }
 
 .tool-card h3{
     font-size:18px;
-    margin-bottom:8px;
+    margin-top:9px;
 }
 
 .tool-card p{
     color:var(--muted);
     font-size:13px;
     line-height:1.55;
+    margin-top:7px;
 }
 
 .tool-open{
-    margin-top:16px;
+    margin-top:13px;
     border:0;
-    background:transparent;
-    color:var(--cyan);
-    font-weight:700;
+    background:none;
+    color:var(--pink2);
+    font-weight:800;
 }
 
 /* WORKSPACE */
@@ -580,18 +579,18 @@ h1{
 }
 
 .workspace-box{
-    background:var(--panel);
+    background:var(--card);
     border:1px solid var(--border);
-    border-radius:28px;
+    border-radius:30px;
     padding:24px;
-    backdrop-filter:blur(20px);
+    backdrop-filter:blur(22px);
     box-shadow:var(--shadow);
 }
 
 .workspace-head{
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
     gap:15px;
     margin-bottom:20px;
 }
@@ -617,7 +616,7 @@ h1{
     padding:10px;
     border:1px solid var(--border);
     border-radius:20px;
-    background:rgba(0,0,0,.12);
+    background:rgba(0,0,0,.16);
 }
 
 .message{
@@ -629,25 +628,25 @@ h1{
     white-space:pre-wrap;
 }
 
-.user{
+.message.user{
     margin-left:auto;
     background:
         linear-gradient(
             135deg,
-            rgba(39,231,255,.14),
-            rgba(39,231,255,.06)
+            rgba(255,79,163,.17),
+            rgba(155,77,255,.13)
         );
-    border:1px solid rgba(39,231,255,.16);
+    border:1px solid rgba(255,79,163,.18);
 }
 
-.ai{
+.message.ai{
     background:
         linear-gradient(
             135deg,
-            rgba(168,85,247,.14),
-            rgba(168,85,247,.05)
+            rgba(155,77,255,.18),
+            rgba(255,79,163,.07)
         );
-    border:1px solid rgba(168,85,247,.16);
+    border:1px solid rgba(155,77,255,.2);
 }
 
 .chat-input{
@@ -663,12 +662,14 @@ h1{
     flex:1;
 }
 
+/* INPUTS */
+
 textarea,
 input,
 select{
     width:100%;
     border:1px solid var(--border);
-    background:rgba(0,0,0,.18);
+    background:rgba(0,0,0,.2);
     color:var(--text);
     border-radius:14px;
     padding:14px;
@@ -678,11 +679,9 @@ select{
 textarea:focus,
 input:focus,
 select:focus{
-    border-color:rgba(39,231,255,.55);
-    box-shadow:0 0 20px rgba(39,231,255,.07);
+    border-color:var(--pink);
+    box-shadow:0 0 25px rgba(255,79,163,.1);
 }
-
-/* FORM */
 
 .form{
     display:grid;
@@ -704,13 +703,13 @@ label{
 
 .result{
     margin-top:18px;
-    padding:18px;
+    padding:20px;
     border:1px solid var(--border);
-    border-radius:18px;
-    background:rgba(0,0,0,.14);
+    border-radius:20px;
+    background:rgba(0,0,0,.16);
     white-space:pre-wrap;
-    line-height:1.65;
-    min-height:80px;
+    line-height:1.7;
+    min-height:90px;
 }
 
 /* THINKING */
@@ -718,8 +717,8 @@ label{
 .thinking{
     display:none;
     align-items:center;
-    gap:7px;
-    color:var(--cyan);
+    gap:9px;
+    color:var(--pink2);
     font-size:13px;
     margin:10px 0;
 }
@@ -737,37 +736,19 @@ label{
 .wave i{
     width:3px;
     height:15px;
-    background:var(--cyan);
+    background:linear-gradient(var(--purple),var(--pink));
     border-radius:5px;
     animation:wave .7s ease-in-out infinite alternate;
 }
 
-.wave i:nth-child(2){
-    animation-delay:.1s;
-}
-
-.wave i:nth-child(3){
-    animation-delay:.2s;
-}
-
-.wave i:nth-child(4){
-    animation-delay:.3s;
-}
-
-.wave i:nth-child(5){
-    animation-delay:.4s;
-}
+.wave i:nth-child(2){animation-delay:.1s}
+.wave i:nth-child(3){animation-delay:.2s}
+.wave i:nth-child(4){animation-delay:.3s}
+.wave i:nth-child(5){animation-delay:.4s}
 
 @keyframes wave{
-    from{
-        height:5px;
-        opacity:.35;
-    }
-
-    to{
-        height:19px;
-        opacity:1;
-    }
+    from{height:5px;opacity:.35}
+    to{height:20px;opacity:1}
 }
 
 /* SETTINGS */
@@ -777,8 +758,14 @@ label{
     align-items:center;
     justify-content:space-between;
     gap:15px;
-    padding:16px 0;
+    padding:18px 0;
     border-bottom:1px solid var(--border);
+}
+
+.setting p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:4px;
 }
 
 .switch{
@@ -786,7 +773,7 @@ label{
     height:28px;
     border:0;
     border-radius:20px;
-    background:#283246;
+    background:#312b38;
     position:relative;
 }
 
@@ -803,20 +790,89 @@ label{
 }
 
 .switch.on{
-    background:linear-gradient(
-        90deg,
-        var(--cyan),
-        var(--violet)
-    );
+    background:linear-gradient(90deg,var(--purple),var(--pink));
 }
 
 .switch.on:after{
     left:24px;
 }
 
-/* =========================
-   REAL WORLD MAP
-========================= */
+/* HISTORY */
+
+.history-intro{
+    padding:25px;
+    border-radius:25px;
+    min-height:210px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(155,77,255,.2),
+            rgba(255,79,163,.08)
+        ),
+        url("https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&w=1200&q=80")
+        center/cover;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:18px;
+}
+
+.history-intro:after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        90deg,
+        rgba(5,5,8,.92),
+        rgba(5,5,8,.45),
+        rgba(5,5,8,.75)
+    );
+}
+
+.history-content{
+    position:relative;
+    z-index:2;
+    max-width:650px;
+}
+
+.history-content h3{
+    font-family:Syne,sans-serif;
+    font-size:30px;
+}
+
+.history-content p{
+    color:#ddd;
+    line-height:1.6;
+    margin-top:8px;
+}
+
+.history-result{
+    display:grid;
+    gap:12px;
+}
+
+.history-card{
+    padding:20px;
+    border:1px solid var(--border);
+    border-radius:20px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(155,77,255,.09),
+            rgba(255,79,163,.05)
+        );
+}
+
+.history-card h4{
+    color:var(--pink2);
+    margin-bottom:7px;
+}
+
+.history-card p{
+    color:var(--muted);
+    line-height:1.65;
+}
+
+/* MAP */
 
 .map-shell{
     display:grid;
@@ -825,8 +881,7 @@ label{
 
 .map-toolbar{
     display:flex;
-    align-items:center;
-    gap:9px;
+    gap:8px;
     flex-wrap:wrap;
 }
 
@@ -840,55 +895,26 @@ label{
     height:45px;
     border-radius:13px;
     border:1px solid var(--border);
-    background:rgba(255,255,255,.045);
+    background:rgba(255,255,255,.04);
     color:var(--text);
     font-weight:800;
-    transition:.2s;
 }
 
 .map-control:hover{
-    border-color:var(--cyan);
-    background:rgba(39,231,255,.1);
-    transform:translateY(-1px);
-}
-
-.map-control.reset{
-    padding:0 15px;
-    width:auto;
+    border-color:var(--pink);
+    background:rgba(255,79,163,.1);
 }
 
 .map-container{
     position:relative;
-    width:100%;
     height:540px;
     overflow:hidden;
     border-radius:24px;
-    border:1px solid rgba(39,231,255,.2);
-    background:
-        radial-gradient(
-            circle at 50% 45%,
-            rgba(39,231,255,.09),
-            transparent 55%
-        ),
-        linear-gradient(
-            180deg,
-            rgba(3,16,31,.98),
-            rgba(2,9,19,.98)
-        );
+    border:1px solid rgba(155,77,255,.3);
+    background:#08060d;
     box-shadow:
-        inset 0 0 50px rgba(39,231,255,.04),
-        0 15px 55px rgba(0,0,0,.25);
-    touch-action:none;
-}
-
-body.light .map-container{
-    background:
-        radial-gradient(
-            circle at 50% 45%,
-            rgba(39,160,210,.09),
-            transparent 55%
-        ),
-        #dce7f2;
+        inset 0 0 60px rgba(155,77,255,.08),
+        0 20px 60px rgba(0,0,0,.35);
 }
 
 #worldMap{
@@ -899,53 +925,39 @@ body.light .map-container{
 #worldMap svg{
     width:100%;
     height:100%;
-    display:block;
     cursor:grab;
-    user-select:none;
-}
-
-#worldMap svg:active{
-    cursor:grabbing;
 }
 
 .world-country{
-    fill:#17304a;
-    stroke:#53738e;
+    fill:#241735;
+    stroke:#8752a9;
     stroke-width:.55;
-    transition:
-        fill .15s ease,
-        stroke .15s ease,
-        filter .15s ease,
-        opacity .15s ease;
+    transition:.15s;
     cursor:pointer;
 }
 
 .world-country:hover{
-    fill:#19cce8;
-    stroke:#ffffff;
-    stroke-width:1;
-    filter:
-        drop-shadow(0 0 7px rgba(39,231,255,.75));
+    fill:#a044d5;
+    stroke:#fff;
+    filter:drop-shadow(0 0 7px rgba(255,79,163,.8));
 }
 
 .world-country.selected{
-    fill:#914cff;
-    stroke:#ffffff;
-    stroke-width:1.3;
-    filter:
-        drop-shadow(0 0 11px rgba(168,85,247,.85));
+    fill:#ff4fa3;
+    stroke:#fff;
+    stroke-width:1.2;
 }
 
 .map-loading{
     position:absolute;
     inset:0;
+    z-index:5;
     display:grid;
     place-items:center;
-    color:var(--cyan);
-    font-weight:700;
-    background:rgba(3,10,20,.55);
-    backdrop-filter:blur(3px);
-    z-index:3;
+    background:rgba(5,3,8,.8);
+    backdrop-filter:blur(5px);
+    color:#fff;
+    font-weight:800;
 }
 
 .map-info{
@@ -953,36 +965,29 @@ body.light .map-container{
     grid-template-columns:auto 1fr;
     gap:15px;
     align-items:center;
-    padding:17px 19px;
+    padding:18px;
     border:1px solid var(--border);
-    border-radius:18px;
+    border-radius:20px;
     background:rgba(255,255,255,.035);
 }
 
 .map-info-icon{
-    width:50px;
-    height:50px;
+    width:55px;
+    height:55px;
     display:grid;
     place-items:center;
-    border-radius:15px;
-    font-size:24px;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(39,231,255,.13),
-            rgba(168,85,247,.14)
-        );
-    border:1px solid var(--border);
+    border-radius:17px;
+    background:linear-gradient(135deg,var(--purple),var(--pink));
+    font-size:25px;
 }
 
 .map-info h3{
-    font-size:19px;
-    margin-bottom:4px;
+    font-size:20px;
 }
 
 .map-info p{
     color:var(--muted);
-    font-size:14px;
+    margin-top:5px;
 }
 
 .map-status{
@@ -990,35 +995,10 @@ body.light .map-container{
     font-size:12px;
 }
 
-@media(max-width:700px){
-
-    .map-container{
-        height:390px;
-    }
-
-    .map-toolbar{
-        align-items:stretch;
-    }
-
-    .map-toolbar input{
-        min-width:100%;
-        order:-1;
-    }
-
-    .map-info{
-        grid-template-columns:1fr;
-        text-align:center;
-    }
-
-    .map-info-icon{
-        margin:auto;
-    }
-}
-
 /* FOOTER */
 
 .footer{
-    width:min(1180px,calc(100% - 30px));
+    width:min(1200px,calc(100% - 28px));
     margin:auto;
     padding:25px 0 40px;
     color:var(--muted);
@@ -1044,42 +1024,33 @@ body.light .map-container{
         justify-content:center;
     }
 
-    .sphere-area{
-        height:390px;
-    }
-
     .tools-grid{
         grid-template-columns:1fr 1fr;
     }
 
-    .einstein{
-        opacity:.08;
-        width:70vw;
-        right:-100px;
+    .sphere-area{
+        height:390px;
     }
 
-    .neural-glow{
-        right:50px;
+    .einstein{
+        width:70vw;
+        opacity:.07;
     }
 }
 
 @media(max-width:650px){
 
     .nav{
-        top:8px;
-        margin-top:8px;
+        top:7px;
+        margin-top:7px;
     }
 
     .nav-links{
         display:none;
     }
 
-    .hero{
-        padding-top:45px;
-    }
-
     h1{
-        font-size:42px;
+        font-size:41px;
         letter-spacing:-2px;
     }
 
@@ -1099,10 +1070,26 @@ body.light .map-container{
         max-width:92%;
     }
 
+    .workspace-box{
+        padding:16px;
+    }
+
+    .map-container{
+        height:390px;
+    }
+
+    .map-info{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+    .map-info-icon{
+        margin:auto;
+    }
+
     .einstein{
         width:100vw;
         right:-180px;
-        opacity:.07;
     }
 }
 </style>
@@ -1113,12 +1100,10 @@ body.light .map-container{
 <canvas id="network"></canvas>
 
 <img
-    class="einstein"
-    src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg"
-    alt="Albert Einstein"
+class="einstein"
+src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg"
+alt="Albert Einstein"
 >
-
-<div class="neural-glow"></div>
 
 <div class="app">
 
@@ -1126,7 +1111,7 @@ body.light .map-container{
 
     <button class="logo" data-home>
         <span class="logo-orb"></span>
-        <span>AMROYAN AI</span>
+        AMROYAN AI
     </button>
 
     <div class="nav-links">
@@ -1143,19 +1128,11 @@ body.light .map-container{
 
     <div class="nav-actions">
 
-        <button
-            class="icon-btn"
-            id="themeBtn"
-            title="Theme"
-        >
+        <button class="icon-btn" id="themeBtn">
             ☾
         </button>
 
-        <button
-            class="icon-btn"
-            id="settingsTop"
-            title="Settings"
-        >
+        <button class="icon-btn" id="settingsTop">
             ⚙
         </button>
 
@@ -1168,169 +1145,285 @@ body.light .map-container{
 
 <section class="hero">
 
-    <div class="hero-copy">
+<div class="hero-copy">
 
-        <div class="eyebrow">
-            <span class="live-dot"></span>
-            AMROYAN AI SYSTEM ONLINE
-        </div>
+<div class="eyebrow">
+    <span class="live-dot"></span>
+    AMROYAN AI SYSTEM ONLINE
+</div>
 
-        <h1>
-            AMROYAN AI:
-            <span class="gradient">
-                ՈՉ ԹԵ ՊԱՐԶԱՊԵՍ ԳՈՐԾԻՔ
-            </span>
-            ԱՅԼ ԳԻՏԱԿՑՈՒԹՅԱՆ ԸՆԴԼԱՅՆՈՒՄԸ
-        </h1>
+<h1>
+    AMROYAN AI:
+    <span class="gradient">
+        ԳԻՏԱԿՑՈՒԹՅԱՆ
+        ԸՆԴԼԱՅՆՈՒՄԸ
+    </span>
+</h1>
 
-        <p class="hero-text">
-            Բացահայտեք արհեստական բանականության էվոլյուցիոն ուժը։
-            Ստեղծեք, ուսումնասիրեք, սովորեք և աշխատեք մեկ կենդանի AI միջավայրում։
-        </p>
+<p class="hero-text">
+    Ստեղծիր, սովորիր, ուսումնասիրիր և աշխատիր
+    ժամանակակից AI գործիքների մեկ գեղեցիկ միջավայրում։
+</p>
 
-        <div class="hero-actions">
+<div class="hero-actions">
 
-            <button class="primary" id="startBtn">
-                Սկսել հիմա →
-            </button>
+<button class="primary" id="startBtn">
+    Սկսել հիմա →
+</button>
 
-            <button class="secondary" data-tools>
-                Դիտել գործիքները
-            </button>
+<button class="secondary" data-tools>
+    Դիտել գործիքները
+</button>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
-    <div class="sphere-area" id="sphereArea">
+<div class="sphere-area" id="sphereArea">
 
-        <div class="sphere" id="sphere">
+<div class="sphere" id="sphere">
+    <div class="sphere-ring"></div>
+    <div class="sphere-ring r2"></div>
+    <div class="sphere-ring r3"></div>
+    <div class="core"></div>
+</div>
 
-            <div class="sphere-ring"></div>
-            <div class="sphere-ring r2"></div>
-            <div class="sphere-ring r3"></div>
-            <div class="core"></div>
-
-        </div>
-
-    </div>
+</div>
 
 </section>
 
 
 <section class="section" id="tools">
 
-    <div class="section-title">
-        Smart Flow
-    </div>
+<div class="section-title">
+    Smart Flow
+</div>
 
-    <p class="section-subtitle">
-        Ընտրիր անհրաժեշտ AI գործիքը։
-    </p>
+<p class="section-subtitle">
+    Բոլոր գործիքները՝ պատկերներով և միասնական նոր դիզայնով։
+</p>
 
-    <div class="tools-grid">
 
-        <article class="tool-card">
-            <div class="tool-icon">💬</div>
-            <h3>AI Chat</h3>
-            <p>
-                Խոսիր AmroyanAI-ի հետ և ստացիր իրական AI պատասխաններ։
-            </p>
-            <button class="tool-open" data-open="chat">
-                Open →
-            </button>
-        </article>
+<div class="tools-grid">
 
-        <article class="tool-card">
-            <div class="tool-icon">🌐</div>
-            <h3>Translator</h3>
-            <p>
-                Թարգմանիր տեքստեր հայերեն, ռուսերեն և անգլերեն։
-            </p>
-            <button class="tool-open" data-open="translator">
-                Open →
-            </button>
-        </article>
 
-        <article class="tool-card">
-            <div class="tool-icon">📚</div>
-            <h3>Homework</h3>
-            <p>
-                Ստացիր օգնություն դպրոցական առաջադրանքների համար։
-            </p>
-            <button class="tool-open" data-open="homework">
-                Open →
-            </button>
-        </article>
+<!-- CHAT -->
 
-        <article class="tool-card">
-            <div class="tool-icon">📋</div>
-            <h3>Project Lab</h3>
-            <p>
-                Ստեղծիր ամբողջական դպրոցական նախագծի կառուցվածք։
-            </p>
-            <button class="tool-open" data-open="project">
-                Open →
-            </button>
-        </article>
+<article class="tool-card">
 
-        <article class="tool-card">
-            <div class="tool-icon">🕵️</div>
-            <h3>Truth Detector</h3>
-            <p>
-                AI-ի միջոցով գնահատիր տեքստի հավաստիությունը։
-            </p>
-            <button class="tool-open" data-open="truth">
-                Open →
-            </button>
-        </article>
+<div class="tool-image chat"></div>
 
-        <article class="tool-card">
-            <div class="tool-icon">🏛️</div>
-            <h3>World History</h3>
-            <p>
-                Ուսումնասիրիր երկրների պատմական ժամանակաշրջանները։
-            </p>
-            <button class="tool-open" data-open="history">
-                Open →
-            </button>
-        </article>
+<div class="tool-body">
 
-        <article class="tool-card">
-            <div class="tool-icon">📝</div>
-            <h3>Quiz Maker</h3>
-            <p>
-                Ստեղծիր AI-ով թեստեր ցանկացած թեմայով։
-            </p>
-            <button class="tool-open" data-open="quiz">
-                Open →
-            </button>
-        </article>
+<div class="tool-icon">💬</div>
 
-        <article class="tool-card">
-            <div class="tool-icon">🌍</div>
-            <h3>World Map</h3>
-            <p>
-                Ուսումնասիրիր իրական աշխարհի քարտեզը։
-            </p>
-            <button class="tool-open" data-open="map">
-                Open →
-            </button>
-        </article>
+<h3>AI Chat</h3>
 
-        <article class="tool-card">
-            <div class="tool-icon">⚙️</div>
-            <h3>Settings</h3>
-            <p>
-                Կարգավորիր թեման և AmroyanAI-ի աշխատանքը։
-            </p>
-            <button class="tool-open" data-open="settings">
-                Open →
-            </button>
-        </article>
+<p>
+Խոսիր իրական AmroyanAI-ի հետ և ստացիր պատասխաններ։
+</p>
 
-    </div>
+<button class="tool-open" data-open="chat">
+Բացել →
+</button>
 
+</div>
+</article>
+
+
+<!-- TRANSLATOR -->
+
+<article class="tool-card">
+
+<div class="tool-image translate"></div>
+
+<div class="tool-body">
+
+<div class="tool-icon">🌐</div>
+
+<h3>Translator</h3>
+
+<p>
+Թարգմանիր հայերեն, ռուսերեն և անգլերեն լեզուներով։
+</p>
+
+<button class="tool-open" data-open="translator">
+Բացել →
+</button>
+
+</div>
+</article>
+
+
+<!-- HOMEWORK -->
+
+<article class="tool-card">
+
+<div class="tool-image homework"></div>
+
+<div class="tool-body">
+
+<div class="tool-icon">📚</div>
+
+<h3>Homework</h3>
+
+<p>
+Ստացիր AI օգնություն դպրոցական առաջադրանքների համար։
+</p>
+
+<button class="tool-open" data-open="homework">
+Բացել →
+</button>
+
+</div>
+</article>
+
+
+<!-- PROJECT -->
+
+<article class="tool-card">
+
+<div class="tool-image project"></div>
+
+<div class="tool-body">
+
+<div class="tool-icon">📋</div>
+
+<h3>Project Lab</h3>
+
+<p>
+Ստեղծիր ամբողջական նախագծի կառուցվածք և նյութեր։
+</p>
+
+<button class="tool-open" data-open="project">
+Բացել →
+</button>
+
+</div>
+</article>
+
+
+<!-- TRUTH -->
+
+<article class="tool-card">
+
+<div class="tool-image truth"></div>
+
+<div class="tool-body">
+
+<div class="tool-icon">🔎</div>
+
+<h3>Truth Detector</h3>
+
+<p>
+Վերլուծիր հայտարարության հավաստիությունը AI-ի օգնությամբ։
+</p>
+
+<button class="tool-open" data-open="truth">
+Բացել →
+</button>
+
+</div>
+</article>
+
+
+<!-- HISTORY -->
+
+<article class="tool-card">
+
+<div class="tool-image history"></div>
+
+<div class="tool-body">
+
+<div class="tool-icon">🏛️</div>
+
+<h3>World History</h3>
+
+<p>
+Ուսումնասիրիր պատմական ժամանակաշրջանները պատկերներով։
+</p>
+
+<button class="tool-open" data-open="history">
+Բացել →
+</button>
+
+</div>
+</article>
+
+
+<!-- QUIZ -->
+
+<article class="tool-card">
+
+<div class="tool-image quiz"></div>
+
+<div class="tool-body">
+
+<div class="tool-icon">🎯</div>
+
+<h3>Quiz Maker</h3>
+
+<p>
+Ստեղծիր AI-ով հետաքրքիր թեստեր ցանկացած թեմայով։
+</p>
+
+<button class="tool-open" data-open="quiz">
+Բացել →
+</button>
+
+</div>
+</article>
+
+
+<!-- MAP -->
+
+<article class="tool-card">
+
+<div class="tool-image map"></div>
+
+<div class="tool-body">
+
+<div class="tool-icon">🌍</div>
+
+<h3>World Map</h3>
+
+<p>
+Իրական ինտերակտիվ քարտեզ՝ երկրներով և մայրաքաղաքներով։
+</p>
+
+<button class="tool-open" data-open="map">
+Բացել →
+</button>
+
+</div>
+</article>
+
+
+<!-- SETTINGS -->
+
+<article class="tool-card">
+
+<div class="tool-image settings"></div>
+
+<div class="tool-body">
+
+<div class="tool-icon">⚙️</div>
+
+<h3>Settings</h3>
+
+<p>
+Կարգավորիր թեման, ձայնը և AI animation-ը։
+</p>
+
+<button class="tool-open" data-open="settings">
+Բացել →
+</button>
+
+</div>
+</article>
+
+
+</div>
 </section>
 
 </main>
@@ -1340,491 +1433,424 @@ body.light .map-container{
 
 <div class="workspace-box">
 
-    <div class="workspace-head">
-
-        <h2 id="workspaceTitle">
-            AI Tool
-        </h2>
-
-        <button class="back" id="backBtn">
-            ← Back
-        </button>
-
-    </div>
-
-
-    <div class="thinking" id="thinking">
-
-        <div class="wave">
-            <i></i>
-            <i></i>
-            <i></i>
-            <i></i>
-            <i></i>
-        </div>
-
-        AmroyanAI-ը մտածում է...
-
-    </div>
-
-
-    <!-- CHAT -->
-
-    <div id="chatTool" class="tool-view">
-
-        <div class="chat" id="chat"></div>
-
-        <div class="chat-input">
-
-            <textarea
-                id="chatInput"
-                placeholder="Գրիր քո հարցը..."
-            ></textarea>
-
-            <button class="primary" id="sendBtn">
-                Send
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- TRANSLATOR -->
-
-    <div id="translatorTool" class="tool-view" hidden>
-
-        <div class="form">
-
-            <label>
-                Տեքստ
-
-                <textarea
-                    id="translateInput"
-                    rows="8"
-                    placeholder="Գրիր տեքստը..."
-                ></textarea>
-
-            </label>
-
-            <div class="row">
-
-                <label>
-                    From
-
-                    <select id="fromLang">
-                        <option>Armenian</option>
-                        <option>Russian</option>
-                        <option>English</option>
-                    </select>
-
-                </label>
-
-                <label>
-                    To
-
-                    <select id="toLang">
-                        <option>English</option>
-                        <option>Armenian</option>
-                        <option>Russian</option>
-                    </select>
-
-                </label>
-
-            </div>
-
-            <button class="primary" id="translateBtn">
-                Translate
-            </button>
-
-        </div>
-
-        <div class="result" id="translateResult"></div>
-
-    </div>
-
-
-    <!-- HOMEWORK -->
-
-    <div id="homeworkTool" class="tool-view" hidden>
-
-        <div class="form">
-
-            <label>
-                Առարկա
-
-                <input
-                    id="homeworkSubject"
-                    placeholder="Օր.՝ Մաթեմատիկա"
-                >
-
-            </label>
-
-            <label>
-                Առաջադրանք
-
-                <textarea
-                    id="homeworkInput"
-                    rows="7"
-                    placeholder="Տեղադրիր առաջադրանքը..."
-                ></textarea>
-
-            </label>
-
-            <button class="primary" id="homeworkBtn">
-                Օգնել
-            </button>
-
-        </div>
-
-        <div class="result" id="homeworkResult"></div>
-
-    </div>
-
-
-    <!-- PROJECT -->
-
-    <div id="projectTool" class="tool-view" hidden>
-
-        <div class="form">
-
-            <label>
-                Նախագծի թեմա
-
-                <input
-                    id="projectTitle"
-                    placeholder="Օր.՝ Դվին"
-                >
-
-            </label>
-
-            <label>
-                Լրացուցիչ տեղեկություն
-
-                <textarea
-                    id="projectInput"
-                    rows="7"
-                    placeholder="Գրիր ինչ է պետք նախագծի համար..."
-                ></textarea>
-
-            </label>
-
-            <button class="primary" id="projectBtn">
-                Ստեղծել նախագիծ
-            </button>
-
-        </div>
-
-        <div class="result" id="projectResult"></div>
-
-    </div>
-
-
-    <!-- TRUTH -->
-
-    <div id="truthTool" class="tool-view" hidden>
-
-        <div class="form">
-
-            <label>
-                Տեքստը
-
-                <textarea
-                    id="truthInput"
-                    rows="8"
-                    placeholder="Տեղադրիր հայտարարությունը կամ տեքստը..."
-                ></textarea>
-
-            </label>
-
-            <button class="primary" id="truthBtn">
-                Ստուգել
-            </button>
-
-        </div>
-
-        <div class="result" id="truthResult">
-            Սա AI գնահատական է, ոչ թե իրական պոլիգրաֆ։
-            Միայն տեքստից հնարավոր չէ 100% որոշել՝ մարդը ստում է, թե ոչ։
-        </div>
-
-    </div>
-
-
-    <!-- HISTORY -->
-
-    <div id="historyTool" class="tool-view" hidden>
-
-        <div class="form">
-
-            <label>
-                Ընտրիր երկիրը
-
-                <select id="historyCountry">
-
-                    <option value="armenia">
-                        Հայաստան
-                    </option>
-
-                    <option value="france">
-                        Ֆրանսիա
-                    </option>
-
-                    <option value="germany">
-                        Գերմանիա
-                    </option>
-
-                    <option value="italy">
-                        Իտալիա
-                    </option>
-
-                    <option value="usa">
-                        ԱՄՆ
-                    </option>
-
-                    <option value="egypt">
-                        Եգիպտոս
-                    </option>
-
-                    <option value="china">
-                        Չինաստան
-                    </option>
-
-                </select>
-
-            </label>
-
-            <button class="primary" id="historyBtn">
-                Ցույց տալ պատմությունը
-            </button>
-
-        </div>
-
-        <div class="result" id="historyResult"></div>
-
-    </div>
-
-
-    <!-- QUIZ -->
-
-    <div id="quizTool" class="tool-view" hidden>
-
-        <div class="form">
-
-            <label>
-                Թեմա
-
-                <input
-                    id="quizTopic"
-                    placeholder="Օր.՝ Հայոց պատմություն"
-                >
-
-            </label>
-
-            <div class="row">
-
-                <label>
-                    Հարցերի քանակ
-
-                    <select id="quizCount">
-                        <option>5</option>
-                        <option>10</option>
-                        <option>20</option>
-                    </select>
-
-                </label>
-
-                <label>
-                    Բարդություն
-
-                    <select id="quizDifficulty">
-                        <option>Easy</option>
-                        <option>Medium</option>
-                        <option>Hard</option>
-                    </select>
-
-                </label>
-
-            </div>
-
-            <button class="primary" id="quizBtn">
-                Ստեղծել Quiz
-            </button>
-
-        </div>
-
-        <div class="result" id="quizResult"></div>
-
-    </div>
-
-
-    <!-- REAL WORLD MAP -->
-
-    <div id="mapTool" class="tool-view" hidden>
-
-        <div class="map-shell">
-
-            <div class="map-toolbar">
-
-                <button
-                    class="map-control"
-                    id="mapZoomIn"
-                    title="Zoom in"
-                >
-                    +
-                </button>
-
-                <button
-                    class="map-control"
-                    id="mapZoomOut"
-                    title="Zoom out"
-                >
-                    −
-                </button>
-
-                <button
-                    class="map-control reset"
-                    id="mapReset"
-                >
-                    Reset
-                </button>
-
-                <input
-                    id="mapSearch"
-                    placeholder="🔍 Search country..."
-                    autocomplete="off"
-                >
-
-            </div>
-
-
-            <div class="map-container">
-
-                <div
-                    id="mapLoading"
-                    class="map-loading"
-                >
-                    🌍 Loading real world map...
-                </div>
-
-                <div id="worldMap"></div>
-
-            </div>
-
-
-            <div class="map-info" id="mapInfo">
-
-                <div class="map-info-icon">
-                    🌍
-                </div>
-
-                <div>
-
-                    <h3>
-                        Ընտրիր երկիր
-                    </h3>
-
-                    <p>
-                        Սեղմիր քարտեզի ցանկացած երկրի վրա՝
-                        տեսնելու երկրի անունը և մայրաքաղաքը։
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="map-status" id="mapStatus">
-                Real interactive world map · Drag · Zoom · Select
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- SETTINGS -->
-
-    <div id="settingsTool" class="tool-view" hidden>
-
-        <div class="setting">
-
-            <div>
-                <strong>
-                    Dark / Light mode
-                </strong>
-
-                <p>
-                    Փոխել արտաքին տեսքը
-                </p>
-
-            </div>
-
-            <button
-                class="switch"
-                id="themeSwitch"
-            ></button>
-
-        </div>
-
-
-        <div class="setting">
-
-            <div>
-                <strong>
-                    Thinking animation
-                </strong>
-
-                <p>
-                    AI-ի մտածելու animation
-                </p>
-
-            </div>
-
-            <button
-                class="switch on"
-                id="thinkingSwitch"
-            ></button>
-
-        </div>
-
-
-        <div class="setting">
-
-            <div>
-                <strong>
-                    Click sound
-                </strong>
-
-                <p>
-                    Կոճակների թեթև ձայնային effect
-                </p>
-
-            </div>
-
-            <button
-                class="switch on"
-                id="soundSwitch"
-            ></button>
-
-        </div>
-
-    </div>
+<div class="workspace-head">
+
+<h2 id="workspaceTitle">
+AI Tool
+</h2>
+
+<button class="back" id="backBtn">
+← Back
+</button>
 
 </div>
 
+
+<div class="thinking" id="thinking">
+
+<div class="wave">
+<i></i><i></i><i></i><i></i><i></i>
+</div>
+
+AmroyanAI-ը մտածում է...
+
+</div>
+
+
+<!-- CHAT -->
+
+<div id="chatTool" class="tool-view">
+
+<div class="chat" id="chat"></div>
+
+<div class="chat-input">
+
+<textarea
+id="chatInput"
+placeholder="Գրիր քո հարցը..."
+></textarea>
+
+<button class="primary" id="sendBtn">
+Ուղարկել
+</button>
+
+</div>
+
+</div>
+
+
+<!-- TRANSLATOR -->
+
+<div id="translatorTool" class="tool-view" hidden>
+
+<div class="form">
+
+<label>
+Տեքստ
+
+<textarea
+id="translateInput"
+rows="8"
+placeholder="Գրիր տեքստը..."
+></textarea>
+</label>
+
+<div class="row">
+
+<label>
+From
+
+<select id="fromLang">
+<option>Armenian</option>
+<option>Russian</option>
+<option>English</option>
+</select>
+</label>
+
+<label>
+To
+
+<select id="toLang">
+<option>English</option>
+<option>Armenian</option>
+<option>Russian</option>
+</select>
+</label>
+
+</div>
+
+<button class="primary" id="translateBtn">
+Թարգմանել
+</button>
+
+</div>
+
+<div class="result" id="translateResult"></div>
+
+</div>
+
+
+<!-- HOMEWORK -->
+
+<div id="homeworkTool" class="tool-view" hidden>
+
+<div class="form">
+
+<label>
+Առարկա
+
+<input
+id="homeworkSubject"
+placeholder="Օր.՝ Մաթեմատիկա"
+>
+</label>
+
+<label>
+Առաջադրանք
+
+<textarea
+id="homeworkInput"
+rows="7"
+placeholder="Տեղադրիր առաջադրանքը..."
+></textarea>
+</label>
+
+<button class="primary" id="homeworkBtn">
+Օգնել
+</button>
+
+</div>
+
+<div class="result" id="homeworkResult"></div>
+
+</div>
+
+
+<!-- PROJECT -->
+
+<div id="projectTool" class="tool-view" hidden>
+
+<div class="form">
+
+<label>
+Նախագծի թեմա
+
+<input
+id="projectTitle"
+placeholder="Օր.՝ Դվին"
+>
+</label>
+
+<label>
+Լրացուցիչ տեղեկություն
+
+<textarea
+id="projectInput"
+rows="7"
+placeholder="Գրիր ինչ է պետք նախագծի համար..."
+></textarea>
+</label>
+
+<button class="primary" id="projectBtn">
+Ստեղծել նախագիծ
+</button>
+
+</div>
+
+<div class="result" id="projectResult"></div>
+
+</div>
+
+
+<!-- TRUTH -->
+
+<div id="truthTool" class="tool-view" hidden>
+
+<div class="form">
+
+<label>
+Տեքստը
+
+<textarea
+id="truthInput"
+rows="8"
+placeholder="Տեղադրիր հայտարարությունը..."
+></textarea>
+</label>
+
+<button class="primary" id="truthBtn">
+Վերլուծել
+</button>
+
+</div>
+
+<div class="result" id="truthResult">
+Սա AI վերլուծություն է և չի կարող 100% որոշել իրականությունը։
+</div>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<div id="historyTool" class="tool-view" hidden>
+
+<div class="history-intro">
+
+<div class="history-content">
+
+<h3>
+Ժամանակի մեքենա
+</h3>
+
+<p>
+Ընտրիր երկիր և ուսումնասիրիր նրա պատմությունը
+տեսողական, պարզ և հետաքրքիր ձևով։
+</p>
+
+</div>
+
+</div>
+
+<div class="form">
+
+<label>
+Ընտրիր երկիրը
+
+<select id="historyCountry">
+
+<option value="armenia">🇦🇲 Հայաստան</option>
+<option value="france">🇫🇷 Ֆրանսիա</option>
+<option value="germany">🇩🇪 Գերմանիա</option>
+<option value="italy">🇮🇹 Իտալիա</option>
+<option value="usa">🇺🇸 ԱՄՆ</option>
+<option value="egypt">🇪🇬 Եգիպտոս</option>
+<option value="china">🇨🇳 Չինաստան</option>
+
+</select>
+
+</label>
+
+<button class="primary" id="historyBtn">
+Բացել պատմությունը
+</button>
+
+</div>
+
+<div class="history-result" id="historyResult"></div>
+
+</div>
+
+
+<!-- QUIZ -->
+
+<div id="quizTool" class="tool-view" hidden>
+
+<div class="form">
+
+<label>
+Թեմա
+
+<input
+id="quizTopic"
+placeholder="Օր.՝ Հայոց պատմություն"
+>
+</label>
+
+<div class="row">
+
+<label>
+Հարցերի քանակ
+
+<select id="quizCount">
+<option>5</option>
+<option>10</option>
+<option>20</option>
+</select>
+
+</label>
+
+<label>
+Բարդություն
+
+<select id="quizDifficulty">
+<option>Easy</option>
+<option>Medium</option>
+<option>Hard</option>
+</select>
+
+</label>
+
+</div>
+
+<button class="primary" id="quizBtn">
+Ստեղծել Quiz
+</button>
+
+</div>
+
+<div class="result" id="quizResult"></div>
+
+</div>
+
+
+<!-- MAP -->
+
+<div id="mapTool" class="tool-view" hidden>
+
+<div class="map-shell">
+
+<div class="map-toolbar">
+
+<button class="map-control" id="mapZoomIn">+</button>
+
+<button class="map-control" id="mapZoomOut">−</button>
+
+<button class="map-control" id="mapReset">
+Reset
+</button>
+
+<input
+id="mapSearch"
+placeholder="🔍 Search country..."
+>
+
+</div>
+
+<div class="map-container">
+
+<div id="mapLoading" class="map-loading">
+🌍 Loading real world map...
+</div>
+
+<div id="worldMap"></div>
+
+</div>
+
+<div class="map-info" id="mapInfo">
+
+<div class="map-info-icon">
+🌍
+</div>
+
+<div>
+
+<h3>
+Ընտրիր երկիր
+</h3>
+
+<p>
+Սեղմիր երկրի վրա՝ անվանումը և մայրաքաղաքը տեսնելու համար։
+</p>
+
+</div>
+
+</div>
+
+<div class="map-status" id="mapStatus">
+Real interactive world map · Drag · Zoom · Select
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SETTINGS -->
+
+<div id="settingsTool" class="tool-view" hidden>
+
+<div class="setting">
+
+<div>
+<strong>Dark / Light mode</strong>
+<p>Փոխել արտաքին տեսքը</p>
+</div>
+
+<button class="switch" id="themeSwitch"></button>
+
+</div>
+
+<div class="setting">
+
+<div>
+<strong>Thinking animation</strong>
+<p>AI-ի մտածելու animation</p>
+</div>
+
+<button class="switch on" id="thinkingSwitch"></button>
+
+</div>
+
+<div class="setting">
+
+<div>
+<strong>Click sound</strong>
+<p>Կոճակների ձայնային effect</p>
+</div>
+
+<button class="switch on" id="soundSwitch"></button>
+
+</div>
+
+</div>
+
+</div>
 </section>
 
 
 <footer class="footer">
-    AMROYAN AI · Intelligent tools for learning, creating and exploring.
+AMROYAN AI · Learn · Create · Explore
 </footer>
 
 </div>
 
 
 <script>
-const state = {
+
+/* STATE */
+
+const state={
     currentTool:null,
     history:[],
     thinking:true,
@@ -1832,33 +1858,33 @@ const state = {
 };
 
 
-/* CLICK SOUND */
+/* SOUND */
 
 function clickSound(){
 
-    if(!state.sound) return;
+    if(!state.sound)return;
 
     try{
 
-        const AudioContext =
-            window.AudioContext ||
+        const AudioContext=
+            window.AudioContext||
             window.webkitAudioContext;
 
-        if(!AudioContext) return;
+        if(!AudioContext)return;
 
-        const ctx = new AudioContext();
+        const ctx=new AudioContext();
 
-        const oscillator =
+        const oscillator=
             ctx.createOscillator();
 
-        const gain =
+        const gain=
             ctx.createGain();
 
         oscillator.type="sine";
-        oscillator.frequency.value=520;
+        oscillator.frequency.value=600;
 
         gain.gain.setValueAtTime(
-            .035,
+            .025,
             ctx.currentTime
         );
 
@@ -1876,77 +1902,63 @@ function clickSound(){
         );
 
     }catch(e){}
+
 }
 
 
-/* BUTTON SOUND */
-
 document.addEventListener(
-    "click",
-    function(e){
+"click",
+e=>{
 
-        const btn =
-            e.target.closest("button");
-
-        if(btn){
-            clickSound();
-        }
-
+    if(e.target.closest("button")){
+        clickSound();
     }
-);
+
+});
 
 
 /* NETWORK */
 
-const canvas =
-    document.getElementById("network");
+const canvas=
+document.getElementById("network");
 
-const ctx =
-    canvas.getContext("2d");
+const ctx=
+canvas.getContext("2d");
 
 let nodes=[];
 
 function resizeCanvas(){
 
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
+    canvas.width=innerWidth;
+    canvas.height=innerHeight;
 
     nodes=[];
 
-    const amount =
+    const count=
         Math.min(
-            85,
-            Math.floor(window.innerWidth/18)
+            90,
+            Math.floor(innerWidth/16)
         );
 
-    for(
-        let i=0;
-        i<amount;
-        i++
-    ){
+    for(let i=0;i<count;i++){
 
         nodes.push({
-
             x:Math.random()*canvas.width,
-
             y:Math.random()*canvas.height,
-
             vx:(Math.random()-.5)*.25,
-
             vy:(Math.random()-.5)*.25,
-
-            r:Math.random()*1.7+.5
-
+            r:Math.random()*1.5+.5
         });
 
     }
+
 }
 
 resizeCanvas();
 
-window.addEventListener(
-    "resize",
-    resizeCanvas
+addEventListener(
+"resize",
+resizeCanvas
 );
 
 
@@ -1964,19 +1976,8 @@ function drawNetwork(){
         n.x+=n.vx;
         n.y+=n.vy;
 
-        if(
-            n.x<0 ||
-            n.x>canvas.width
-        ){
-            n.vx*=-1;
-        }
-
-        if(
-            n.y<0 ||
-            n.y>canvas.height
-        ){
-            n.vy*=-1;
-        }
+        if(n.x<0||n.x>canvas.width)n.vx*=-1;
+        if(n.y<0||n.y>canvas.height)n.vy*=-1;
 
         ctx.beginPath();
 
@@ -1989,7 +1990,7 @@ function drawNetwork(){
         );
 
         ctx.fillStyle=
-            "rgba(39,231,255,.5)";
+            "rgba(190,100,255,.6)";
 
         ctx.fill();
 
@@ -2013,36 +2014,21 @@ function drawNetwork(){
             const dx=a.x-b.x;
             const dy=a.y-b.y;
 
-            const distance=
-                Math.sqrt(
-                    dx*dx+
-                    dy*dy
-                );
+            const d=Math.sqrt(
+                dx*dx+dy*dy
+            );
 
-            if(distance<130){
+            if(d<130){
 
                 ctx.beginPath();
 
-                ctx.moveTo(
-                    a.x,
-                    a.y
-                );
-
-                ctx.lineTo(
-                    b.x,
-                    b.y
-                );
+                ctx.moveTo(a.x,a.y);
+                ctx.lineTo(b.x,b.y);
 
                 ctx.strokeStyle=
-                    `rgba(
-                        80,
-                        150,
-                        210,
-                        ${.12-distance/1200}
-                    )`;
+                    `rgba(255,79,163,${.13-d/1200})`;
 
-                ctx.lineWidth=.6;
-
+                ctx.lineWidth=.5;
                 ctx.stroke();
 
             }
@@ -2051,9 +2037,8 @@ function drawNetwork(){
 
     }
 
-    requestAnimationFrame(
-        drawNetwork
-    );
+    requestAnimationFrame(drawNetwork);
+
 }
 
 drawNetwork();
@@ -2061,59 +2046,51 @@ drawNetwork();
 
 /* SPHERE */
 
-const sphere =
-    document.getElementById("sphere");
+const sphere=
+document.getElementById("sphere");
 
-const sphereArea =
-    document.getElementById("sphereArea");
-
-sphereArea.addEventListener(
-    "mousemove",
-    function(e){
-
-        const rect=
-            sphereArea.getBoundingClientRect();
-
-        const x=
-            (e.clientX-rect.left)/
-            rect.width-.5;
-
-        const y=
-            (e.clientY-rect.top)/
-            rect.height-.5;
-
-        sphere.style.transform=
-            `translate(
-                ${x*18}px,
-                ${y*18}px
-            )`;
-
-    }
-);
+const sphereArea=
+document.getElementById("sphereArea");
 
 sphereArea.addEventListener(
-    "mouseleave",
-    function(){
+"mousemove",
+e=>{
 
-        sphere.style.transform="";
+    const rect=
+        sphereArea.getBoundingClientRect();
 
-    }
-);
+    const x=
+        (e.clientX-rect.left)/
+        rect.width-.5;
+
+    const y=
+        (e.clientY-rect.top)/
+        rect.height-.5;
+
+    sphere.style.transform=
+        `translate(${x*18}px,${y*18}px)`;
+
+});
 
 
-/* NAVIGATION */
+sphereArea.addEventListener(
+"mouseleave",
+()=>{
+    sphere.style.transform="";
+});
+
+
+/* NAV */
 
 function goHome(){
 
-    document.getElementById(
-        "home"
-    ).style.display="block";
+    document.getElementById("home").style.display="block";
 
-    document.getElementById(
-        "workspace"
-    ).classList.remove("active");
+    document
+    .getElementById("workspace")
+    .classList.remove("active");
 
-    window.scrollTo({
+    scrollTo({
         top:0,
         behavior:"smooth"
     });
@@ -2123,13 +2100,11 @@ function goHome(){
 
 function goTools(){
 
-    document.getElementById(
-        "home"
-    ).style.display="block";
+    document.getElementById("home").style.display="block";
 
-    document.getElementById(
-        "tools"
-    ).scrollIntoView({
+    document
+    .getElementById("tools")
+    .scrollIntoView({
         behavior:"smooth"
     });
 
@@ -2139,24 +2114,20 @@ function goTools(){
 document
 .querySelectorAll("[data-home]")
 .forEach(btn=>{
-
     btn.addEventListener(
         "click",
         goHome
     );
-
 });
 
 
 document
 .querySelectorAll("[data-tools]")
 .forEach(btn=>{
-
     btn.addEventListener(
         "click",
         goTools
     );
-
 });
 
 
@@ -2164,36 +2135,24 @@ document
 .getElementById("startBtn")
 .addEventListener(
     "click",
-    function(){
-
+    ()=>{
         openTool("chat");
-
     }
 );
 
 
-/* TOOL OPEN */
+/* TOOLS */
 
 const titles={
-
     chat:"AI Chat",
-
     translator:"Translator",
-
     homework:"Homework",
-
     project:"Project Lab",
-
     truth:"Truth Detector",
-
     history:"World History",
-
     quiz:"Quiz Maker",
-
     map:"World Map",
-
     settings:"Settings"
-
 };
 
 
@@ -2201,26 +2160,21 @@ function openTool(name){
 
     state.currentTool=name;
 
-    document.getElementById(
-        "home"
-    ).style.display="none";
+    document.getElementById("home").style.display="none";
 
-    const workspace=
-        document.getElementById(
-            "workspace"
-        );
+    document
+    .getElementById("workspace")
+    .classList.add("active");
 
-    workspace.classList.add("active");
-
-    document.getElementById(
-        "workspaceTitle"
-    ).textContent=
-        titles[name] || "AI Tool";
+    document
+    .getElementById("workspaceTitle")
+    .textContent=
+        titles[name]||"AI Tool";
 
     document
     .querySelectorAll(".tool-view")
-    .forEach(view=>{
-        view.hidden=true;
+    .forEach(v=>{
+        v.hidden=true;
     });
 
     const target=
@@ -2232,7 +2186,18 @@ function openTool(name){
         target.hidden=false;
     }
 
-    window.scrollTo({
+    if(name==="map"){
+        setTimeout(
+            ()=>{
+                if(window.initWorldMap){
+                    window.initWorldMap();
+                }
+            },
+            80
+        );
+    }
+
+    scrollTo({
         top:0,
         behavior:"smooth"
     });
@@ -2246,12 +2211,10 @@ document
 
     btn.addEventListener(
         "click",
-        function(){
-
+        ()=>{
             openTool(
-                this.dataset.open
+                btn.dataset.open
             );
-
         }
     );
 
@@ -2262,8 +2225,7 @@ document
 .getElementById("backBtn")
 .addEventListener(
     "click",
-    function(){
-
+    ()=>{
         goHome();
 
         setTimeout(
@@ -2276,7 +2238,6 @@ document
             },
             100
         );
-
     }
 );
 
@@ -2287,10 +2248,8 @@ document
 .getElementById("settingsTop")
 .addEventListener(
     "click",
-    function(){
-
+    ()=>{
         openTool("settings");
-
     }
 );
 
@@ -2300,13 +2259,11 @@ document
 function setTheme(){
 
     const light=
-        document.body
-        .classList
-        .toggle("light");
+        document.body.classList.toggle("light");
 
     localStorage.setItem(
         "amroyanai-theme",
-        light ? "light" : "dark"
+        light?"light":"dark"
     );
 
 }
@@ -2317,11 +2274,7 @@ if(
         "amroyanai-theme"
     )==="light"
 ){
-
-    document.body
-    .classList
-    .add("light");
-
+    document.body.classList.add("light");
 }
 
 
@@ -2343,16 +2296,14 @@ document
 
         this.classList.toggle(
             "on",
-            !document.body
-                .classList
-                .contains("light")
+            !document.body.classList.contains("light")
         );
 
     }
 );
 
 
-/* THINKING SWITCH */
+/* THINKING */
 
 document
 .getElementById("thinkingSwitch")
@@ -2372,7 +2323,7 @@ document
 );
 
 
-/* SOUND SWITCH */
+/* SOUND */
 
 document
 .getElementById("soundSwitch")
@@ -2392,25 +2343,19 @@ document
 );
 
 
-/* THINKING */
-
 function setThinking(active){
 
-    const thinking=
-        document.getElementById(
-            "thinking"
-        );
+    const box=
+        document.getElementById("thinking");
 
     if(!state.thinking){
 
-        thinking.classList.remove(
-            "active"
-        );
+        box.classList.remove("active");
 
         return;
     }
 
-    thinking.classList.toggle(
+    box.classList.toggle(
         "active",
         active
     );
@@ -2418,7 +2363,7 @@ function setThinking(active){
 }
 
 
-/* AI REQUEST */
+/* AI */
 
 async function askAI(message){
 
@@ -2438,47 +2383,30 @@ async function askAI(message){
                     },
 
                     body:JSON.stringify({
-                        message:message,
+                        message,
                         history:state.history
                     })
                 }
             );
 
         if(!response.ok){
-
-            let details="";
-
-            try{
-                details=
-                    await response.text();
-            }catch(e){}
-
             throw new Error(
-                "Server error "+
-                response.status+
-                (
-                    details
-                    ? ": "+details
-                    : ""
-                )
+                "Server error "+response.status
             );
-
         }
 
         const data=
             await response.json();
 
         const answer=
-            data.reply ||
-            data.output ||
+            data.reply||
+            data.output||
             data.message;
 
         if(!answer){
-
             throw new Error(
-                "AI returned an empty response."
+                "Empty AI response"
             );
-
         }
 
         return answer;
@@ -2494,20 +2422,13 @@ async function askAI(message){
 
 /* CHAT */
 
-function addChat(
-    text,
-    type
-){
+function addChat(text,type){
 
     const chat=
-        document.getElementById(
-            "chat"
-        );
+        document.getElementById("chat");
 
     const div=
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     div.className=
         "message "+type;
@@ -2525,82 +2446,72 @@ function addChat(
 document
 .getElementById("sendBtn")
 .addEventListener(
-    "click",
-    async function(){
+"click",
+async()=>{
 
-        const input=
-            document.getElementById(
-                "chatInput"
-            );
+    const input=
+        document.getElementById("chatInput");
 
-        const text=
-            input.value.trim();
+    const text=
+        input.value.trim();
 
-        if(!text) return;
+    if(!text)return;
+
+    addChat(text,"user");
+
+    input.value="";
+
+    try{
+
+        const answer=
+            await askAI(text);
+
+        addChat(answer,"ai");
+
+        state.history.push({
+            role:"user",
+            content:text
+        });
+
+        state.history.push({
+            role:"assistant",
+            content:answer
+        });
+
+    }catch(error){
+
+        console.error(error);
 
         addChat(
-            text,
-            "user"
+            "Չհաջողվեց կապվել AI-ի հետ։ Ստուգիր server.js-ը։",
+            "ai"
         );
 
-        input.value="";
-
-        try{
-
-            const answer=
-                await askAI(text);
-
-            addChat(
-                answer,
-                "ai"
-            );
-
-            state.history.push({
-                role:"user",
-                content:text
-            });
-
-            state.history.push({
-                role:"assistant",
-                content:answer
-            });
-
-        }catch(error){
-
-            console.error(error);
-
-            addChat(
-                "Չհաջողվեց կապվել AI-ի հետ։ Ստուգիր, որ server.js-ը աշխատում է։",
-                "ai"
-            );
-
-        }
-
     }
-);
+
+});
 
 
 document
 .getElementById("chatInput")
 .addEventListener(
-    "keydown",
-    function(e){
+"keydown",
+e=>{
 
-        if(
-            e.key==="Enter" &&
-            !e.shiftKey
-        ){
+    if(
+        e.key==="Enter" &&
+        !e.shiftKey
+    ){
 
-            e.preventDefault();
+        e.preventDefault();
 
-            document
-            .getElementById("sendBtn")
-            .click();
-
-        }
+        document
+        .getElementById("sendBtn")
+        .click();
 
     }
-);
+
+});
 
 
 /* TRANSLATOR */
@@ -2608,64 +2519,51 @@ document
 document
 .getElementById("translateBtn")
 .addEventListener(
-    "click",
-    async function(){
+"click",
+async()=>{
 
-        const text=
-            document
-            .getElementById(
-                "translateInput"
-            )
-            .value
-            .trim();
+    const text=
+        document
+        .getElementById("translateInput")
+        .value.trim();
 
-        if(!text) return;
+    if(!text)return;
 
-        const from=
-            document
-            .getElementById(
-                "fromLang"
-            ).value;
+    const from=
+        document
+        .getElementById("fromLang")
+        .value;
 
-        const to=
-            document
-            .getElementById(
-                "toLang"
-            ).value;
+    const to=
+        document
+        .getElementById("toLang")
+        .value;
 
-        const result=
-            document
-            .getElementById(
-                "translateResult"
-            );
+    const result=
+        document
+        .getElementById("translateResult");
 
-        result.textContent="";
+    result.textContent="";
 
-        try{
+    try{
 
-            const answer=
-                await askAI(
-                    `Translate the following text from ${from} to ${to}.
+        result.textContent=
+            await askAI(
+                `Translate this text from ${from} to ${to}.
 Return only the translation.
 
 Text:
 ${text}`
-                );
+            );
 
-            result.textContent=
-                answer;
+    }catch(e){
 
-        }catch(error){
-
-            console.error(error);
-
-            result.textContent=
-                "Թարգմանության ժամանակ սխալ տեղի ունեցավ։";
-
-        }
+        result.textContent=
+            "Թարգմանության ժամանակ սխալ տեղի ունեցավ։";
 
     }
-);
+
+});
 
 
 /* HOMEWORK */
@@ -2673,60 +2571,50 @@ ${text}`
 document
 .getElementById("homeworkBtn")
 .addEventListener(
-    "click",
-    async function(){
+"click",
+async()=>{
 
-        const subject=
-            document
-            .getElementById(
-                "homeworkSubject"
-            )
-            .value
-            .trim();
+    const subject=
+        document
+        .getElementById("homeworkSubject")
+        .value.trim();
 
-        const task=
-            document
-            .getElementById(
-                "homeworkInput"
-            )
-            .value
-            .trim();
+    const task=
+        document
+        .getElementById("homeworkInput")
+        .value.trim();
 
-        if(!task) return;
+    if(!task)return;
 
-        const result=
-            document
-            .getElementById(
-                "homeworkResult"
+    const result=
+        document
+        .getElementById("homeworkResult");
+
+    result.textContent="";
+
+    try{
+
+        result.textContent=
+            await askAI(
+                `You are a helpful school tutor.
+
+Subject: ${subject}
+
+Homework:
+${task}
+
+Explain clearly and step by step.
+Answer in the user's language.`
             );
 
-        result.textContent="";
+    }catch(e){
 
-        try{
-
-            const answer=
-                await askAI(
-                    `You are a helpful school tutor.
-Subject: ${subject || "unknown"}
-
-Solve and explain this homework problem clearly:
-${task}`
-                );
-
-            result.textContent=
-                answer;
-
-        }catch(error){
-
-            console.error(error);
-
-            result.textContent=
-                "Չհաջողվեց ստանալ AI պատասխանը։";
-
-        }
+        result.textContent=
+            "Չհաջողվեց ստանալ AI պատասխանը։";
 
     }
-);
+
+});
 
 
 /* PROJECT */
@@ -2734,52 +2622,44 @@ ${task}`
 document
 .getElementById("projectBtn")
 .addEventListener(
-    "click",
-    async function(){
+"click",
+async()=>{
 
-        const title=
-            document
-            .getElementById(
-                "projectTitle"
-            )
-            .value
-            .trim();
+    const title=
+        document
+        .getElementById("projectTitle")
+        .value.trim();
 
-        const extra=
-            document
-            .getElementById(
-                "projectInput"
-            )
-            .value
-            .trim();
+    const extra=
+        document
+        .getElementById("projectInput")
+        .value.trim();
 
-        if(!title) return;
+    if(!title)return;
 
-        const result=
-            document
-            .getElementById(
-                "projectResult"
-            );
+    const result=
+        document
+        .getElementById("projectResult");
 
-        result.textContent="";
+    result.textContent="";
 
-        try{
+    try{
 
-            const answer=
-                await askAI(
-                    `Create a detailed school project in Armenian.
+        result.textContent=
+            await askAI(
+                `Create a detailed school project.
 
 Topic: ${title}
 
-Additional information:
+Extra information:
 ${extra}
 
 Include:
-1. Project relevance
+1. Relevance
 2. Goal
 3. Objectives
 4. Research question
-5. Research subquestions
+5. Subquestions
 6. Description
 7. Process
 8. Expected results
@@ -2787,23 +2667,19 @@ Include:
 10. Data verification
 11. SWOT analysis
 12. Sources
-13. Presentation structure`
-                );
+13. Presentation structure
 
-            result.textContent=
-                answer;
+Answer in Armenian.`
+            );
 
-        }catch(error){
+    }catch(e){
 
-            console.error(error);
-
-            result.textContent=
-                "Նախագիծը ստեղծել չհաջողվեց։";
-
-        }
+        result.textContent=
+            "Նախագիծը ստեղծել չհաջողվեց։";
 
     }
-);
+
+});
 
 
 /* TRUTH */
@@ -2811,160 +2687,123 @@ Include:
 document
 .getElementById("truthBtn")
 .addEventListener(
-    "click",
-    async function(){
+"click",
+async()=>{
 
-        const text=
-            document
-            .getElementById(
-                "truthInput"
-            )
-            .value
-            .trim();
+    const text=
+        document
+        .getElementById("truthInput")
+        .value.trim();
 
-        if(!text) return;
+    if(!text)return;
 
-        const result=
-            document
-            .getElementById(
-                "truthResult"
-            );
+    const result=
+        document
+        .getElementById("truthResult");
 
-        result.textContent="";
+    result.textContent="";
 
-        try{
+    try{
 
-            const answer=
-                await askAI(
-                    `Analyze the following claim for credibility.
+        result.textContent=
+            await askAI(
+                `Analyze this claim.
 
-IMPORTANT:
 Do not claim certainty.
-This is NOT a real lie detector.
-Use:
-VERDICT: LIKELY TRUE / UNCERTAIN / LIKELY FALSE
-CONFIDENCE: LOW / MEDIUM / HIGH
-REASON:
-WHAT TO CHECK:
+This is not a real lie detector.
+
+Give:
+VERDICT
+CONFIDENCE
+REASON
+WHAT TO CHECK
 
 Claim:
 ${text}`
-                );
+            );
 
-            result.textContent=
-                answer;
+    }catch(e){
 
-        }catch(error){
-
-            console.error(error);
-
-            result.textContent=
-                "Ստուգումը չհաջողվեց։";
-
-        }
+        result.textContent=
+            "Ստուգումը չհաջողվեց։";
 
     }
-);
+
+});
 
 
 /* HISTORY */
 
 const historyData={
 
-    armenia:
-`Հին Հայաստան
-Ժամանակաշրջան՝ հնագույն ժամանակներից
-Առաջնորդներ՝ Հայկական թագավորությունների տարբեր արքաներ
-Կարևոր իրադարձություններ՝ Ուրարտու, Երվանդականներ, Արտաշեսյաններ, Տիգրան Մեծ։
+armenia:[
+["🏺 Հին Հայաստան",
+"Ուրարտու, Երվանդականներ, Արտաշեսյաններ և Տիգրան Մեծ։"],
+["👑 Միջնադարյան Հայաստան",
+"Բագրատունիներ, Անիի զարգացումը և հայկական միջնադարյան թագավորությունները։"],
+["🏰 Կիլիկյան Հայաստան",
+"Ռուբինյանների և Հեթումյանների ժամանակաշրջանը։"],
+["🇦🇲 Առաջին Հանրապետություն",
+"1918–1920 թվականներին Հայաստանի Առաջին Հանրապետության պատմությունը։"],
+["🌅 Անկախ Հայաստան",
+"1991 թվականից Հայաստանի Հանրապետության անկախ պետականությունը։"]
+],
 
-Միջնադարյան Հայաստան
-Առաջնորդներ՝ Բագրատունիներ և այլ հայկական իշխանական տներ
-Կարևոր իրադարձություններ՝ Անիի վերելք, հայկական թագավորություններ։
+france:[
+["⚔️ Ֆրանկական պետություն",
+"Ֆրանկների պետության ձևավորումն ու զարգացումը։"],
+["👑 Ֆրանսիական միապետություն",
+"Կենտրոնացված ֆրանսիական պետության զարգացումը։"],
+["🔥 Ֆրանսիական հեղափոխություն",
+"1789 թվականից սկսված հեղափոխական շրջանը։"],
+["🇫🇷 Ժամանակակից Ֆրանսիա",
+"Ֆրանսիայի Հանրապետության ժամանակակից զարգացումը։"]
+],
 
-Կիլիկյան Հայաստան
-Առաջնորդներ՝ Ռուբինյան և Հեթումյան արքայական տներ
-Կարևոր իրադարձություններ՝ Կիլիկիայի հայկական պետության ձևավորում։
+germany:[
+["🏰 Սուրբ Հռոմեական կայսրություն",
+"Գերմանական տարածքների երկարատև քաղաքական զարգացումը։"],
+["👑 Գերմանական կայսրություն",
+"1871 թվականին Գերմանիայի միավորումը։"],
+["🇩🇪 Ժամանակակից Գերմանիա",
+"Գերմանիայի Դաշնային Հանրապետության զարգացումը։"]
+],
 
-Առաջին Հանրապետություն
-Ժամանակաշրջան՝ 1918–1920
-Կարևոր իրադարձություն՝ Հայաստանի առաջին հանրապետության ստեղծում։
+italy:[
+["🏛️ Հին Հռոմ",
+"Հռոմեական Հանրապետության և Կայսրության պատմությունը։"],
+["🇮🇹 Իտալիայի միավորում",
+"XIX դարում Իտալիայի քաղաքական միավորման գործընթացը։"],
+["🌍 Ժամանակակից Իտալիա",
+"Իտալիայի Հանրապետության զարգացումը։"]
+],
 
-Խորհրդային Հայաստան
-Ժամանակաշրջան՝ 1920–1991
-Կարևոր իրադարձություն՝ Խորհրդային Հայաստանի ձևավորում։
+usa:[
+["🗽 Անկախության շրջան",
+"ԱՄՆ անկախության ձևավորումը և անկախության հռչակագիրը։"],
+["⚔️ Քաղաքացիական պատերազմ",
+"1861–1865 թվականների քաղաքացիական պատերազմը։"],
+["🇺🇸 Ժամանակակից ԱՄՆ",
+"Միացյալ Նահանգների հետագա զարգացումը։"]
+],
 
-Անկախ Հայաստան
-Ժամանակաշրջան՝ 1991–ներկայում
-Կարևոր իրադարձություն՝ անկախության վերականգնում։`,
+egypt:[
+["🔺 Հին Եգիպտոս",
+"Փարավոններ, բուրգեր և հին թագավորություններ։"],
+["🏺 Պտղոմեոսյան Եգիպտոս",
+"Հելլենիստական ժամանակաշրջանի զարգացումը։"],
+["🇪🇬 Ժամանակակից Եգիպտոս",
+"Ժամանակակից Եգիպտոսի ձևավորումը։"]
+],
 
-    france:
-`Հին և միջնադարյան Ֆրանսիա
-Ֆրանկական պետության ձևավորում։
-
-Ֆրանսիական միապետություն
-Կենտրոնացված պետության զարգացում։
-
-Ֆրանսիական հեղափոխություն
-Ժամանակաշրջան՝ 1789-ից
-Կարևոր իրադարձություն՝ միապետության տապալում։
-
-Ժամանակակից Ֆրանսիա
-Հանրապետության զարգացում։`,
-
-    germany:
-`Սուրբ Հռոմեական կայսրություն
-Գերմանական տարածքների քաղաքական զարգացում։
-
-Գերմանական կայսրություն
-Ժամանակաշրջան՝ 1871–1918
-Կարևոր իրադարձություն՝ Գերմանիայի միավորում։
-
-Ժամանակակից Գերմանիա
-Գերմանիայի Դաշնային Հանրապետության զարգացում։`,
-
-    italy:
-`Հին Հռոմ
-Հռոմեական հանրապետության և կայսրության զարգացում։
-
-Իտալիայի միավորում
-XIX դար
-Կարևոր իրադարձություն՝ Իտալիայի միավորում։
-
-Ժամանակակից Իտալիա
-Իտալիայի Հանրապետության ձևավորում։`,
-
-    usa:
-`ԱՄՆ անկախության շրջան
-XVIII դար
-Կարևոր իրադարձություն՝ ԱՄՆ անկախության հռչակագիր։
-
-ԱՄՆ քաղաքացիական պատերազմ
-1861–1865
-Կարևոր իրադարձություն՝ Միության պահպանում։
-
-Ժամանակակից ԱՄՆ
-ԱՄՆ-ի զարգացումը որպես համաշխարհային տերություն։`,
-
-    egypt:
-`Հին Եգիպտոս
-Փարավոնական պետություններ, բուրգեր և հին թագավորություններ։
-
-Պտղոմեոսյան Եգիպտոս
-Հելլենիստական ժամանակաշրջան։
-
-Ժամանակակից Եգիպտոս
-Ժամանակակից հանրապետության ձևավորում։`,
-
-    china:
-`Հին Չինաստան
-Տարբեր կայսերական դինաստիաների զարգացում։
-
-Ցին դինաստիա
-Ցին Շի Հուանդի
-Չինաստանի առաջին կենտրոնացված կայսրությունը։
-
-Ժամանակակից Չինաստան
-Չինաստանի Ժողովրդական Հանրապետության ձևավորում։`
+china:[
+["🐉 Հին Չինաստան",
+"Հին չինական պետությունների և դինաստիաների զարգացումը։"],
+["👑 Ցին դինաստիա",
+"Չինաստանի կենտրոնացված կայսրության ձևավորումը։"],
+["🇨🇳 Ժամանակակից Չինաստան",
+"Ժամանակակից Չինաստանի պատմական զարգացումը։"]
+]
 
 };
 
@@ -2972,26 +2811,30 @@ XVIII դար
 document
 .getElementById("historyBtn")
 .addEventListener(
-    "click",
-    function(){
+"click",
+()=>{
 
-        const country=
-            document
-            .getElementById(
-                "historyCountry"
-            )
-            .value;
-
+    const country=
         document
-        .getElementById(
-            "historyResult"
-        )
-        .textContent=
-            historyData[country] ||
-            "Տվյալ չկա։";
+        .getElementById("historyCountry")
+        .value;
 
-    }
-);
+    const result=
+        document
+        .getElementById("historyResult");
+
+    const data=
+        historyData[country]||[];
+
+    result.innerHTML=
+        data.map(item=>`
+            <article class="history-card">
+                <h4>${item[0]}</h4>
+                <p>${item[1]}</p>
+            </article>
+        `).join("");
+
+});
 
 
 /* QUIZ */
@@ -2999,87 +2842,73 @@ document
 document
 .getElementById("quizBtn")
 .addEventListener(
-    "click",
-    async function(){
+"click",
+async()=>{
 
-        const topic=
-            document
-            .getElementById(
-                "quizTopic"
-            )
-            .value
-            .trim();
+    const topic=
+        document
+        .getElementById("quizTopic")
+        .value.trim();
 
-        if(!topic) return;
+    if(!topic)return;
 
-        const count=
-            document
-            .getElementById(
-                "quizCount"
-            ).value;
+    const count=
+        document
+        .getElementById("quizCount")
+        .value;
 
-        const difficulty=
-            document
-            .getElementById(
-                "quizDifficulty"
-            ).value;
+    const difficulty=
+        document
+        .getElementById("quizDifficulty")
+        .value;
 
-        const result=
-            document
-            .getElementById(
-                "quizResult"
-            );
+    const result=
+        document
+        .getElementById("quizResult");
 
-        result.textContent="";
+    result.textContent="";
 
-        try{
+    try{
 
-            const answer=
-                await askAI(
-                    `Create a ${count}-question multiple choice quiz.
+        result.textContent=
+            await askAI(
+                `Create a ${count}-question multiple choice quiz.
 
 Topic: ${topic}
 Difficulty: ${difficulty}
 
 Language: Armenian.
 
-For every question provide:
-Question
+Each question:
 A)
 B)
 C)
 D)
 Correct answer
 Short explanation`
-                );
+            );
 
-            result.textContent=
-                answer;
+    }catch(e){
 
-        }catch(error){
-
-            console.error(error);
-
-            result.textContent=
-                "Quiz ստեղծել չհաջողվեց։";
-
-        }
+        result.textContent=
+            "Quiz ստեղծել չհաջողվեց։";
 
     }
-);
+
+});
 
 
 /* INITIAL CHAT */
 
 addChat(
-    "Բարև 👋 Ես AmroyanAI-ն եմ։ Ինչո՞վ կարող եմ օգնել։",
-    "ai"
+"Բարև 👋 Ես AmroyanAI-ն եմ։ Ինչո՞վ կարող եմ օգնել։",
+"ai"
 );
 
 </script>
 
 
-<!-- REAL INTERACTIVE WORLD MAP -->
+<!-- REAL WORLD MAP -->
 
 <script type="module">
 
@@ -3090,11 +2919,11 @@ import {feature}
 from "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/+esm";
 
 
-const WORLD_MAP_URL =
-    "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json";
+const WORLD_MAP_URL=
+"https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json";
 
-const CAPITALS_URL =
-    "https://cdn.jsdelivr.net/gh/samayo/country-json@master/src/country-by-capital-city.json";
+const CAPITALS_URL=
+"https://cdn.jsdelivr.net/gh/samayo/country-json@master/src/country-by-capital-city.json";
 
 
 let mapSvg=null;
@@ -3104,148 +2933,84 @@ let mapCountries=null;
 let capitalData=[];
 
 
-const mapContainer =
-    document.getElementById(
-        "worldMap"
-    );
+const mapContainer=
+document.getElementById("worldMap");
 
-const mapLoading =
-    document.getElementById(
-        "mapLoading"
-    );
+const mapLoading=
+document.getElementById("mapLoading");
 
-const mapInfo =
-    document.getElementById(
-        "mapInfo"
-    );
+const mapInfo=
+document.getElementById("mapInfo");
 
-const mapStatus =
-    document.getElementById(
-        "mapStatus"
-    );
+const mapStatus=
+document.getElementById("mapStatus");
 
-
-/* LOAD MAP */
 
 async function loadWorldMap(){
 
     try{
 
-        mapLoading.textContent=
-            "🌍 Loading real world map...";
-
         const responses=
             await Promise.all([
-
                 fetch(WORLD_MAP_URL),
-
                 fetch(CAPITALS_URL)
-
             ]);
-
-
-        if(!responses[0].ok){
-
-            throw new Error(
-                "World map data could not be loaded."
-            );
-
-        }
-
 
         const world=
             await responses[0].json();
 
-
         if(responses[1].ok){
-
             capitalData=
                 await responses[1].json();
-
-        }else{
-
-            capitalData=[];
-
         }
-
 
         drawWorldMap(world);
 
         mapLoading.style.display="none";
 
         mapStatus.textContent=
-            "Real world map loaded · Drag · Zoom · Click a country";
-
+            "Real interactive world map · Drag · Zoom · Click";
 
     }catch(error){
 
-        console.error(
-            "World Map error:",
-            error
-        );
+        console.error(error);
 
         mapLoading.textContent=
-            "❌ Քարտեզը չբեռնվեց։ Ստուգիր ինտերնետ կապը։";
-
-        mapStatus.textContent=
-            "World Map loading error";
+            "❌ Քարտեզը չբեռնվեց։ Ստուգիր ինտերնետը։";
 
     }
 
 }
 
 
-/* DRAW MAP */
-
 function drawWorldMap(world){
 
     const width=1200;
     const height=620;
 
-
     mapContainer.innerHTML="";
 
-
     mapSvg=
-        d3.select(
-            mapContainer
-        )
+        d3.select(mapContainer)
         .append("svg")
         .attr(
             "viewBox",
             `0 0 ${width} ${height}`
-        )
-        .attr(
-            "preserveAspectRatio",
-            "xMidYMid meet"
         );
 
-
     mapGroup=
-        mapSvg
-        .append("g");
-
-
-    const sphere={
-        type:"Sphere"
-    };
-
+        mapSvg.append("g");
 
     const projection=
         d3.geoNaturalEarth1()
         .fitExtent(
-            [
-                [15,15],
-                [width-15,height-15]
-            ],
-            sphere
+            [[15,15],[width-15,height-15]],
+            {type:"Sphere"}
         );
-
 
     const path=
         d3.geoPath()
         .projection(projection);
-
 
     const countries=
         feature(
@@ -3253,31 +3018,18 @@ function drawWorldMap(world){
             world.objects.countries
         ).features;
 
-
     mapCountries=
         mapGroup
         .selectAll(".world-country")
         .data(countries)
         .enter()
         .append("path")
-        .attr(
-            "class",
-            "world-country"
-        )
-        .attr(
-            "d",
-            path
-        )
+        .attr("class","world-country")
+        .attr("d",path)
         .attr(
             "data-country",
-            d=>{
-                return (
-                    d.properties &&
-                    d.properties.name
-                )
-                ||
-                "";
-            }
+            d=>
+                d.properties?.name||""
         )
         .on(
             "click",
@@ -3285,8 +3037,7 @@ function drawWorldMap(world){
 
                 event.stopPropagation();
 
-                mapCountries
-                .classed(
+                mapCountries.classed(
                     "selected",
                     false
                 );
@@ -3297,308 +3048,173 @@ function drawWorldMap(world){
                     true
                 );
 
-
-                const countryName=
-                    (
-                        d.properties &&
-                        d.properties.name
-                    )
-                    ||
-                    "Unknown country";
-
-
                 showCountry(
-                    countryName
+                    d.properties?.name||
+                    "Unknown country"
                 );
 
             }
         );
 
 
-    /* ZOOM */
-
     mapZoom=
         d3.zoom()
-        .scaleExtent(
-            [1,8]
-        )
+        .scaleExtent([1,8])
         .on(
             "zoom",
-            function(event){
-
+            event=>{
                 mapGroup.attr(
                     "transform",
                     event.transform
                 );
+            }
+        );
+
+    mapSvg.call(mapZoom);
+
+
+    document
+    .getElementById("mapZoomIn")
+    .onclick=()=>{
+        mapSvg
+        .transition()
+        .duration(250)
+        .call(
+            mapZoom.scaleBy,
+            1.5
+        );
+    };
+
+
+    document
+    .getElementById("mapZoomOut")
+    .onclick=()=>{
+        mapSvg
+        .transition()
+        .duration(250)
+        .call(
+            mapZoom.scaleBy,
+            .67
+        );
+    };
+
+
+    document
+    .getElementById("mapReset")
+    .onclick=()=>{
+
+        mapSvg
+        .transition()
+        .duration(300)
+        .call(
+            mapZoom.transform,
+            d3.zoomIdentity
+        );
+
+        mapCountries.classed(
+            "selected",
+            false
+        );
+
+        document
+        .getElementById("mapSearch")
+        .value="";
+
+    };
+
+
+    document
+    .getElementById("mapSearch")
+    .oninput=function(){
+
+        const query=
+            this.value
+            .trim()
+            .toLowerCase();
+
+        mapCountries.style(
+            "opacity",
+            d=>{
+
+                if(!query)return 1;
+
+                const name=
+                    String(
+                        d.properties?.name||""
+                    ).toLowerCase();
+
+                return name.includes(query)
+                    ?1
+                    :.15;
 
             }
         );
 
+    };
 
-    mapSvg.call(
-        mapZoom
-    );
-
-
-    /* ZOOM IN */
-
-    document
-    .getElementById(
-        "mapZoomIn"
-    )
-    .onclick=
-        function(){
-
-            mapSvg
-            .transition()
-            .duration(250)
-            .call(
-                mapZoom.scaleBy,
-                1.5
-            );
-
-        };
+}
 
 
-    /* ZOOM OUT */
+function getCapital(country){
 
-    document
-    .getElementById(
-        "mapZoomOut"
-    )
-    .onclick=
-        function(){
+    const name=
+        String(country)
+        .toLowerCase()
+        .trim();
 
-            mapSvg
-            .transition()
-            .duration(250)
-            .call(
-                mapZoom.scaleBy,
-                0.67
-            );
+    let found=
+        capitalData.find(
+            item=>
+                String(item.country||"")
+                .toLowerCase()
+                .trim()===name
+        );
 
-        };
+    if(!found){
 
+        found=
+            capitalData.find(
+                item=>{
 
-    /* RESET */
-
-    document
-    .getElementById(
-        "mapReset"
-    )
-    .onclick=
-        function(){
-
-            mapSvg
-            .transition()
-            .duration(300)
-            .call(
-                mapZoom.transform,
-                d3.zoomIdentity
-            );
-
-            mapCountries
-            .classed(
-                "selected",
-                false
-            );
-
-            document
-            .getElementById(
-                "mapSearch"
-            )
-            .value="";
-
-
-            mapCountries
-            .style(
-                "opacity",
-                1
-            );
-
-
-            mapInfo.innerHTML=`
-
-                <div class="map-info-icon">
-                    🌍
-                </div>
-
-                <div>
-
-                    <h3>
-                        Ընտրիր երկիր
-                    </h3>
-
-                    <p>
-                        Սեղմիր քարտեզի ցանկացած երկրի վրա՝
-                        տեսնելու երկրի անունը և մայրաքաղաքը։
-                    </p>
-
-                </div>
-
-            `;
-
-        };
-
-
-    /* SEARCH */
-
-    document
-    .getElementById(
-        "mapSearch"
-    )
-    .oninput=
-        function(){
-
-            const query=
-                this.value
-                .trim()
-                .toLowerCase();
-
-
-            if(!query){
-
-                mapCountries
-                .style(
-                    "opacity",
-                    1
-                );
-
-                return;
-
-            }
-
-
-            mapCountries
-            .style(
-                "opacity",
-                function(d){
-
-                    const name=
+                    const n=
                         String(
-                            d.properties &&
-                            d.properties.name
-                            ||
-                            ""
+                            item.country||""
                         )
                         .toLowerCase();
 
-
-                    return name.includes(
-                        query
-                    )
-                    ? 1
-                    : .16;
+                    return(
+                        n.includes(name)||
+                        name.includes(n)
+                    );
 
                 }
             );
 
-        };
+    }
 
-
-    /* BACKGROUND CLICK */
-
-    mapSvg.on(
-        "click",
-        function(){
-
-            mapCountries
-            .classed(
-                "selected",
-                false
-            );
-
-        }
-    );
+    return found?.city||
+           found?.capital||
+           "Տվյալը հասանելի չէ";
 
 }
 
 
-/* FIND CAPITAL */
+function escapeHTML(value){
 
-function getCapital(countryName){
-
-    if(!capitalData.length){
-
-        return null;
-
-    }
-
-
-    const clean=
-        String(countryName)
-        .toLowerCase()
-        .trim();
-
-
-    let found=
-        capitalData.find(
-            item=>{
-
-                const name=
-                    String(
-                        item.country ||
-                        ""
-                    )
-                    .toLowerCase()
-                    .trim();
-
-                return name===clean;
-
-            }
-        );
-
-
-    if(found){
-
-        return found.city ||
-               found.capital ||
-               null;
-
-    }
-
-
-    found=
-        capitalData.find(
-            item=>{
-
-                const name=
-                    String(
-                        item.country ||
-                        ""
-                    )
-                    .toLowerCase()
-                    .trim();
-
-                return (
-                    name.includes(clean) ||
-                    clean.includes(name)
-                );
-
-            }
-        );
-
-
-    return found
-        ? (
-            found.city ||
-            found.capital ||
-            null
-        )
-        : null;
+    return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
-/* SHOW COUNTRY */
-
-function showCountry(countryName){
+function showCountry(country){
 
     const capital=
-        getCapital(
-            countryName
-        );
-
+        getCapital(country);
 
     mapInfo.innerHTML=`
 
@@ -3609,17 +3225,13 @@ function showCountry(countryName){
         <div>
 
             <h3>
-                ${escapeHTML(countryName)}
+                ${escapeHTML(country)}
             </h3>
 
             <p>
                 🏛️ Մայրաքաղաք՝
                 <strong>
-                    ${
-                        capital
-                        ? escapeHTML(capital)
-                        : "Տվյալը հասանելի չէ"
-                    }
+                    ${escapeHTML(capital)}
                 </strong>
             </p>
 
@@ -3630,38 +3242,17 @@ function showCountry(countryName){
 }
 
 
-/* SAFE TEXT */
+let mapLoaded=false;
 
-function escapeHTML(value){
+window.initWorldMap=function(){
 
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    if(mapLoaded)return;
 
-}
+    mapLoaded=true;
 
+    loadWorldMap();
 
-/* START */
-
-loadWorldMap();
+};
 
 </script>
 
