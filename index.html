@@ -1,3260 +1,2730 @@
+```html
 <!DOCTYPE html>
 <html lang="hy">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AmroyanAI — Հայերեն AI</title>
 
-<title>AmroyanAI</title>
+<!-- REAL MAP: LEAFLET -->
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap');
-
-:root{
-    --bg:#050507;
-    --bg2:#0b0710;
-    --card:rgba(18,12,24,.78);
-    --card2:rgba(28,17,38,.9);
-    --text:#fff;
-    --muted:#aaa0b4;
-    --purple:#9b4dff;
-    --purple2:#6d28d9;
-    --pink:#ff4fa3;
-    --pink2:#ff78bd;
-    --white:#ffffff;
-    --border:rgba(255,255,255,.11);
-    --shadow:0 25px 80px rgba(0,0,0,.5);
+*{
+box-sizing:border-box;
+margin:0;
+padding:0
 }
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+:root{
+--bg:#03050d;
+--panel:rgba(12,16,34,.78);
+--line:rgba(255,255,255,.10);
+--text:#f8fafc;
+--muted:#9ca8c7;
+--purple:#8b5cf6;
+--pink:#ec4899;
+--cyan:#22d3ee;
+--green:#22c55e;
+--red:#ef4444;
 }
 
 html{
-    scroll-behavior:smooth;
+scroll-behavior:smooth
 }
 
 body{
-    min-height:100vh;
-    color:var(--text);
-    background:
-        radial-gradient(circle at 15% 10%,rgba(155,77,255,.18),transparent 28%),
-        radial-gradient(circle at 85% 25%,rgba(255,79,163,.13),transparent 28%),
-        radial-gradient(circle at 50% 100%,rgba(109,40,217,.12),transparent 35%),
-        var(--bg);
-    font-family:Inter,Arial,sans-serif;
-    overflow-x:hidden;
+font-family:Arial,"Noto Sans Armenian",sans-serif;
+background:
+radial-gradient(circle at 10% 10%,rgba(124,58,237,.18),transparent 28%),
+radial-gradient(circle at 90% 10%,rgba(236,72,153,.12),transparent 25%),
+#03050d;
+color:var(--text);
+min-height:100vh;
+overflow-x:hidden;
 }
 
-body.light{
-    --bg:#f5f2f7;
-    --bg2:#fff;
-    --card:rgba(255,255,255,.82);
-    --card2:#fff;
-    --text:#17121d;
-    --muted:#655c6d;
-    --border:rgba(50,30,70,.12);
+.space{
+position:fixed;
+inset:0;
+z-index:-10;
+overflow:hidden;
+background:
+radial-gradient(circle at 50% 50%,rgba(59,130,246,.06),transparent 35%),
+#03050d;
 }
 
-button,
-input,
-textarea,
-select{
-    font:inherit;
+.space i{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+border-radius:50%;
+opacity:.5;
+animation:star 5s infinite ease-in-out alternate;
 }
 
-button{
-    cursor:pointer;
+.space i:nth-child(1){left:5%;top:15%}
+.space i:nth-child(2){left:12%;top:70%;animation-delay:1s}
+.space i:nth-child(3){left:20%;top:35%;animation-delay:2s}
+.space i:nth-child(4){left:28%;top:82%;animation-delay:.5s}
+.space i:nth-child(5){left:38%;top:18%;animation-delay:3s}
+.space i:nth-child(6){left:47%;top:65%;animation-delay:1.5s}
+.space i:nth-child(7){left:59%;top:12%;animation-delay:2.4s}
+.space i:nth-child(8){left:66%;top:77%;animation-delay:.7s}
+.space i:nth-child(9){left:76%;top:30%;animation-delay:2.8s}
+.space i:nth-child(10){left:88%;top:65%;animation-delay:1.2s}
+.space i:nth-child(11){left:94%;top:18%;animation-delay:3s}
+.space i:nth-child(12){left:82%;top:88%;animation-delay:2s}
+
+@keyframes star{
+from{
+opacity:.2;
+transform:scale(.7)
+}
+to{
+opacity:1;
+transform:scale(1.7)
+}
 }
 
-/* BACKGROUND */
-
-#network{
-    position:fixed;
-    inset:0;
-    width:100%;
-    height:100%;
-    pointer-events:none;
-    z-index:0;
-    opacity:.3;
+header{
+position:sticky;
+top:0;
+z-index:1000;
+background:rgba(3,5,13,.72);
+backdrop-filter:blur(22px);
+border-bottom:1px solid var(--line);
 }
-
-/* EINSTEIN */
-
-.einstein{
-    position:fixed;
-    right:-30px;
-    bottom:-20px;
-    width:min(470px,40vw);
-    max-height:80vh;
-    object-fit:contain;
-    object-position:center bottom;
-    opacity:.12;
-    filter:
-        grayscale(1)
-        contrast(1.3)
-        brightness(.7)
-        drop-shadow(0 0 35px rgba(155,77,255,.25));
-    z-index:1;
-    pointer-events:none;
-    mask-image:linear-gradient(
-        to bottom,
-        transparent,
-        black 18%,
-        black 78%,
-        transparent
-    );
-    -webkit-mask-image:linear-gradient(
-        to bottom,
-        transparent,
-        black 18%,
-        black 78%,
-        transparent
-    );
-}
-
-/* APP */
-
-.app{
-    position:relative;
-    z-index:5;
-    min-height:100vh;
-}
-
-/* NAV */
 
 .nav{
-    position:sticky;
-    top:15px;
-    z-index:100;
-    width:min(1200px,calc(100% - 28px));
-    margin:15px auto 0;
-    padding:11px 13px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-    border:1px solid var(--border);
-    border-radius:22px;
-    background:rgba(10,7,14,.72);
-    backdrop-filter:blur(25px);
-    box-shadow:var(--shadow);
-}
-
-body.light .nav{
-    background:rgba(255,255,255,.78);
+max-width:1350px;
+margin:auto;
+padding:13px 22px;
+display:flex;
+align-items:center;
+justify-content:space-between;
 }
 
 .logo{
-    border:0;
-    background:none;
-    color:var(--text);
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-family:Syne,sans-serif;
-    font-weight:800;
-    letter-spacing:1px;
+display:flex;
+align-items:center;
+gap:12px;
+font-size:22px;
+font-weight:900;
 }
 
-.logo-orb{
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    background:
-        radial-gradient(circle at 35% 30%,#fff,transparent 12%),
-        linear-gradient(135deg,var(--purple),var(--pink));
-    box-shadow:
-        0 0 22px rgba(155,77,255,.6),
-        0 0 35px rgba(255,79,163,.3);
+.logoIcon{
+width:44px;
+height:44px;
+border-radius:15px;
+display:grid;
+place-items:center;
+font-size:23px;
+background:linear-gradient(135deg,var(--purple),var(--pink));
+box-shadow:0 0 35px rgba(139,92,246,.45);
 }
 
-.nav-links{
-    display:flex;
-    gap:5px;
+.logo span{
+color:#c4b5fd;
 }
 
-.nav-btn{
-    border:1px solid transparent;
-    background:transparent;
-    color:var(--muted);
-    padding:10px 16px;
-    border-radius:12px;
-    transition:.25s;
+.status{
+font-size:13px;
+color:#86efac;
 }
 
-.nav-btn:hover,
-.nav-btn.active{
-    color:#fff;
-    background:linear-gradient(
-        135deg,
-        rgba(155,77,255,.18),
-        rgba(255,79,163,.1)
-    );
-    border-color:rgba(255,79,163,.2);
+main{
+max-width:1350px;
+margin:auto;
+padding:20px 20px 70px;
 }
-
-body.light .nav-btn:hover,
-body.light .nav-btn.active{
-    color:var(--text);
-}
-
-.nav-actions{
-    display:flex;
-    gap:8px;
-}
-
-.icon-btn{
-    width:42px;
-    height:42px;
-    border-radius:13px;
-    border:1px solid var(--border);
-    background:rgba(255,255,255,.04);
-    color:var(--text);
-    transition:.2s;
-}
-
-.icon-btn:hover{
-    transform:translateY(-2px);
-    border-color:var(--pink);
-    box-shadow:0 0 20px rgba(255,79,163,.18);
-}
-
-/* HERO */
 
 .hero{
-    width:min(1200px,calc(100% - 28px));
-    min-height:calc(100vh - 100px);
-    margin:auto;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    align-items:center;
-    gap:30px;
-    padding:65px 0 50px;
+min-height:570px;
+display:grid;
+grid-template-columns:1fr 1fr;
+align-items:center;
+position:relative;
+overflow:hidden;
 }
 
-.hero-copy{
-    position:relative;
-    z-index:4;
+.heroText{
+position:relative;
+z-index:5;
 }
 
-.eyebrow{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 14px;
-    border:1px solid rgba(255,79,163,.25);
-    border-radius:100px;
-    background:rgba(155,77,255,.07);
-    color:var(--pink2);
-    font-size:12px;
-    font-weight:800;
-    letter-spacing:1.2px;
-    margin-bottom:20px;
+.badge{
+display:inline-flex;
+padding:9px 15px;
+border:1px solid rgba(167,139,250,.35);
+background:rgba(139,92,246,.10);
+border-radius:999px;
+color:#ddd6fe;
+font-size:13px;
+margin-bottom:20px;
 }
 
-.live-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--pink);
-    box-shadow:0 0 13px var(--pink);
-}
-
-h1{
-    font-family:Syne,sans-serif;
-    font-size:clamp(40px,5vw,76px);
-    line-height:.98;
-    letter-spacing:-3px;
+.hero h1{
+font-size:clamp(48px,7vw,92px);
+line-height:.9;
+letter-spacing:-5px;
+margin-bottom:25px;
 }
 
 .gradient{
-    background:linear-gradient(
-        100deg,
-        #fff,
-        #d9b7ff 35%,
-        var(--pink2) 70%,
-        var(--purple)
-    );
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+background:linear-gradient(
+90deg,
+#ffffff,
+#c4b5fd,
+#f9a8d4,
+#67e8f9
+);
+-webkit-background-clip:text;
+background-clip:text;
+color:transparent;
 }
 
-.hero-text{
-    color:var(--muted);
-    font-size:17px;
-    line-height:1.7;
-    max-width:650px;
-    margin-top:25px;
+.hero p{
+max-width:650px;
+color:var(--muted);
+font-size:18px;
+line-height:1.8;
 }
 
-.hero-actions{
-    display:flex;
-    gap:11px;
-    margin-top:30px;
-    flex-wrap:wrap;
+.heroVisual{
+height:550px;
+position:relative;
+display:grid;
+place-items:center;
+}
+
+.einstein{
+position:absolute;
+width:100%;
+max-width:600px;
+height:100%;
+object-fit:contain;
+object-position:center;
+opacity:.28;
+filter:
+grayscale(1)
+contrast(1.2)
+brightness(1.15)
+drop-shadow(0 0 35px rgba(139,92,246,.35));
+
+mask-image:linear-gradient(
+to bottom,
+transparent 0%,
+black 12%,
+black 82%,
+transparent 100%
+);
+
+-webkit-mask-image:linear-gradient(
+to bottom,
+transparent 0%,
+black 12%,
+black 82%,
+transparent 100%
+);
+
+animation:einsteinFloat 7s ease-in-out infinite;
+}
+
+@keyframes einsteinFloat{
+50%{
+transform:translateY(-10px)
+}
+}
+
+.eGlow{
+position:absolute;
+width:350px;
+height:350px;
+border-radius:50%;
+background:rgba(139,92,246,.15);
+filter:blur(80px);
+}
+
+.orbit{
+position:absolute;
+width:380px;
+height:380px;
+border:1px solid rgba(167,139,250,.25);
+border-radius:50%;
+transform:rotate(30deg);
+animation:orbit 12s linear infinite;
+}
+
+.orbit:before{
+content:"";
+position:absolute;
+width:13px;
+height:13px;
+border-radius:50%;
+background:#22d3ee;
+box-shadow:0 0 30px #22d3ee;
+top:-6px;
+left:50%;
+}
+
+.orbit2{
+width:290px;
+height:430px;
+transform:rotate(-55deg);
+border-color:rgba(34,211,238,.16);
+animation-duration:15s;
+}
+
+@keyframes orbit{
+to{
+transform:rotate(390deg)
+}
+}
+
+.eCore{
+position:absolute;
+width:80px;
+height:80px;
+border-radius:50%;
+background:
+radial-gradient(
+circle,
+#fff,
+#a78bfa 30%,
+#7c3aed 65%,
+transparent 70%
+);
+box-shadow:0 0 70px #8b5cf6;
+}
+
+.sectionTitle{
+margin:20px 0 17px;
+display:flex;
+justify-content:space-between;
+align-items:end;
+}
+
+.sectionTitle h2{
+font-size:29px;
+}
+
+.sectionTitle p{
+font-size:13px;
+color:var(--muted);
+}
+
+.tools{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:16px;
+}
+
+.tool{
+min-height:205px;
+padding:18px;
+border:1px solid var(--line);
+border-radius:25px;
+background:
+linear-gradient(
+145deg,
+rgba(255,255,255,.075),
+rgba(255,255,255,.025)
+);
+cursor:pointer;
+position:relative;
+overflow:hidden;
+transition:.3s;
+}
+
+.tool:after{
+content:"";
+position:absolute;
+width:130px;
+height:130px;
+right:-60px;
+bottom:-70px;
+border-radius:50%;
+background:var(--purple);
+filter:blur(30px);
+opacity:.15;
+}
+
+.tool:hover{
+transform:translateY(-8px);
+border-color:rgba(167,139,250,.55);
+box-shadow:0 25px 70px rgba(0,0,0,.38);
+}
+
+.toolImage{
+height:92px;
+border-radius:19px;
+display:grid;
+place-items:center;
+font-size:48px;
+margin-bottom:14px;
+background:
+radial-gradient(
+circle at 50% 50%,
+rgba(139,92,246,.3),
+transparent 62%
+),
+linear-gradient(
+135deg,
+rgba(34,211,238,.07),
+rgba(236,72,153,.09)
+);
+border:1px solid rgba(255,255,255,.07);
+}
+
+.tool h3{
+font-size:17px;
+margin-bottom:7px;
+}
+
+.tool p{
+color:var(--muted);
+font-size:13px;
+line-height:1.55;
+}
+
+.workspace{
+display:none;
+margin-top:25px;
+padding:27px;
+border:1px solid var(--line);
+border-radius:30px;
+background:rgba(6,9,22,.90);
+backdrop-filter:blur(22px);
+box-shadow:0 25px 100px rgba(0,0,0,.4);
+min-height:450px;
+}
+
+.workspaceHeader{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+margin-bottom:22px;
+}
+
+.workspaceHeader h2{
+font-size:28px;
+}
+
+button{
+font-family:inherit;
+}
+
+.close,
+.primary,
+.secondary,
+.answer,
+.countryButton{
+border-radius:14px;
+padding:11px 16px;
+font-weight:700;
+cursor:pointer;
+color:white;
+}
+
+.close,
+.secondary{
+background:rgba(255,255,255,.06);
+border:1px solid var(--line);
 }
 
 .primary{
-    border:0;
-    color:#fff;
-    font-weight:800;
-    padding:14px 22px;
-    border-radius:14px;
-    background:linear-gradient(
-        110deg,
-        var(--purple2),
-        var(--purple),
-        var(--pink)
-    );
-    box-shadow:
-        0 0 25px rgba(155,77,255,.25),
-        0 0 35px rgba(255,79,163,.12);
-    transition:.25s;
+background:linear-gradient(135deg,var(--purple),var(--pink));
+border:0;
+box-shadow:0 10px 35px rgba(139,92,246,.25);
 }
-
-.primary:hover{
-    transform:translateY(-3px);
-    box-shadow:
-        0 0 35px rgba(155,77,255,.45),
-        0 0 55px rgba(255,79,163,.25);
-}
-
-.secondary{
-    border:1px solid var(--border);
-    color:var(--text);
-    background:rgba(255,255,255,.045);
-    padding:14px 22px;
-    border-radius:14px;
-    transition:.25s;
-}
-
-.secondary:hover{
-    border-color:var(--pink);
-    transform:translateY(-2px);
-}
-
-/* SPHERE */
-
-.sphere-area{
-    position:relative;
-    height:500px;
-    display:grid;
-    place-items:center;
-}
-
-.sphere{
-    position:relative;
-    width:min(390px,72vw);
-    aspect-ratio:1;
-    border-radius:50%;
-    background:
-        radial-gradient(circle at 35% 28%,rgba(255,255,255,.7),transparent 3%),
-        radial-gradient(circle,
-            rgba(255,79,163,.14),
-            rgba(155,77,255,.16) 30%,
-            rgba(5,5,10,.94) 68%,
-            transparent 70%
-        );
-    box-shadow:
-        0 0 55px rgba(155,77,255,.25),
-        0 0 110px rgba(255,79,163,.1);
-    animation:sphereFloat 5s ease-in-out infinite;
-}
-
-@keyframes sphereFloat{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-12px)}
-}
-
-.sphere-ring{
-    position:absolute;
-    inset:5%;
-    border:1px solid rgba(255,79,163,.35);
-    border-radius:50%;
-    animation:spin 12s linear infinite;
-}
-
-.sphere-ring.r2{
-    inset:14%;
-    border-color:rgba(155,77,255,.4);
-    animation-duration:17s;
-    animation-direction:reverse;
-}
-
-.sphere-ring.r3{
-    inset:24%;
-    border-color:rgba(255,255,255,.13);
-    animation-duration:23s;
-}
-
-@keyframes spin{
-    to{transform:rotate(360deg)}
-}
-
-.core{
-    position:absolute;
-    inset:35%;
-    border-radius:50%;
-    background:
-        radial-gradient(
-            circle,
-            #fff,
-            #ffc3e1 18%,
-            var(--pink) 40%,
-            var(--purple) 62%,
-            transparent 73%
-        );
-    filter:blur(2px);
-    box-shadow:
-        0 0 35px var(--pink),
-        0 0 90px rgba(155,77,255,.8);
-    animation:corePulse 2.5s ease-in-out infinite;
-}
-
-@keyframes corePulse{
-    0%,100%{transform:scale(.9)}
-    50%{transform:scale(1.12)}
-}
-
-/* SECTIONS */
-
-.section{
-    width:min(1200px,calc(100% - 28px));
-    margin:auto;
-    padding:45px 0 80px;
-}
-
-.section-title{
-    font-family:Syne,sans-serif;
-    font-size:36px;
-}
-
-.section-subtitle{
-    color:var(--muted);
-    margin:8px 0 25px;
-}
-
-/* TOOL GRID */
-
-.tools-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:17px;
-}
-
-.tool-card{
-    position:relative;
-    min-height:265px;
-    overflow:hidden;
-    border:1px solid var(--border);
-    border-radius:28px;
-    background:var(--card);
-    backdrop-filter:blur(18px);
-    box-shadow:0 15px 45px rgba(0,0,0,.2);
-    transition:.3s;
-}
-
-.tool-card:hover{
-    transform:translateY(-8px);
-    border-color:rgba(255,79,163,.4);
-    box-shadow:
-        0 20px 55px rgba(0,0,0,.35),
-        0 0 35px rgba(155,77,255,.12);
-}
-
-.tool-image{
-    height:115px;
-    position:relative;
-    overflow:hidden;
-    background-size:cover;
-    background-position:center;
-}
-
-.tool-image:after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-        linear-gradient(
-            to bottom,
-            transparent,
-            rgba(7,4,10,.9)
-        );
-}
-
-.tool-image.chat{
-    background-image:url("https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80");
-}
-
-.tool-image.translate{
-    background-image:url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80");
-}
-
-.tool-image.homework{
-    background-image:url("https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=900&q=80");
-}
-
-.tool-image.project{
-    background-image:url("https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=900&q=80");
-}
-
-.tool-image.truth{
-    background-image:url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80");
-}
-
-.tool-image.history{
-    background-image:url("https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&w=900&q=80");
-}
-
-.tool-image.quiz{
-    background-image:url("https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=80");
-}
-
-.tool-image.map{
-    background-image:url("https://images.unsplash.com/photo-1524666041070-9f8766a8e4c1?auto=format&fit=crop&w=900&q=80");
-}
-
-.tool-image.settings{
-    background-image:url("https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=900&q=80");
-}
-
-.tool-body{
-    padding:18px 19px 20px;
-}
-
-.tool-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-}
-
-.tool-icon{
-    width:46px;
-    height:46px;
-    display:grid;
-    place-items:center;
-    border-radius:15px;
-    margin-top:-39px;
-    position:relative;
-    z-index:2;
-    font-size:22px;
-    background:
-        linear-gradient(135deg,var(--purple2),var(--pink));
-    border:2px solid rgba(255,255,255,.15);
-    box-shadow:0 0 22px rgba(155,77,255,.35);
-}
-
-.tool-card h3{
-    font-size:18px;
-    margin-top:9px;
-}
-
-.tool-card p{
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.55;
-    margin-top:7px;
-}
-
-.tool-open{
-    margin-top:13px;
-    border:0;
-    background:none;
-    color:var(--pink2);
-    font-weight:800;
-}
-
-/* WORKSPACE */
-
-.workspace{
-    display:none;
-}
-
-.workspace.active{
-    display:block;
-}
-
-.workspace-box{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:30px;
-    padding:24px;
-    backdrop-filter:blur(22px);
-    box-shadow:var(--shadow);
-}
-
-.workspace-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-    margin-bottom:20px;
-}
-
-.workspace-head h2{
-    font-family:Syne,sans-serif;
-    font-size:30px;
-}
-
-.back{
-    border:1px solid var(--border);
-    background:rgba(255,255,255,.04);
-    color:var(--text);
-    border-radius:12px;
-    padding:10px 15px;
-}
-
-/* CHAT */
-
-.chat{
-    height:430px;
-    overflow-y:auto;
-    padding:10px;
-    border:1px solid var(--border);
-    border-radius:20px;
-    background:rgba(0,0,0,.16);
-}
-
-.message{
-    max-width:82%;
-    padding:13px 16px;
-    border-radius:18px;
-    margin:8px 0;
-    line-height:1.55;
-    white-space:pre-wrap;
-}
-
-.message.user{
-    margin-left:auto;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,79,163,.17),
-            rgba(155,77,255,.13)
-        );
-    border:1px solid rgba(255,79,163,.18);
-}
-
-.message.ai{
-    background:
-        linear-gradient(
-            135deg,
-            rgba(155,77,255,.18),
-            rgba(255,79,163,.07)
-        );
-    border:1px solid rgba(155,77,255,.2);
-}
-
-.chat-input{
-    display:flex;
-    gap:9px;
-    margin-top:12px;
-}
-
-.chat-input textarea{
-    min-height:55px;
-    max-height:150px;
-    resize:vertical;
-    flex:1;
-}
-
-/* INPUTS */
 
 textarea,
 input,
 select{
-    width:100%;
-    border:1px solid var(--border);
-    background:rgba(0,0,0,.2);
-    color:var(--text);
-    border-radius:14px;
-    padding:14px;
-    outline:none;
+width:100%;
+padding:15px;
+border-radius:15px;
+background:#080c1c;
+color:white;
+border:1px solid var(--line);
+outline:none;
+font:inherit;
+}
+
+textarea{
+min-height:145px;
+resize:vertical;
 }
 
 textarea:focus,
 input:focus,
 select:focus{
-    border-color:var(--pink);
-    box-shadow:0 0 25px rgba(255,79,163,.1);
-}
-
-.form{
-    display:grid;
-    gap:14px;
-}
-
-.row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-}
-
-label{
-    display:grid;
-    gap:7px;
-    color:var(--muted);
-    font-size:13px;
+border-color:var(--purple);
 }
 
 .result{
-    margin-top:18px;
-    padding:20px;
-    border:1px solid var(--border);
-    border-radius:20px;
-    background:rgba(0,0,0,.16);
-    white-space:pre-wrap;
-    line-height:1.7;
-    min-height:90px;
+margin-top:17px;
+padding:19px;
+border-radius:19px;
+border:1px solid var(--line);
+background:rgba(255,255,255,.045);
+line-height:1.8;
+white-space:pre-wrap;
 }
 
-/* THINKING */
-
-.thinking{
-    display:none;
-    align-items:center;
-    gap:9px;
-    color:var(--pink2);
-    font-size:13px;
-    margin:10px 0;
+.cards{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:16px;
 }
 
-.thinking.active{
-    display:flex;
+.card{
+border:1px solid var(--line);
+border-radius:23px;
+padding:18px;
+background:rgba(255,255,255,.045);
+overflow:hidden;
 }
 
-.wave{
-    display:flex;
-    align-items:center;
-    gap:3px;
+.cardImage{
+height:135px;
+border-radius:18px;
+display:grid;
+place-items:center;
+font-size:65px;
+margin-bottom:15px;
+position:relative;
+overflow:hidden;
+background:
+radial-gradient(
+circle at 50% 30%,
+rgba(139,92,246,.38),
+transparent 50%
+),
+linear-gradient(135deg,#10152c,#1c1230);
 }
 
-.wave i{
-    width:3px;
-    height:15px;
-    background:linear-gradient(var(--purple),var(--pink));
-    border-radius:5px;
-    animation:wave .7s ease-in-out infinite alternate;
+.cardImage:before{
+content:"";
+position:absolute;
+inset:0;
+background:
+linear-gradient(
+135deg,
+transparent 30%,
+rgba(255,255,255,.08) 50%,
+transparent 70%
+);
+transform:translateX(-100%);
+animation:shine 5s infinite;
 }
 
-.wave i:nth-child(2){animation-delay:.1s}
-.wave i:nth-child(3){animation-delay:.2s}
-.wave i:nth-child(4){animation-delay:.3s}
-.wave i:nth-child(5){animation-delay:.4s}
-
-@keyframes wave{
-    from{height:5px;opacity:.35}
-    to{height:20px;opacity:1}
+@keyframes shine{
+50%{
+transform:translateX(100%)
+}
 }
 
-/* SETTINGS */
-
-.setting{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-    padding:18px 0;
-    border-bottom:1px solid var(--border);
+.card h3{
+margin-bottom:9px;
 }
 
-.setting p{
-    color:var(--muted);
-    font-size:13px;
-    margin-top:4px;
+.card p{
+font-size:14px;
+color:var(--muted);
+line-height:1.65;
 }
 
-.switch{
-    width:50px;
-    height:28px;
-    border:0;
-    border-radius:20px;
-    background:#312b38;
-    position:relative;
+.timeline{
+position:relative;
+padding:15px 0;
 }
 
-.switch:after{
-    content:"";
-    position:absolute;
-    width:22px;
-    height:22px;
-    top:3px;
-    left:4px;
-    border-radius:50%;
-    background:#fff;
-    transition:.25s;
+.timeline:before{
+content:"";
+position:absolute;
+left:28px;
+top:0;
+bottom:0;
+width:2px;
+background:
+linear-gradient(
+var(--purple),
+var(--pink),
+var(--cyan)
+);
 }
 
-.switch.on{
-    background:linear-gradient(90deg,var(--purple),var(--pink));
+.timelineItem{
+position:relative;
+padding-left:70px;
+margin-bottom:25px;
 }
 
-.switch.on:after{
-    left:24px;
+.timelineDot{
+position:absolute;
+left:17px;
+top:5px;
+width:24px;
+height:24px;
+border-radius:50%;
+background:var(--purple);
+box-shadow:0 0 25px rgba(139,92,246,.8);
 }
 
-/* HISTORY */
-
-.history-intro{
-    padding:25px;
-    border-radius:25px;
-    min-height:210px;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(155,77,255,.2),
-            rgba(255,79,163,.08)
-        ),
-        url("https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&w=1200&q=80")
-        center/cover;
-    position:relative;
-    overflow:hidden;
-    margin-bottom:18px;
+.timelineItem h3{
+margin-bottom:6px;
 }
 
-.history-intro:after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(
-        90deg,
-        rgba(5,5,8,.92),
-        rgba(5,5,8,.45),
-        rgba(5,5,8,.75)
-    );
+.timelineItem p{
+color:var(--muted);
+line-height:1.7;
 }
 
-.history-content{
-    position:relative;
-    z-index:2;
-    max-width:650px;
+/* ================= REAL MAP ================= */
+
+.mapWrap{
+border:1px solid var(--line);
+border-radius:25px;
+overflow:hidden;
+background:#07101d;
 }
 
-.history-content h3{
-    font-family:Syne,sans-serif;
-    font-size:30px;
+.mapHeader{
+padding:18px;
+display:flex;
+justify-content:space-between;
+gap:15px;
+align-items:center;
+border-bottom:1px solid var(--line);
 }
 
-.history-content p{
-    color:#ddd;
-    line-height:1.6;
-    margin-top:8px;
+.mapHeader input{
+max-width:330px;
 }
 
-.history-result{
-    display:grid;
-    gap:12px;
+#realLeafletMap{
+width:100%;
+height:520px;
 }
 
-.history-card{
-    padding:20px;
-    border:1px solid var(--border);
-    border-radius:20px;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(155,77,255,.09),
-            rgba(255,79,163,.05)
-        );
+.leaflet-container{
+font-family:Arial,"Noto Sans Armenian",sans-serif;
+background:#07101d;
 }
 
-.history-card h4{
-    color:var(--pink2);
-    margin-bottom:7px;
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip{
+background:#0b1022;
+color:white;
 }
 
-.history-card p{
-    color:var(--muted);
-    line-height:1.65;
+.leaflet-popup-content{
+font-size:14px;
+line-height:1.6;
 }
 
-/* MAP */
-
-.map-shell{
-    display:grid;
-    gap:14px;
+.leaflet-control-zoom a{
+background:#11172c !important;
+color:white !important;
+border-color:rgba(255,255,255,.15) !important;
 }
 
-.map-toolbar{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
+.leaflet-control-attribution{
+background:rgba(3,5,13,.75) !important;
+color:#9ca8c7 !important;
 }
 
-.map-toolbar input{
-    flex:1;
-    min-width:190px;
+.leaflet-control-attribution a{
+color:#67e8f9 !important;
 }
 
-.map-control{
-    min-width:45px;
-    height:45px;
-    border-radius:13px;
-    border:1px solid var(--border);
-    background:rgba(255,255,255,.04);
-    color:var(--text);
-    font-weight:800;
+.countryButtons{
+display:flex;
+flex-wrap:wrap;
+gap:9px;
+padding:16px;
 }
 
-.map-control:hover{
-    border-color:var(--pink);
-    background:rgba(255,79,163,.1);
+.countryButton{
+background:#11172c;
+border:1px solid var(--line);
 }
 
-.map-container{
-    position:relative;
-    height:540px;
-    overflow:hidden;
-    border-radius:24px;
-    border:1px solid rgba(155,77,255,.3);
-    background:#08060d;
-    box-shadow:
-        inset 0 0 60px rgba(155,77,255,.08),
-        0 20px 60px rgba(0,0,0,.35);
+.countryButton:hover{
+border-color:var(--cyan);
 }
 
-#worldMap{
-    width:100%;
-    height:100%;
+.quiz{
+max-width:900px;
+margin:auto;
 }
 
-#worldMap svg{
-    width:100%;
-    height:100%;
-    cursor:grab;
+.quizTop{
+display:flex;
+justify-content:space-between;
+color:var(--muted);
+margin-bottom:12px;
 }
 
-.world-country{
-    fill:#241735;
-    stroke:#8752a9;
-    stroke-width:.55;
-    transition:.15s;
-    cursor:pointer;
+.progress{
+height:8px;
+border-radius:99px;
+overflow:hidden;
+background:#20243a;
+margin-bottom:28px;
 }
 
-.world-country:hover{
-    fill:#a044d5;
-    stroke:#fff;
-    filter:drop-shadow(0 0 7px rgba(255,79,163,.8));
+.progress div{
+height:100%;
+background:
+linear-gradient(
+90deg,
+var(--purple),
+var(--pink)
+);
+transition:.3s;
 }
 
-.world-country.selected{
-    fill:#ff4fa3;
-    stroke:#fff;
-    stroke-width:1.2;
+.question{
+font-size:27px;
+line-height:1.45;
+margin-bottom:20px;
 }
 
-.map-loading{
-    position:absolute;
-    inset:0;
-    z-index:5;
-    display:grid;
-    place-items:center;
-    background:rgba(5,3,8,.8);
-    backdrop-filter:blur(5px);
-    color:#fff;
-    font-weight:800;
+.answers{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
 }
 
-.map-info{
-    display:grid;
-    grid-template-columns:auto 1fr;
-    gap:15px;
-    align-items:center;
-    padding:18px;
-    border:1px solid var(--border);
-    border-radius:20px;
-    background:rgba(255,255,255,.035);
+.answer{
+min-height:62px;
+text-align:left;
+background:#11172c;
+border:1px solid var(--line);
+transition:.2s;
 }
 
-.map-info-icon{
-    width:55px;
-    height:55px;
-    display:grid;
-    place-items:center;
-    border-radius:17px;
-    background:linear-gradient(135deg,var(--purple),var(--pink));
-    font-size:25px;
+.answer:hover{
+border-color:var(--purple);
+background:#1a2040;
 }
 
-.map-info h3{
-    font-size:20px;
+.answer.correct{
+background:rgba(34,197,94,.17);
+border-color:var(--green);
 }
 
-.map-info p{
-    color:var(--muted);
-    margin-top:5px;
+.answer.wrong{
+background:rgba(239,68,68,.17);
+border-color:var(--red);
 }
 
-.map-status{
-    color:var(--muted);
-    font-size:12px;
+.score{
+text-align:center;
+font-size:80px;
+font-weight:900;
+background:
+linear-gradient(
+90deg,
+#a78bfa,
+#f9a8d4
+);
+-webkit-background-clip:text;
+background-clip:text;
+color:transparent;
 }
 
-/* FOOTER */
-
-.footer{
-    width:min(1200px,calc(100% - 28px));
-    margin:auto;
-    padding:25px 0 40px;
-    color:var(--muted);
-    text-align:center;
-    font-size:12px;
+footer{
+text-align:center;
+color:#66708e;
+font-size:13px;
+padding:40px 10px 10px;
 }
 
-/* RESPONSIVE */
+@media(max-width:1000px){
 
-@media(max-width:900px){
-
-    .hero{
-        grid-template-columns:1fr;
-        text-align:center;
-    }
-
-    .hero-text{
-        margin-left:auto;
-        margin-right:auto;
-    }
-
-    .hero-actions{
-        justify-content:center;
-    }
-
-    .tools-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .sphere-area{
-        height:390px;
-    }
-
-    .einstein{
-        width:70vw;
-        opacity:.07;
-    }
+.tools{
+grid-template-columns:repeat(2,1fr)
 }
 
-@media(max-width:650px){
+.hero{
+grid-template-columns:1fr
+}
 
-    .nav{
-        top:7px;
-        margin-top:7px;
-    }
+.heroVisual{
+height:430px
+}
 
-    .nav-links{
-        display:none;
-    }
+.cards{
+grid-template-columns:1fr 1fr
+}
 
-    h1{
-        font-size:41px;
-        letter-spacing:-2px;
-    }
+}
 
-    .tools-grid{
-        grid-template-columns:1fr;
-    }
+@media(max-width:600px){
 
-    .row{
-        grid-template-columns:1fr;
-    }
+main{
+padding:15px 12px 50px
+}
 
-    .chat-input{
-        flex-direction:column;
-    }
+.status{
+display:none
+}
 
-    .message{
-        max-width:92%;
-    }
+.hero h1{
+font-size:50px;
+letter-spacing:-2px
+}
 
-    .workspace-box{
-        padding:16px;
-    }
+.heroVisual{
+height:330px
+}
 
-    .map-container{
-        height:390px;
-    }
+.tools,
+.cards,
+.answers{
+grid-template-columns:1fr
+}
 
-    .map-info{
-        grid-template-columns:1fr;
-        text-align:center;
-    }
+.workspace{
+padding:17px;
+border-radius:22px
+}
 
-    .map-info-icon{
-        margin:auto;
-    }
+.question{
+font-size:21px
+}
 
-    .einstein{
-        width:100vw;
-        right:-180px;
-    }
+.mapHeader{
+flex-direction:column;
+align-items:stretch
+}
+
+.mapHeader input{
+max-width:none
+}
+
+#realLeafletMap{
+height:430px
+}
+
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="network"></canvas>
+<div class="space">
+<i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i>
+</div>
+
+<header>
+<div class="nav">
+
+<div class="logo">
+<div class="logoIcon">🧠</div>
+<div>Amroyan<span>AI</span></div>
+</div>
+
+<div class="status">
+● AI համակարգը պատրաստ է
+</div>
+
+</div>
+</header>
+
+<main>
+
+<section class="hero">
+
+<div class="heroText">
+
+<div class="badge">
+🇦🇲 Հայերեն AI • Գիտություն • Պատմություն • Աշխարհագրություն
+</div>
+
+<h1>
+Քո նոր<br>
+<span class="gradient">AI աշխարհը</span>
+</h1>
+
+<p>
+Սովորիր, ուսումնասիրիր, ստեղծիր և հարցրու։
+AmroyanAI-ը միավորում է արհեստական բանականությունը,
+համաշխարհային պատմությունը, աշխարհագրությունը,
+քուիզները և նախագծային աշխատանքը մեկ հայկական հարթակում։
+</p>
+
+</div>
+
+<div class="heroVisual">
+
+<div class="eGlow"></div>
 
 <img
 class="einstein"
 src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg"
-alt="Albert Einstein"
->
+alt="Ալբերտ Էյնշտեյն">
 
-<div class="app">
-
-<nav class="nav">
-
-    <button class="logo" data-home>
-        <span class="logo-orb"></span>
-        AMROYAN AI
-    </button>
-
-    <div class="nav-links">
-
-        <button class="nav-btn active" data-home>
-            Home
-        </button>
-
-        <button class="nav-btn" data-tools>
-            Tools
-        </button>
-
-    </div>
-
-    <div class="nav-actions">
-
-        <button class="icon-btn" id="themeBtn">
-            ☾
-        </button>
-
-        <button class="icon-btn" id="settingsTop">
-            ⚙
-        </button>
-
-    </div>
-
-</nav>
-
-
-<main id="home">
-
-<section class="hero">
-
-<div class="hero-copy">
-
-<div class="eyebrow">
-    <span class="live-dot"></span>
-    AMROYAN AI SYSTEM ONLINE
-</div>
-
-<h1>
-    AMROYAN AI:
-    <span class="gradient">
-        ԳԻՏԱԿՑՈՒԹՅԱՆ
-        ԸՆԴԼԱՅՆՈՒՄԸ
-    </span>
-</h1>
-
-<p class="hero-text">
-    Ստեղծիր, սովորիր, ուսումնասիրիր և աշխատիր
-    ժամանակակից AI գործիքների մեկ գեղեցիկ միջավայրում։
-</p>
-
-<div class="hero-actions">
-
-<button class="primary" id="startBtn">
-    Սկսել հիմա →
-</button>
-
-<button class="secondary" data-tools>
-    Դիտել գործիքները
-</button>
-
-</div>
-
-</div>
-
-<div class="sphere-area" id="sphereArea">
-
-<div class="sphere" id="sphere">
-    <div class="sphere-ring"></div>
-    <div class="sphere-ring r2"></div>
-    <div class="sphere-ring r3"></div>
-    <div class="core"></div>
-</div>
+<div class="orbit"></div>
+<div class="orbit orbit2"></div>
+<div class="eCore"></div>
 
 </div>
 
 </section>
 
+<div class="sectionTitle">
 
-<section class="section" id="tools">
-
-<div class="section-title">
-    Smart Flow
-</div>
-
-<p class="section-subtitle">
-    Բոլոր գործիքները՝ պատկերներով և միասնական նոր դիզայնով։
-</p>
-
-
-<div class="tools-grid">
-
-
-<!-- CHAT -->
-
-<article class="tool-card">
-
-<div class="tool-image chat"></div>
-
-<div class="tool-body">
-
-<div class="tool-icon">💬</div>
-
-<h3>AI Chat</h3>
-
+<div>
+<h2>🚀 AmroyanAI գործիքներ</h2>
 <p>
-Խոսիր իրական AmroyanAI-ի հետ և ստացիր պատասխաններ։
+Յուրաքանչյուր գործիք ունի իր առանձին աշխատանքային միջավայրը
 </p>
-
-<button class="tool-open" data-open="chat">
-Բացել →
-</button>
+</div>
 
 </div>
-</article>
 
+<section class="tools">
 
-<!-- TRANSLATOR -->
-
-<article class="tool-card">
-
-<div class="tool-image translate"></div>
-
-<div class="tool-body">
-
-<div class="tool-icon">🌐</div>
-
-<h3>Translator</h3>
-
+<div class="tool" onclick="openTool('chat')">
+<div class="toolImage">🤖</div>
+<h3>AI զրույց</h3>
 <p>
-Թարգմանիր հայերեն, ռուսերեն և անգլերեն լեզուներով։
+Իրական AI զրույց՝ հայերեն պատասխաններով և հարցերի բացատրությամբ։
 </p>
-
-<button class="tool-open" data-open="translator">
-Բացել →
-</button>
-
 </div>
-</article>
 
-
-<!-- HOMEWORK -->
-
-<article class="tool-card">
-
-<div class="tool-image homework"></div>
-
-<div class="tool-body">
-
-<div class="tool-icon">📚</div>
-
-<h3>Homework</h3>
-
+<div class="tool" onclick="openTool('history')">
+<div class="toolImage">🏛️</div>
+<h3>Համաշխարհային պատմություն</h3>
 <p>
-Ստացիր AI օգնություն դպրոցական առաջադրանքների համար։
+Պատկերազարդ ժամանակագիծ, քաղաքակրթություններ և պատմական թեմաներ։
 </p>
-
-<button class="tool-open" data-open="homework">
-Բացել →
-</button>
-
 </div>
-</article>
 
-
-<!-- PROJECT -->
-
-<article class="tool-card">
-
-<div class="tool-image project"></div>
-
-<div class="tool-body">
-
-<div class="tool-icon">📋</div>
-
-<h3>Project Lab</h3>
-
+<div class="tool" onclick="openTool('geography')">
+<div class="toolImage">🌍</div>
+<h3>Աշխարհագրություն</h3>
 <p>
-Ստեղծիր ամբողջական նախագծի կառուցվածք և նյութեր։
+Երկրներ, մայրաքաղաքներ, բնություն և աշխարհագրական բացատրություններ։
 </p>
-
-<button class="tool-open" data-open="project">
-Բացել →
-</button>
-
 </div>
-</article>
 
-
-<!-- TRUTH -->
-
-<article class="tool-card">
-
-<div class="tool-image truth"></div>
-
-<div class="tool-body">
-
-<div class="tool-icon">🔎</div>
-
-<h3>Truth Detector</h3>
-
+<div class="tool" onclick="openTool('map')">
+<div class="toolImage">🗺️</div>
+<h3>Իրական աշխարհի քարտեզ</h3>
 <p>
-Վերլուծիր հայտարարության հավաստիությունը AI-ի օգնությամբ։
+Իրական ինտերակտիվ քարտեզ՝ zoom, շարժում և երկրների որոնում։
 </p>
-
-<button class="tool-open" data-open="truth">
-Բացել →
-</button>
-
 </div>
-</article>
 
-
-<!-- HISTORY -->
-
-<article class="tool-card">
-
-<div class="tool-image history"></div>
-
-<div class="tool-body">
-
-<div class="tool-icon">🏛️</div>
-
-<h3>World History</h3>
-
+<div class="tool" onclick="openTool('quiz')">
+<div class="toolImage">🧠</div>
+<h3>Գիտելիքների քուիզ</h3>
 <p>
-Ուսումնասիրիր պատմական ժամանակաշրջանները պատկերներով։
+Հարցեր, ճիշտ և սխալ պատասխաններ, միավորներ և վերջնական արդյունք։
 </p>
-
-<button class="tool-open" data-open="history">
-Բացել →
-</button>
-
 </div>
-</article>
 
-
-<!-- QUIZ -->
-
-<article class="tool-card">
-
-<div class="tool-image quiz"></div>
-
-<div class="tool-body">
-
-<div class="tool-icon">🎯</div>
-
-<h3>Quiz Maker</h3>
-
+<div class="tool" onclick="openTool('homework')">
+<div class="toolImage">📚</div>
+<h3>Տնային աշխատանք</h3>
 <p>
-Ստեղծիր AI-ով հետաքրքիր թեստեր ցանկացած թեմայով։
+Դասերի և առաջադրանքների բացատրություն՝ պարզ հայերենով։
 </p>
-
-<button class="tool-open" data-open="quiz">
-Բացել →
-</button>
-
 </div>
-</article>
 
-
-<!-- MAP -->
-
-<article class="tool-card">
-
-<div class="tool-image map"></div>
-
-<div class="tool-body">
-
-<div class="tool-icon">🌍</div>
-
-<h3>World Map</h3>
-
+<div class="tool" onclick="openTool('project')">
+<div class="toolImage">🔬</div>
+<h3>Նախագծային լաբորատորիա</h3>
 <p>
-Իրական ինտերակտիվ քարտեզ՝ երկրներով և մայրաքաղաքներով։
+AI-ի օգնությամբ ստեղծիր ամբողջական դպրոցական նախագիծ։
 </p>
-
-<button class="tool-open" data-open="map">
-Բացել →
-</button>
-
 </div>
-</article>
 
-
-<!-- SETTINGS -->
-
-<article class="tool-card">
-
-<div class="tool-image settings"></div>
-
-<div class="tool-body">
-
-<div class="tool-icon">⚙️</div>
-
-<h3>Settings</h3>
-
+<div class="tool" onclick="openTool('translate')">
+<div class="toolImage">🌐</div>
+<h3>Թարգմանիչ</h3>
 <p>
-Կարգավորիր թեման, ձայնը և AI animation-ը։
+Հայերեն, անգլերեն և ռուսերեն թարգմանություն։
 </p>
-
-<button class="tool-open" data-open="settings">
-Բացել →
-</button>
-
 </div>
-</article>
 
-
-</div>
 </section>
+
+<section id="workspace" class="workspace"></section>
+
+<footer>
+AmroyanAI • Հայերեն AI հարթակ 🇦🇲
+</footer>
 
 </main>
 
+<script>
 
-<section class="section workspace" id="workspace">
+const workspace=document.getElementById("workspace");
 
-<div class="workspace-box">
+let realMap=null;
 
-<div class="workspace-head">
+function openTool(type){
 
-<h2 id="workspaceTitle">
-AI Tool
-</h2>
+workspace.style.display="block";
 
-<button class="back" id="backBtn">
-← Back
+if(type==="chat")chatTool();
+if(type==="history")historyTool();
+if(type==="geography")geographyTool();
+if(type==="map")mapTool();
+if(type==="quiz")quizTool();
+if(type==="homework")homeworkTool();
+if(type==="project")projectTool();
+if(type==="translate")translateTool();
+
+workspace.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+}
+
+function closeTool(){
+
+if(realMap){
+realMap.remove();
+realMap=null;
+}
+
+workspace.style.display="none";
+workspace.innerHTML="";
+}
+
+function head(title,icon){
+
+return `
+<div class="workspaceHeader">
+
+<h2>${icon} ${title}</h2>
+
+<button
+class="close"
+onclick="closeTool()">
+Փակել
 </button>
 
 </div>
+`;
 
+}
 
-<div class="thinking" id="thinking">
+/* ================= CHAT ================= */
 
-<div class="wave">
-<i></i><i></i><i></i><i></i><i></i>
-</div>
+function chatTool(){
 
-AmroyanAI-ը մտածում է...
-
-</div>
-
-
-<!-- CHAT -->
-
-<div id="chatTool" class="tool-view">
-
-<div class="chat" id="chat"></div>
-
-<div class="chat-input">
+workspace.innerHTML=head("AI զրույց","🤖")+`
 
 <textarea
 id="chatInput"
-placeholder="Գրիր քո հարցը..."
-></textarea>
+placeholder="Գրիր հարցդ հայերեն..."></textarea>
 
-<button class="primary" id="sendBtn">
-Ուղարկել
+<button
+class="primary"
+style="margin-top:10px"
+onclick="chatAI()">
+Ուղարկել →
 </button>
 
+<div id="chatResult" class="result">
+🤖 AmroyanAI-ը պատրաստ է։
+</div>
+`;
+
+}
+
+async function chatAI(){
+
+const text=document
+.getElementById("chatInput")
+.value
+.trim();
+
+const result=document.getElementById("chatResult");
+
+if(!text){
+
+result.textContent="Գրիր հարց։";
+return;
+
+}
+
+result.textContent="⏳ AmroyanAI-ը մտածում է...";
+
+try{
+
+const r=await fetch("/api/chat",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+message:
+"Պատասխանիր հայերեն, եթե օգտատերը հայերեն է գրում։ Պատասխանիր պարզ, ճիշտ և օգտակար։ Հարց՝ "+text
+
+})
+
+});
+
+const d=await r.json();
+
+if(!r.ok){
+
+throw new Error(
+d.error||"Server error"
+);
+
+}
+
+result.textContent=
+d.reply||
+"Պատասխան չստացվեց։";
+
+}catch(e){
+
+result.textContent=
+"❌ AI-ի հետ կապի սխալ։ Ստուգիր server.js-ը և API բանալին։";
+
+}
+
+}
+
+/* ================= HISTORY ================= */
+
+function historyTool(){
+
+workspace.innerHTML=head(
+"Համաշխարհային պատմություն",
+"📜"
+)+`
+
+<div class="cards">
+
+<div class="card">
+
+<div class="cardImage">
+🏛️
 </div>
 
-</div>
-
-
-<!-- TRANSLATOR -->
-
-<div id="translatorTool" class="tool-view" hidden>
-
-<div class="form">
-
-<label>
-Տեքստ
-
-<textarea
-id="translateInput"
-rows="8"
-placeholder="Գրիր տեքստը..."
-></textarea>
-</label>
-
-<div class="row">
-
-<label>
-From
-
-<select id="fromLang">
-<option>Armenian</option>
-<option>Russian</option>
-<option>English</option>
-</select>
-</label>
-
-<label>
-To
-
-<select id="toLang">
-<option>English</option>
-<option>Armenian</option>
-<option>Russian</option>
-</select>
-</label>
-
-</div>
-
-<button class="primary" id="translateBtn">
-Թարգմանել
-</button>
-
-</div>
-
-<div class="result" id="translateResult"></div>
-
-</div>
-
-
-<!-- HOMEWORK -->
-
-<div id="homeworkTool" class="tool-view" hidden>
-
-<div class="form">
-
-<label>
-Առարկա
-
-<input
-id="homeworkSubject"
-placeholder="Օր.՝ Մաթեմատիկա"
->
-</label>
-
-<label>
-Առաջադրանք
-
-<textarea
-id="homeworkInput"
-rows="7"
-placeholder="Տեղադրիր առաջադրանքը..."
-></textarea>
-</label>
-
-<button class="primary" id="homeworkBtn">
-Օգնել
-</button>
-
-</div>
-
-<div class="result" id="homeworkResult"></div>
-
-</div>
-
-
-<!-- PROJECT -->
-
-<div id="projectTool" class="tool-view" hidden>
-
-<div class="form">
-
-<label>
-Նախագծի թեմա
-
-<input
-id="projectTitle"
-placeholder="Օր.՝ Դվին"
->
-</label>
-
-<label>
-Լրացուցիչ տեղեկություն
-
-<textarea
-id="projectInput"
-rows="7"
-placeholder="Գրիր ինչ է պետք նախագծի համար..."
-></textarea>
-</label>
-
-<button class="primary" id="projectBtn">
-Ստեղծել նախագիծ
-</button>
-
-</div>
-
-<div class="result" id="projectResult"></div>
-
-</div>
-
-
-<!-- TRUTH -->
-
-<div id="truthTool" class="tool-view" hidden>
-
-<div class="form">
-
-<label>
-Տեքստը
-
-<textarea
-id="truthInput"
-rows="8"
-placeholder="Տեղադրիր հայտարարությունը..."
-></textarea>
-</label>
-
-<button class="primary" id="truthBtn">
-Վերլուծել
-</button>
-
-</div>
-
-<div class="result" id="truthResult">
-Սա AI վերլուծություն է և չի կարող 100% որոշել իրականությունը։
-</div>
-
-</div>
-
-
-<!-- HISTORY -->
-
-<div id="historyTool" class="tool-view" hidden>
-
-<div class="history-intro">
-
-<div class="history-content">
-
-<h3>
-Ժամանակի մեքենա
-</h3>
+<h3>Դվին</h3>
 
 <p>
-Ընտրիր երկիր և ուսումնասիրիր նրա պատմությունը
-տեսողական, պարզ և հետաքրքիր ձևով։
+Դվինը Հայաստանի հին և միջնադարյան կարևոր քաղաքներից էր։
+Այն եղել է քաղաքական, տնտեսական և մշակութային կենտրոն։
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="cardImage">
+🏺
+</div>
+
+<h3>Հին Եգիպտոս</h3>
+
+<p>
+Նեղոսի հովտում ձևավորված քաղաքակրթություն՝
+փարավոններով, բուրգերով և հիերոգլիֆներով։
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="cardImage">
+🏛️
+</div>
+
+<h3>Հին Հունաստան</h3>
+
+<p>
+Փիլիսոփայության, արվեստի, գիտության և
+ժողովրդավարության զարգացման կարևոր կենտրոն։
 </p>
 
 </div>
 
 </div>
 
-<div class="form">
+<h3 style="margin:28px 0 15px">
+⏳ Պատմության ժամանակագիծ
+</h3>
 
-<label>
-Ընտրիր երկիրը
+<div class="timeline">
 
-<select id="historyCountry">
+<div class="timelineItem">
+<div class="timelineDot"></div>
 
-<option value="armenia">🇦🇲 Հայաստան</option>
-<option value="france">🇫🇷 Ֆրանսիա</option>
-<option value="germany">🇩🇪 Գերմանիա</option>
-<option value="italy">🇮🇹 Իտալիա</option>
-<option value="usa">🇺🇸 ԱՄՆ</option>
-<option value="egypt">🇪🇬 Եգիպտոս</option>
-<option value="china">🇨🇳 Չինաստան</option>
+<h3>Հին քաղաքակրթություններ</h3>
 
-</select>
+<p>
+Եգիպտոս, Միջագետք, Հունաստան, Հռոմ և այլ քաղաքակրթություններ։
+</p>
 
-</label>
+</div>
 
-<button class="primary" id="historyBtn">
-Բացել պատմությունը
+<div class="timelineItem">
+<div class="timelineDot"></div>
+
+<h3>Միջնադար</h3>
+
+<p>
+Թագավորություններ, առևտրային ճանապարհներ,
+մշակույթի և գիտության զարգացում։
+</p>
+
+</div>
+
+<div class="timelineItem">
+<div class="timelineDot"></div>
+
+<h3>Նոր ժամանակներ</h3>
+
+<p>
+Աշխարհագրական հայտնագործություններ,
+գիտական հեղափոխություն և արդյունաբերական զարգացում։
+</p>
+
+</div>
+
+<div class="timelineItem">
+<div class="timelineDot"></div>
+
+<h3>Ժամանակակից աշխարհ</h3>
+
+<p>
+Տեխնոլոգիա, համաշխարհային հարաբերություններ և ժամանակակից պետություններ։
+</p>
+
+</div>
+
+</div>
+
+<textarea
+id="historyInput"
+placeholder="Օրինակ՝ Պատմիր ինձ Դվինի պատմությունը">
+</textarea>
+
+<button
+class="primary"
+style="margin-top:10px"
+onclick="historyAI()">
+📖 Խորը բացատրություն
 </button>
 
+<div id="historyResult" class="result">
+Պատմական հարցդ գրիր վերևում։
+</div>
+`;
+
+}
+
+async function historyAI(){
+
+const text=document
+.getElementById("historyInput")
+.value
+.trim();
+
+const result=document.getElementById("historyResult");
+
+if(!text){
+
+result.textContent="Գրիր պատմական հարց։";
+return;
+
+}
+
+result.textContent=
+"⏳ Պատմությունը պատրաստվում է...";
+
+try{
+
+const r=await fetch("/api/chat",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+message:
+"Դու պատմության ուսուցիչ ես։ Պատասխանիր միայն հայերեն։ Բացատրի՛ր պատմական թեման հետաքրքիր, հասկանալի և փաստերով։ Հարց՝ "+text
+
+})
+
+});
+
+const d=await r.json();
+
+if(!r.ok)throw new Error();
+
+result.textContent=
+d.reply||
+"Պատասխան չկա։";
+
+}catch(e){
+
+result.textContent=
+"❌ AI կապի սխալ։";
+
+}
+
+}
+
+/* ================= GEOGRAPHY ================= */
+
+function geographyTool(){
+
+workspace.innerHTML=head(
+"Аշխարհագրություն",
+"🌍"
+)+`
+
+<div class="cards">
+
+<div class="card">
+
+<div class="cardImage">
+🇦🇲
 </div>
 
-<div class="history-result" id="historyResult"></div>
+<h3>Հայաստան</h3>
+
+<p>
+Մայրաքաղաք՝ Երևան<br>
+Տարածք՝ մոտ 29,743 կմ²<br>
+Տարածաշրջան՝ Հարավային Կովկաս։
+</p>
 
 </div>
 
+<div class="card">
 
-<!-- QUIZ -->
+<div class="cardImage">
+🏔️
+</div>
 
-<div id="quizTool" class="tool-view" hidden>
+<h3>Լեռներ</h3>
 
-<div class="form">
+<p>
+Ուսումնասիրիր լեռնաշղթաները,
+գագաթները և բարձրությունները։
+</p>
 
-<label>
-Թեմա
+</div>
+
+<div class="card">
+
+<div class="cardImage">
+🌊
+</div>
+
+<h3>Ծովեր և օվկիանոսներ</h3>
+
+<p>
+Ուսումնասիրիր աշխարհի ծովերը,
+օվկիանոսները և ջրային համակարգերը։
+</p>
+
+</div>
+
+</div>
 
 <input
-id="quizTopic"
-placeholder="Օր.՝ Հայոց պատմություն"
->
-</label>
+id="geoInput"
+style="margin-top:20px"
+placeholder="Օրինակ՝ Ինչպիսի՞ կլիմա ունի Հայաստանը">
 
-<div class="row">
-
-<label>
-Հարցերի քանակ
-
-<select id="quizCount">
-<option>5</option>
-<option>10</option>
-<option>20</option>
-</select>
-
-</label>
-
-<label>
-Բարդություն
-
-<select id="quizDifficulty">
-<option>Easy</option>
-<option>Medium</option>
-<option>Hard</option>
-</select>
-
-</label>
-
-</div>
-
-<button class="primary" id="quizBtn">
-Ստեղծել Quiz
+<button
+class="primary"
+style="margin-top:10px"
+onclick="geoAI()">
+🌍 Բացատրել
 </button>
 
+<div id="geoResult" class="result">
+Աշխարհագրական հարցդ գրիր վերևում։
+</div>
+`;
+
+}
+
+async function geoAI(){
+
+const text=document
+.getElementById("geoInput")
+.value
+.trim();
+
+const result=document.getElementById("geoResult");
+
+if(!text){
+
+result.textContent="Գրիր հարց։";
+return;
+
+}
+
+result.textContent=
+"⏳ Աշխարհագրական բացատրությունը պատրաստվում է...";
+
+try{
+
+const r=await fetch("/api/chat",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+message:
+"Դու աշխարհագրության ուսուցիչ ես։ Պատասխանիր միայն հայերեն։ Տուր ճիշտ և հասկանալի բացատրություն։ Հարց՝ "+text
+
+})
+
+});
+
+const d=await r.json();
+
+if(!r.ok)throw new Error();
+
+result.textContent=
+d.reply||
+"Պատասխան չկա։";
+
+}catch(e){
+
+result.textContent=
+"❌ AI կապի սխալ։";
+
+}
+
+}
+
+/* ================= REAL MAP ================= */
+
+function mapTool(){
+
+workspace.innerHTML=head(
+"Իրական աշխարհի քարտեզ",
+"🗺️"
+)+`
+
+<div class="mapWrap">
+
+<div class="mapHeader">
+
+<div>
+
+<strong>
+🌍 Իրական ինտերակտիվ աշխարհի քարտեզ
+</strong>
+
+<div
+style="
+color:var(--muted);
+font-size:12px;
+margin-top:5px">
+Քաշիր քարտեզը, օգտագործիր zoom-ը և սեղմիր երկրի վրա։
 </div>
 
-<div class="result" id="quizResult"></div>
-
 </div>
-
-
-<!-- MAP -->
-
-<div id="mapTool" class="tool-view" hidden>
-
-<div class="map-shell">
-
-<div class="map-toolbar">
-
-<button class="map-control" id="mapZoomIn">+</button>
-
-<button class="map-control" id="mapZoomOut">−</button>
-
-<button class="map-control" id="mapReset">
-Reset
-</button>
 
 <input
 id="mapSearch"
-placeholder="🔍 Search country..."
->
+placeholder="🔎 Փնտրել երկիր..."
+onkeydown="
+if(event.key==='Enter'){
+searchRealCountry()
+}
+">
 
 </div>
 
-<div class="map-container">
+<div id="realLeafletMap"></div>
 
-<div id="mapLoading" class="map-loading">
-🌍 Loading real world map...
+<div class="countryButtons">
+
+<button
+class="countryButton"
+onclick="
+goCountry(
+40.1792,
+44.4991,
+7,
+'Հայաստան'
+)
+">
+🇦🇲 Հայաստան
+</button>
+
+<button
+class="countryButton"
+onclick="
+goCountry(
+48.8566,
+2.3522,
+6,
+'Ֆրանսիա'
+)
+">
+🇫🇷 Ֆրանսիա
+</button>
+
+<button
+class="countryButton"
+onclick="
+goCountry(
+52.52,
+13.405,
+6,
+'Գերմանիա'
+)
+">
+🇩🇪 Գերմանիա
+</button>
+
+<button
+class="countryButton"
+onclick="
+goCountry(
+35.6762,
+139.6503,
+6,
+'Ճապոնիա'
+)
+">
+🇯🇵 Ճապոնիա
+</button>
+
+<button
+class="countryButton"
+onclick="
+goCountry(
+39.9042,
+116.4074,
+5,
+'Չինաստան'
+)
+">
+🇨🇳 Չինաստան
+</button>
+
+<button
+class="countryButton"
+onclick="
+goCountry(
+28.6139,
+77.209,
+5,
+'Հնդկաստան'
+)
+">
+🇮🇳 Հնդկաստան
+</button>
+
+<button
+class="countryButton"
+onclick="
+goCountry(
+38.9072,
+-77.0369,
+5,
+'ԱՄՆ'
+)
+">
+🇺🇸 ԱՄՆ
+</button>
+
+<button
+class="countryButton"
+onclick="
+goCountry(
+-15.7975,
+-47.8919,
+5,
+'Բրազիլիա'
+)
+">
+🇧🇷 Բրազիլիա
+</button>
+
+<button
+class="countryButton"
+onclick="
+goCountry(
+55.7558,
+37.6173,
+5,
+'Ռուսաստան'
+)
+">
+🇷🇺 Ռուսաստան
+</button>
+
+<button
+class="countryButton"
+onclick="
+goCountry(
+-35.2809,
+149.1300,
+5,
+'Ավստրալիա'
+)
+">
+🇦🇺 Ավստրալիա
+</button>
+
 </div>
 
-<div id="worldMap"></div>
-
 </div>
 
-<div class="map-info" id="mapInfo">
-
-<div class="map-info-icon">
-🌍
+<div id="countryResult" class="result">
+🗺️ Ընտրիր երկիր կամ փնտրիր վերևի դաշտում։
 </div>
+`;
+
+setTimeout(
+initRealMap,
+150
+);
+
+}
+
+/* ===== INIT REAL MAP ===== */
+
+function initRealMap(){
+
+if(typeof L==="undefined"){
+
+document.getElementById(
+"countryResult"
+).textContent=
+"❌ Քարտեզի համակարգը չի բեռնվել։ Ստուգիր ինտերնետ կապը։";
+
+return;
+
+}
+
+if(realMap){
+
+realMap.remove();
+realMap=null;
+
+}
+
+realMap=L.map(
+"realLeafletMap",
+{
+worldCopyJump:true,
+zoomControl:true,
+minZoom:2,
+maxZoom:18
+}
+).setView(
+[40.1792,44.4991],
+3
+);
+
+L.tileLayer(
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+maxZoom:19,
+attribution:
+'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+}
+).addTo(realMap);
+
+
+/* ARMENIA MARKER */
+
+const armenia=L.marker(
+[40.1792,44.4991]
+).addTo(realMap);
+
+armenia.bindPopup(`
 
 <div>
 
-<h3>
-Ընտրիր երկիր
-</h3>
+<strong style="font-size:17px">
+🇦🇲 Հայաստան
+</strong>
 
-<p>
-Սեղմիր երկրի վրա՝ անվանումը և մայրաքաղաքը տեսնելու համար։
-</p>
+<br><br>
 
-</div>
+<b>Մայրաքաղաք՝</b> Երևան
+<br>
 
-</div>
+<b>Տարածաշրջան՝</b> Հարավային Կովկաս
+<br>
 
-<div class="map-status" id="mapStatus">
-Real interactive world map · Drag · Zoom · Select
-</div>
+<b>Լեզու՝</b> հայերեն
+<br>
 
-</div>
+<b>Դրամական միավոր՝</b> դրամ
 
-</div>
+<br><br>
 
-
-<!-- SETTINGS -->
-
-<div id="settingsTool" class="tool-view" hidden>
-
-<div class="setting">
-
-<div>
-<strong>Dark / Light mode</strong>
-<p>Փոխել արտաքին տեսքը</p>
-</div>
-
-<button class="switch" id="themeSwitch"></button>
+<button
+onclick="showCountryInfo('Հայաստան')"
+style="
+background:#8b5cf6;
+color:white;
+border:0;
+padding:8px 12px;
+border-radius:9px;
+cursor:pointer;
+">
+Տեղեկություն
+</button>
 
 </div>
 
-<div class="setting">
-
-<div>
-<strong>Thinking animation</strong>
-<p>AI-ի մտածելու animation</p>
-</div>
-
-<button class="switch on" id="thinkingSwitch"></button>
-
-</div>
-
-<div class="setting">
-
-<div>
-<strong>Click sound</strong>
-<p>Կոճակների ձայնային effect</p>
-</div>
-
-<button class="switch on" id="soundSwitch"></button>
-
-</div>
-
-</div>
-
-</div>
-</section>
-
-
-<footer class="footer">
-AMROYAN AI · Learn · Create · Explore
-</footer>
-
-</div>
-
-
-<script>
-
-/* STATE */
-
-const state={
-    currentTool:null,
-    history:[],
-    thinking:true,
-    sound:true
-};
-
-
-/* SOUND */
-
-function clickSound(){
-
-    if(!state.sound)return;
-
-    try{
-
-        const AudioContext=
-            window.AudioContext||
-            window.webkitAudioContext;
-
-        if(!AudioContext)return;
-
-        const ctx=new AudioContext();
-
-        const oscillator=
-            ctx.createOscillator();
-
-        const gain=
-            ctx.createGain();
-
-        oscillator.type="sine";
-        oscillator.frequency.value=600;
-
-        gain.gain.setValueAtTime(
-            .025,
-            ctx.currentTime
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            .001,
-            ctx.currentTime+.07
-        );
-
-        oscillator.connect(gain);
-        gain.connect(ctx.destination);
-
-        oscillator.start();
-        oscillator.stop(
-            ctx.currentTime+.07
-        );
-
-    }catch(e){}
+`);
 
 }
 
 
-document.addEventListener(
-"click",
-e=>{
-
-    if(e.target.closest("button")){
-        clickSound();
-    }
-
-});
-
-
-/* NETWORK */
-
-const canvas=
-document.getElementById("network");
-
-const ctx=
-canvas.getContext("2d");
-
-let nodes=[];
-
-function resizeCanvas(){
-
-    canvas.width=innerWidth;
-    canvas.height=innerHeight;
-
-    nodes=[];
-
-    const count=
-        Math.min(
-            90,
-            Math.floor(innerWidth/16)
-        );
-
-    for(let i=0;i<count;i++){
-
-        nodes.push({
-            x:Math.random()*canvas.width,
-            y:Math.random()*canvas.height,
-            vx:(Math.random()-.5)*.25,
-            vy:(Math.random()-.5)*.25,
-            r:Math.random()*1.5+.5
-        });
-
-    }
-
-}
-
-resizeCanvas();
-
-addEventListener(
-"resize",
-resizeCanvas
-);
-
-
-function drawNetwork(){
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-    for(const n of nodes){
-
-        n.x+=n.vx;
-        n.y+=n.vy;
-
-        if(n.x<0||n.x>canvas.width)n.vx*=-1;
-        if(n.y<0||n.y>canvas.height)n.vy*=-1;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            n.x,
-            n.y,
-            n.r,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fillStyle=
-            "rgba(190,100,255,.6)";
-
-        ctx.fill();
-
-    }
-
-    for(
-        let i=0;
-        i<nodes.length;
-        i++
-    ){
-
-        for(
-            let j=i+1;
-            j<nodes.length;
-            j++
-        ){
-
-            const a=nodes[i];
-            const b=nodes[j];
-
-            const dx=a.x-b.x;
-            const dy=a.y-b.y;
-
-            const d=Math.sqrt(
-                dx*dx+dy*dy
-            );
-
-            if(d<130){
-
-                ctx.beginPath();
-
-                ctx.moveTo(a.x,a.y);
-                ctx.lineTo(b.x,b.y);
-
-                ctx.strokeStyle=
-                    `rgba(255,79,163,${.13-d/1200})`;
-
-                ctx.lineWidth=.5;
-                ctx.stroke();
-
-            }
-
-        }
-
-    }
-
-    requestAnimationFrame(drawNetwork);
-
-}
-
-drawNetwork();
-
-
-/* SPHERE */
-
-const sphere=
-document.getElementById("sphere");
-
-const sphereArea=
-document.getElementById("sphereArea");
-
-sphereArea.addEventListener(
-"mousemove",
-e=>{
-
-    const rect=
-        sphereArea.getBoundingClientRect();
-
-    const x=
-        (e.clientX-rect.left)/
-        rect.width-.5;
-
-    const y=
-        (e.clientY-rect.top)/
-        rect.height-.5;
-
-    sphere.style.transform=
-        `translate(${x*18}px,${y*18}px)`;
-
-});
-
-
-sphereArea.addEventListener(
-"mouseleave",
-()=>{
-    sphere.style.transform="";
-});
-
-
-/* NAV */
-
-function goHome(){
-
-    document.getElementById("home").style.display="block";
-
-    document
-    .getElementById("workspace")
-    .classList.remove("active");
-
-    scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-}
-
-
-function goTools(){
-
-    document.getElementById("home").style.display="block";
-
-    document
-    .getElementById("tools")
-    .scrollIntoView({
-        behavior:"smooth"
-    });
-
-}
-
-
-document
-.querySelectorAll("[data-home]")
-.forEach(btn=>{
-    btn.addEventListener(
-        "click",
-        goHome
-    );
-});
-
-
-document
-.querySelectorAll("[data-tools]")
-.forEach(btn=>{
-    btn.addEventListener(
-        "click",
-        goTools
-    );
-});
-
-
-document
-.getElementById("startBtn")
-.addEventListener(
-    "click",
-    ()=>{
-        openTool("chat");
-    }
-);
-
-
-/* TOOLS */
-
-const titles={
-    chat:"AI Chat",
-    translator:"Translator",
-    homework:"Homework",
-    project:"Project Lab",
-    truth:"Truth Detector",
-    history:"World History",
-    quiz:"Quiz Maker",
-    map:"World Map",
-    settings:"Settings"
-};
-
-
-function openTool(name){
-
-    state.currentTool=name;
-
-    document.getElementById("home").style.display="none";
-
-    document
-    .getElementById("workspace")
-    .classList.add("active");
-
-    document
-    .getElementById("workspaceTitle")
-    .textContent=
-        titles[name]||"AI Tool";
-
-    document
-    .querySelectorAll(".tool-view")
-    .forEach(v=>{
-        v.hidden=true;
-    });
-
-    const target=
-        document.getElementById(
-            name+"Tool"
-        );
-
-    if(target){
-        target.hidden=false;
-    }
-
-    if(name==="map"){
-        setTimeout(
-            ()=>{
-                if(window.initWorldMap){
-                    window.initWorldMap();
-                }
-            },
-            80
-        );
-    }
-
-    scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-}
-
-
-document
-.querySelectorAll("[data-open]")
-.forEach(btn=>{
-
-    btn.addEventListener(
-        "click",
-        ()=>{
-            openTool(
-                btn.dataset.open
-            );
-        }
-    );
-
-});
-
-
-document
-.getElementById("backBtn")
-.addEventListener(
-    "click",
-    ()=>{
-        goHome();
-
-        setTimeout(
-            ()=>{
-                document
-                .getElementById("tools")
-                .scrollIntoView({
-                    behavior:"smooth"
-                });
-            },
-            100
-        );
-    }
-);
-
-
-/* SETTINGS TOP */
-
-document
-.getElementById("settingsTop")
-.addEventListener(
-    "click",
-    ()=>{
-        openTool("settings");
-    }
-);
-
-
-/* THEME */
-
-function setTheme(){
-
-    const light=
-        document.body.classList.toggle("light");
-
-    localStorage.setItem(
-        "amroyanai-theme",
-        light?"light":"dark"
-    );
-
-}
-
-
-if(
-    localStorage.getItem(
-        "amroyanai-theme"
-    )==="light"
+/* ===== COUNTRY NAVIGATION ===== */
+
+function goCountry(
+lat,
+lng,
+zoom,
+name
 ){
-    document.body.classList.add("light");
+
+if(!realMap)return;
+
+realMap.flyTo(
+[lat,lng],
+zoom,
+{
+duration:1.5
 }
-
-
-document
-.getElementById("themeBtn")
-.addEventListener(
-    "click",
-    setTheme
 );
 
+setTimeout(()=>{
 
-document
-.getElementById("themeSwitch")
-.addEventListener(
-    "click",
-    function(){
+L.popup()
+.setLatLng([lat,lng])
+.setContent(`
 
-        setTheme();
+<div>
 
-        this.classList.toggle(
-            "on",
-            !document.body.classList.contains("light")
-        );
+<strong style="font-size:17px">
+${name}
+</strong>
 
-    }
-);
+<br><br>
 
+<button
+onclick="showCountryInfo('${name}')"
+style="
+background:#8b5cf6;
+color:white;
+border:0;
+padding:8px 12px;
+border-radius:9px;
+cursor:pointer;
+">
+📚 Ուսումնասիրել
+</button>
 
-/* THINKING */
+</div>
 
-document
-.getElementById("thinkingSwitch")
-.addEventListener(
-    "click",
-    function(){
+`)
+.openOn(realMap);
 
-        state.thinking=
-            !state.thinking;
-
-        this.classList.toggle(
-            "on",
-            state.thinking
-        );
-
-    }
-);
-
-
-/* SOUND */
-
-document
-.getElementById("soundSwitch")
-.addEventListener(
-    "click",
-    function(){
-
-        state.sound=
-            !state.sound;
-
-        this.classList.toggle(
-            "on",
-            state.sound
-        );
-
-    }
-);
-
-
-function setThinking(active){
-
-    const box=
-        document.getElementById("thinking");
-
-    if(!state.thinking){
-
-        box.classList.remove("active");
-
-        return;
-    }
-
-    box.classList.toggle(
-        "active",
-        active
-    );
+},700);
 
 }
 
 
-/* AI */
+/* ===== COUNTRY SEARCH ===== */
 
-async function askAI(message){
+function searchRealCountry(){
 
-    setThinking(true);
+const element=
+document.getElementById("mapSearch");
 
-    try{
+if(!element)return;
 
-        const response=
-            await fetch(
-                "/api/chat",
-                {
-                    method:"POST",
+const input=
+element.value
+.trim()
+.toLowerCase();
 
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
+if(!input)return;
 
-                    body:JSON.stringify({
-                        message,
-                        history:state.history
-                    })
-                }
-            );
+const countries={
 
-        if(!response.ok){
-            throw new Error(
-                "Server error "+response.status
-            );
-        }
-
-        const data=
-            await response.json();
-
-        const answer=
-            data.reply||
-            data.output||
-            data.message;
-
-        if(!answer){
-            throw new Error(
-                "Empty AI response"
-            );
-        }
-
-        return answer;
-
-    }finally{
-
-        setThinking(false);
-
-    }
-
-}
-
-
-/* CHAT */
-
-function addChat(text,type){
-
-    const chat=
-        document.getElementById("chat");
-
-    const div=
-        document.createElement("div");
-
-    div.className=
-        "message "+type;
-
-    div.textContent=text;
-
-    chat.appendChild(div);
-
-    chat.scrollTop=
-        chat.scrollHeight;
-
-}
-
-
-document
-.getElementById("sendBtn")
-.addEventListener(
-"click",
-async()=>{
-
-    const input=
-        document.getElementById("chatInput");
-
-    const text=
-        input.value.trim();
-
-    if(!text)return;
-
-    addChat(text,"user");
-
-    input.value="";
-
-    try{
-
-        const answer=
-            await askAI(text);
-
-        addChat(answer,"ai");
-
-        state.history.push({
-            role:"user",
-            content:text
-        });
-
-        state.history.push({
-            role:"assistant",
-            content:answer
-        });
-
-    }catch(error){
-
-        console.error(error);
-
-        addChat(
-            "Չհաջողվեց կապվել AI-ի հետ։ Ստուգիր server.js-ը։",
-            "ai"
-        );
-
-    }
-
-});
-
-
-document
-.getElementById("chatInput")
-.addEventListener(
-"keydown",
-e=>{
-
-    if(
-        e.key==="Enter" &&
-        !e.shiftKey
-    ){
-
-        e.preventDefault();
-
-        document
-        .getElementById("sendBtn")
-        .click();
-
-    }
-
-});
-
-
-/* TRANSLATOR */
-
-document
-.getElementById("translateBtn")
-.addEventListener(
-"click",
-async()=>{
-
-    const text=
-        document
-        .getElementById("translateInput")
-        .value.trim();
-
-    if(!text)return;
-
-    const from=
-        document
-        .getElementById("fromLang")
-        .value;
-
-    const to=
-        document
-        .getElementById("toLang")
-        .value;
-
-    const result=
-        document
-        .getElementById("translateResult");
-
-    result.textContent="";
-
-    try{
-
-        result.textContent=
-            await askAI(
-                `Translate this text from ${from} to ${to}.
-Return only the translation.
-
-Text:
-${text}`
-            );
-
-    }catch(e){
-
-        result.textContent=
-            "Թարգմանության ժամանակ սխալ տեղի ունեցավ։";
-
-    }
-
-});
-
-
-/* HOMEWORK */
-
-document
-.getElementById("homeworkBtn")
-.addEventListener(
-"click",
-async()=>{
-
-    const subject=
-        document
-        .getElementById("homeworkSubject")
-        .value.trim();
-
-    const task=
-        document
-        .getElementById("homeworkInput")
-        .value.trim();
-
-    if(!task)return;
-
-    const result=
-        document
-        .getElementById("homeworkResult");
-
-    result.textContent="";
-
-    try{
-
-        result.textContent=
-            await askAI(
-                `You are a helpful school tutor.
-
-Subject: ${subject}
-
-Homework:
-${task}
-
-Explain clearly and step by step.
-Answer in the user's language.`
-            );
-
-    }catch(e){
-
-        result.textContent=
-            "Չհաջողվեց ստանալ AI պատասխանը։";
-
-    }
-
-});
-
-
-/* PROJECT */
-
-document
-.getElementById("projectBtn")
-.addEventListener(
-"click",
-async()=>{
-
-    const title=
-        document
-        .getElementById("projectTitle")
-        .value.trim();
-
-    const extra=
-        document
-        .getElementById("projectInput")
-        .value.trim();
-
-    if(!title)return;
-
-    const result=
-        document
-        .getElementById("projectResult");
-
-    result.textContent="";
-
-    try{
-
-        result.textContent=
-            await askAI(
-                `Create a detailed school project.
-
-Topic: ${title}
-
-Extra information:
-${extra}
-
-Include:
-1. Relevance
-2. Goal
-3. Objectives
-4. Research question
-5. Subquestions
-6. Description
-7. Process
-8. Expected results
-9. Final outcomes
-10. Data verification
-11. SWOT analysis
-12. Sources
-13. Presentation structure
-
-Answer in Armenian.`
-            );
-
-    }catch(e){
-
-        result.textContent=
-            "Նախագիծը ստեղծել չհաջողվեց։";
-
-    }
-
-});
-
-
-/* TRUTH */
-
-document
-.getElementById("truthBtn")
-.addEventListener(
-"click",
-async()=>{
-
-    const text=
-        document
-        .getElementById("truthInput")
-        .value.trim();
-
-    if(!text)return;
-
-    const result=
-        document
-        .getElementById("truthResult");
-
-    result.textContent="";
-
-    try{
-
-        result.textContent=
-            await askAI(
-                `Analyze this claim.
-
-Do not claim certainty.
-This is not a real lie detector.
-
-Give:
-VERDICT
-CONFIDENCE
-REASON
-WHAT TO CHECK
-
-Claim:
-${text}`
-            );
-
-    }catch(e){
-
-        result.textContent=
-            "Ստուգումը չհաջողվեց։";
-
-    }
-
-});
-
-
-/* HISTORY */
-
-const historyData={
-
-armenia:[
-["🏺 Հին Հայաստան",
-"Ուրարտու, Երվանդականներ, Արտաշեսյաններ և Տիգրան Մեծ։"],
-["👑 Միջնադարյան Հայաստան",
-"Բագրատունիներ, Անիի զարգացումը և հայկական միջնադարյան թագավորությունները։"],
-["🏰 Կիլիկյան Հայաստան",
-"Ռուբինյանների և Հեթումյանների ժամանակաշրջանը։"],
-["🇦🇲 Առաջին Հանրապետություն",
-"1918–1920 թվականներին Հայաստանի Առաջին Հանրապետության պատմությունը։"],
-["🌅 Անկախ Հայաստան",
-"1991 թվականից Հայաստանի Հանրապետության անկախ պետականությունը։"]
+"հայաստան":[
+40.1792,
+44.4991,
+7,
+"Հայաստան"
 ],
 
-france:[
-["⚔️ Ֆրանկական պետություն",
-"Ֆրանկների պետության ձևավորումն ու զարգացումը։"],
-["👑 Ֆրանսիական միապետություն",
-"Կենտրոնացված ֆրանսիական պետության զարգացումը։"],
-["🔥 Ֆրանսիական հեղափոխություն",
-"1789 թվականից սկսված հեղափոխական շրջանը։"],
-["🇫🇷 Ժամանակակից Ֆրանսիա",
-"Ֆրանսիայի Հանրապետության ժամանակակից զարգացումը։"]
+"armenia":[
+40.1792,
+44.4991,
+7,
+"Հայաստան"
 ],
 
-germany:[
-["🏰 Սուրբ Հռոմեական կայսրություն",
-"Գերմանական տարածքների երկարատև քաղաքական զարգացումը։"],
-["👑 Գերմանական կայսրություն",
-"1871 թվականին Գերմանիայի միավորումը։"],
-["🇩🇪 Ժամանակակից Գերմանիա",
-"Գերմանիայի Դաշնային Հանրապետության զարգացումը։"]
+"ֆրանսիա":[
+48.8566,
+2.3522,
+6,
+"Ֆրանսիա"
 ],
 
-italy:[
-["🏛️ Հին Հռոմ",
-"Հռոմեական Հանրապետության և Կայսրության պատմությունը։"],
-["🇮🇹 Իտալիայի միավորում",
-"XIX դարում Իտալիայի քաղաքական միավորման գործընթացը։"],
-["🌍 Ժամանակակից Իտալիա",
-"Իտալիայի Հանրապետության զարգացումը։"]
+"france":[
+48.8566,
+2.3522,
+6,
+"Ֆրանսիա"
 ],
 
-usa:[
-["🗽 Անկախության շրջան",
-"ԱՄՆ անկախության ձևավորումը և անկախության հռչակագիրը։"],
-["⚔️ Քաղաքացիական պատերազմ",
-"1861–1865 թվականների քաղաքացիական պատերազմը։"],
-["🇺🇸 Ժամանակակից ԱՄՆ",
-"Միացյալ Նահանգների հետագա զարգացումը։"]
+"գերմանիա":[
+52.52,
+13.405,
+6,
+"Գերմանիա"
 ],
 
-egypt:[
-["🔺 Հին Եգիպտոս",
-"Փարավոններ, բուրգեր և հին թագավորություններ։"],
-["🏺 Պտղոմեոսյան Եգիպտոս",
-"Հելլենիստական ժամանակաշրջանի զարգացումը։"],
-["🇪🇬 Ժամանակակից Եգիպտոս",
-"Ժամանակակից Եգիպտոսի ձևավորումը։"]
+"germany":[
+52.52,
+13.405,
+6,
+"Գերմանիա"
 ],
 
-china:[
-["🐉 Հին Չինաստան",
-"Հին չինական պետությունների և դինաստիաների զարգացումը։"],
-["👑 Ցին դինաստիա",
-"Չինաստանի կենտրոնացված կայսրության ձևավորումը։"],
-["🇨🇳 Ժամանակակից Չինաստան",
-"Ժամանակակից Չինաստանի պատմական զարգացումը։"]
+"ճապոնիա":[
+35.6762,
+139.6503,
+6,
+"Ճապոնիա"
+],
+
+"japan":[
+35.6762,
+139.6503,
+6,
+"Ճապոնիա"
+],
+
+"չինաստան":[
+39.9042,
+116.4074,
+5,
+"Չինաստան"
+],
+
+"china":[
+39.9042,
+116.4074,
+5,
+"Չինաստան"
+],
+
+"հնդկաստան":[
+28.6139,
+77.209,
+5,
+"Հնդկաստան"
+],
+
+"india":[
+28.6139,
+77.209,
+5,
+"Հնդկաստան"
+],
+
+"ամն":[
+38.9072,
+-77.0369,
+5,
+"ԱՄՆ"
+],
+
+"usa":[
+38.9072,
+-77.0369,
+5,
+"ԱՄՆ"
+],
+
+"բրազիլիա":[
+-15.7975,
+-47.8919,
+5,
+"Բրազիլիա"
+],
+
+"brazil":[
+-15.7975,
+-47.8919,
+5,
+"Բրազիլիա"
+],
+
+"ռուսաստան":[
+55.7558,
+37.6173,
+5,
+"Ռուսաստան"
+],
+
+"russia":[
+55.7558,
+37.6173,
+5,
+"Ռուսաստան"
+],
+
+"ավստրալիա":[
+-35.2809,
+149.1300,
+5,
+"Ավստրալիա"
+],
+
+"australia":[
+-35.2809,
+149.1300,
+5,
+"Ավստրալիա"
 ]
 
 };
 
+if(countries[input]){
 
-document
-.getElementById("historyBtn")
-.addEventListener(
-"click",
-()=>{
+const c=countries[input];
 
-    const country=
-        document
-        .getElementById("historyCountry")
-        .value;
-
-    const result=
-        document
-        .getElementById("historyResult");
-
-    const data=
-        historyData[country]||[];
-
-    result.innerHTML=
-        data.map(item=>`
-            <article class="history-card">
-                <h4>${item[0]}</h4>
-                <p>${item[1]}</p>
-            </article>
-        `).join("");
-
-});
-
-
-/* QUIZ */
-
-document
-.getElementById("quizBtn")
-.addEventListener(
-"click",
-async()=>{
-
-    const topic=
-        document
-        .getElementById("quizTopic")
-        .value.trim();
-
-    if(!topic)return;
-
-    const count=
-        document
-        .getElementById("quizCount")
-        .value;
-
-    const difficulty=
-        document
-        .getElementById("quizDifficulty")
-        .value;
-
-    const result=
-        document
-        .getElementById("quizResult");
-
-    result.textContent="";
-
-    try{
-
-        result.textContent=
-            await askAI(
-                `Create a ${count}-question multiple choice quiz.
-
-Topic: ${topic}
-Difficulty: ${difficulty}
-
-Language: Armenian.
-
-Each question:
-A)
-B)
-C)
-D)
-Correct answer
-Short explanation`
-            );
-
-    }catch(e){
-
-        result.textContent=
-            "Quiz ստեղծել չհաջողվեց։";
-
-    }
-
-});
-
-
-/* INITIAL CHAT */
-
-addChat(
-"Բարև 👋 Ես AmroyanAI-ն եմ։ Ինչո՞վ կարող եմ օգնել։",
-"ai"
+goCountry(
+c[0],
+c[1],
+c[2],
+c[3]
 );
 
-</script>
+return;
 
+}
 
-<!-- REAL WORLD MAP -->
-
-<script type="module">
-
-import * as d3
-from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
-
-import {feature}
-from "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/+esm";
-
-
-const WORLD_MAP_URL=
-"https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json";
-
-const CAPITALS_URL=
-"https://cdn.jsdelivr.net/gh/samayo/country-json@master/src/country-by-capital-city.json";
-
-
-let mapSvg=null;
-let mapGroup=null;
-let mapZoom=null;
-let mapCountries=null;
-let capitalData=[];
-
-
-const mapContainer=
-document.getElementById("worldMap");
-
-const mapLoading=
-document.getElementById("mapLoading");
-
-const mapInfo=
-document.getElementById("mapInfo");
-
-const mapStatus=
-document.getElementById("mapStatus");
-
-
-async function loadWorldMap(){
-
-    try{
-
-        const responses=
-            await Promise.all([
-                fetch(WORLD_MAP_URL),
-                fetch(CAPITALS_URL)
-            ]);
-
-        const world=
-            await responses[0].json();
-
-        if(responses[1].ok){
-            capitalData=
-                await responses[1].json();
-        }
-
-        drawWorldMap(world);
-
-        mapLoading.style.display="none";
-
-        mapStatus.textContent=
-            "Real interactive world map · Drag · Zoom · Click";
-
-    }catch(error){
-
-        console.error(error);
-
-        mapLoading.textContent=
-            "❌ Քարտեզը չբեռնվեց։ Ստուգիր ինտերնետը։";
-
-    }
+document.getElementById(
+"countryResult"
+).textContent=
+"🔎 Երկիրը արագ որոնման ցանկում չգտնվեց։ Փորձիր Հայաստանի, Ֆրանսիայի, Գերմանիայի, Ճապոնիայի, Չինաստանի, Հնդկաստանի, ԱՄՆ-ի, Բրազիլիայի, Ռուսաստանի կամ Ավստրալիայի անունը։";
 
 }
 
 
-function drawWorldMap(world){
+/* ===== COUNTRY INFORMATION ===== */
 
-    const width=1200;
-    const height=620;
+function showCountryInfo(name){
 
-    mapContainer.innerHTML="";
+const data={
 
-    mapSvg=
-        d3.select(mapContainer)
-        .append("svg")
-        .attr(
-            "viewBox",
-            `0 0 ${width} ${height}`
-        );
+"Հայաստան":
+"🇦🇲 Հայաստան\n\nՄայրաքաղաք՝ Երևան\nՏարածաշրջան՝ Հարավային Կովկաս\nՏարածք՝ մոտ 29,743 կմ²\nԼեզու՝ հայերեն\nԴրամական միավոր՝ դրամ\nՀետաքրքիր վայրեր՝ Գառնի, Գեղարդ, Սևանա լիճ։",
 
-    mapGroup=
-        mapSvg.append("g");
+"Ֆրանսիա":
+"🇫🇷 Ֆրանսիա\n\nՄայրաքաղաք՝ Փարիզ\nՏարածաշրջան՝ Արևմտյան Եվրոպա\nԼեզու՝ ֆրանսերեն\nՀայտնի վայրեր՝ Էյֆելյան աշտարակ, Լուվր, Վերսալ։",
 
-    const projection=
-        d3.geoNaturalEarth1()
-        .fitExtent(
-            [[15,15],[width-15,height-15]],
-            {type:"Sphere"}
-        );
+"Գերմանիա":
+"🇩🇪 Գերմանիա\n\nՄայրաքաղաք՝ Բեռլին\nՏարածաշրջան՝ Կենտրոնական Եվրոպա\nԼեզու՝ գերմաներեն։",
 
-    const path=
-        d3.geoPath()
-        .projection(projection);
+"Ճապոնիա":
+"🇯🇵 Ճապոնիա\n\nՄայրաքաղաք՝ Տոկիո\nՏարածաշրջան՝ Արևելյան Ասիա\nԼեզու՝ ճապոներեն\nՀայտնի վայր՝ Ֆուջի լեռ։",
 
-    const countries=
-        feature(
-            world,
-            world.objects.countries
-        ).features;
+"Չինաստան":
+"🇨🇳 Չինաստան\n\nՄայրաքաղաք՝ Պեկին\nՏարածաշրջան՝ Արևելյան Ասիա\nՀայտնի վայր՝ Չինական մեծ պարիսպ։",
 
-    mapCountries=
-        mapGroup
-        .selectAll(".world-country")
-        .data(countries)
-        .enter()
-        .append("path")
-        .attr("class","world-country")
-        .attr("d",path)
-        .attr(
-            "data-country",
-            d=>
-                d.properties?.name||""
-        )
-        .on(
-            "click",
-            function(event,d){
+"Հնդկաստան":
+"🇮🇳 Հնդկաստան\n\nՄայրաքաղաք՝ Նյու Դելի\nՏարածաշրջան՝ Հարավային Ասիա\nՀայտնի վայր՝ Թաջ Մահալ։",
 
-                event.stopPropagation();
+"ԱՄՆ":
+"🇺🇸 Ամերիկայի Միացյալ Նահանգներ\n\nՄայրաքաղաք՝ Վաշինգտոն\nՄայրցամաք՝ Հյուսիսային Ամերիկա\nՀայտնի վայր՝ Գրանդ Կանյոն։",
 
-                mapCountries.classed(
-                    "selected",
-                    false
-                );
+"Բրազիլիա":
+"🇧🇷 Բրազիլիա\n\nՄայրաքաղաք՝ Բրազիլիա\nՄայրցամաք՝ Հարավային Ամերիկա\nՀայտնի է Ամազոնի ավազանով։",
 
-                d3.select(this)
-                .classed(
-                    "selected",
-                    true
-                );
+"Ռուսաստան":
+"🇷🇺 Ռուսաստան\n\nՄայրաքաղաք՝ Մոսկվա\nՏարածվում է Եվրոպայից մինչև Ասիա։",
 
-                showCountry(
-                    d.properties?.name||
-                    "Unknown country"
-                );
-
-            }
-        );
-
-
-    mapZoom=
-        d3.zoom()
-        .scaleExtent([1,8])
-        .on(
-            "zoom",
-            event=>{
-                mapGroup.attr(
-                    "transform",
-                    event.transform
-                );
-            }
-        );
-
-    mapSvg.call(mapZoom);
-
-
-    document
-    .getElementById("mapZoomIn")
-    .onclick=()=>{
-        mapSvg
-        .transition()
-        .duration(250)
-        .call(
-            mapZoom.scaleBy,
-            1.5
-        );
-    };
-
-
-    document
-    .getElementById("mapZoomOut")
-    .onclick=()=>{
-        mapSvg
-        .transition()
-        .duration(250)
-        .call(
-            mapZoom.scaleBy,
-            .67
-        );
-    };
-
-
-    document
-    .getElementById("mapReset")
-    .onclick=()=>{
-
-        mapSvg
-        .transition()
-        .duration(300)
-        .call(
-            mapZoom.transform,
-            d3.zoomIdentity
-        );
-
-        mapCountries.classed(
-            "selected",
-            false
-        );
-
-        document
-        .getElementById("mapSearch")
-        .value="";
-
-    };
-
-
-    document
-    .getElementById("mapSearch")
-    .oninput=function(){
-
-        const query=
-            this.value
-            .trim()
-            .toLowerCase();
-
-        mapCountries.style(
-            "opacity",
-            d=>{
-
-                if(!query)return 1;
-
-                const name=
-                    String(
-                        d.properties?.name||""
-                    ).toLowerCase();
-
-                return name.includes(query)
-                    ?1
-                    :.15;
-
-            }
-        );
-
-    };
-
-}
-
-
-function getCapital(country){
-
-    const name=
-        String(country)
-        .toLowerCase()
-        .trim();
-
-    let found=
-        capitalData.find(
-            item=>
-                String(item.country||"")
-                .toLowerCase()
-                .trim()===name
-        );
-
-    if(!found){
-
-        found=
-            capitalData.find(
-                item=>{
-
-                    const n=
-                        String(
-                            item.country||""
-                        )
-                        .toLowerCase();
-
-                    return(
-                        n.includes(name)||
-                        name.includes(n)
-                    );
-
-                }
-            );
-
-    }
-
-    return found?.city||
-           found?.capital||
-           "Տվյալը հասանելի չէ";
-
-}
-
-
-function escapeHTML(value){
-
-    return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-
-function showCountry(country){
-
-    const capital=
-        getCapital(country);
-
-    mapInfo.innerHTML=`
-
-        <div class="map-info-icon">
-            🌍
-        </div>
-
-        <div>
-
-            <h3>
-                ${escapeHTML(country)}
-            </h3>
-
-            <p>
-                🏛️ Մայրաքաղաք՝
-                <strong>
-                    ${escapeHTML(capital)}
-                </strong>
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-
-let mapLoaded=false;
-
-window.initWorldMap=function(){
-
-    if(mapLoaded)return;
-
-    mapLoaded=true;
-
-    loadWorldMap();
+"Ավստրալիա":
+"🇦🇺 Ավստրալիա\n\nՄայրաքաղաք՝ Կանբերա\nՄայրցամաք՝ Ավստրալիա։"
 
 };
+
+const result=
+document.getElementById(
+"countryResult"
+);
+
+if(result){
+
+result.textContent=
+data[name]||
+"Այս երկրի մասին տեղեկությունը դեռ ավելացված չէ։";
+
+}
+
+}
+
+
+/* ================= QUIZ ================= */
+
+const questions=[
+
+{
+q:"Ո՞րն է Հայաստանի մայրաքաղաքը։",
+a:[
+"Երևան",
+"Գյումրի",
+"Վանաձոր",
+"Կապան"
+],
+c:0
+},
+
+{
+q:"Ո՞ր գետն է հոսում Եգիպտոսով։",
+a:[
+"Ամազոն",
+"Նեղոս",
+"Դանուբ",
+"Հռենոս"
+],
+c:1
+},
+
+{
+q:"Ո՞րն է Ֆրանսիայի մայրաքաղաքը։",
+a:[
+"Լիոն",
+"Փարիզ",
+"Մարսել",
+"Նիցցա"
+],
+c:1
+},
+
+{
+q:"Որտե՞ղ է գտնվում Ֆուջի լեռը։",
+a:[
+"Չինաստան",
+"Ճապոնիա",
+"Հնդկաստան",
+"Կորեա"
+],
+c:1
+},
+
+{
+q:"Ո՞ր լիճն է գտնվում Հայաստանում։",
+a:[
+"Բայկալ",
+"Վիկտորիա",
+"Սևանա լիճ",
+"Տիտիկակա"
+],
+c:2
+},
+
+{
+q:"Ո՞ր քաղաքն էր Հին Հունաստանի կարևոր կենտրոն։",
+a:[
+"Аթենք",
+"Բեռլին",
+"Լոնդոն",
+"Կահիրե"
+],
+c:0
+},
+
+{
+q:"Ո՞ր մայրցամաքում է գտնվում Եգիպտոսը։",
+a:[
+"Եվրոպա",
+"Аֆրիկա",
+"Аսիա",
+"Аվստրալիա"
+],
+c:1
+},
+
+{
+q:"Ո՞րն է Ճապոնիայի մայրաքաղաքը։",
+a:[
+"Կիոտո",
+"Օսակա",
+"Տոկիո",
+"Նագոյա"
+],
+c:2
+}
+
+];
+
+let qIndex=0;
+let qScore=0;
+let qAnswered=false;
+
+function quizTool(){
+
+qIndex=0;
+qScore=0;
+qAnswered=false;
+
+renderQuiz();
+
+}
+
+function renderQuiz(){
+
+const q=
+questions[qIndex];
+
+workspace.innerHTML=
+head("Գիտելիքների քուիզ","🧠")
++`
+
+<div class="quiz">
+
+<div class="quizTop">
+
+<span>
+Հարց ${qIndex+1} / ${questions.length}
+</span>
+
+<span>
+⭐ ${qScore} միավոր
+</span>
+
+</div>
+
+<div class="progress">
+
+<div
+style="
+width:${((qIndex)/questions.length)*100}%;
+">
+</div>
+
+</div>
+
+<div class="question">
+${q.q}
+</div>
+
+<div class="answers">
+
+${q.a.map((x,i)=>`
+
+<button
+class="answer"
+onclick="quizAnswer(${i})">
+
+${String.fromCharCode(65+i)}. ${x}
+
+</button>
+
+`).join("")}
+
+</div>
+
+<div
+id="quizMessage"
+style="
+margin-top:18px;
+min-height:30px
+">
+</div>
+
+</div>
+`;
+
+}
+
+function quizAnswer(index){
+
+if(qAnswered)return;
+
+qAnswered=true;
+
+const q=
+questions[qIndex];
+
+const buttons=
+document.querySelectorAll(".answer");
+
+const message=
+document.getElementById(
+"quizMessage"
+);
+
+buttons.forEach((b,i)=>{
+
+if(i===q.c){
+
+b.classList.add(
+"correct"
+);
+
+}
+
+if(
+i===index &&
+index!==q.c
+){
+
+b.classList.add(
+"wrong"
+);
+
+}
+
+b.disabled=true;
+
+});
+
+if(index===q.c){
+
+qScore++;
+
+message.innerHTML=
+`
+<span
+style="
+color:#4ade80;
+font-weight:bold
+">
+✅ Ճիշտ պատասխան։ +1 միավոր
+</span>
+`;
+
+}else{
+
+message.innerHTML=
+`
+<span
+style="
+color:#f87171;
+font-weight:bold
+">
+❌ Սխալ։ Ճիշտ պատասխան՝ ${q.a[q.c]}
+</span>
+`;
+
+}
+
+setTimeout(()=>{
+
+qIndex++;
+
+if(qIndex>=questions.length){
+
+quizEnd();
+
+}else{
+
+qAnswered=false;
+
+renderQuiz();
+
+}
+
+},1000);
+
+}
+
+function quizEnd(){
+
+const percent=
+Math.round(
+qScore/questions.length*100
+);
+
+let message;
+
+if(percent>=90){
+
+message=
+"🏆 Գերազանց արդյունք։";
+
+}else if(percent>=70){
+
+message=
+"🔥 Շատ լավ արդյունք։";
+
+}else if(percent>=50){
+
+message=
+"👍 Լավ արդյունք։";
+
+}else{
+
+message=
+"📚 Նորից փորձիր և բարելավիր արդյունքդ։";
+
+}
+
+workspace.innerHTML=
+head("Քուիզի արդյունքը","🏆")
++`
+
+<div
+style="
+text-align:center;
+padding:35px
+">
+
+<div style="font-size:65px">
+🎉
+</div>
+
+<div class="score">
+${qScore}/${questions.length}
+</div>
+
+<h2>
+${percent}%
+</h2>
+
+<p
+style="
+color:var(--muted);
+margin:15px 0 25px
+">
+
+${message}
+
+</p>
+
+<button
+class="primary"
+onclick="quizTool()">
+
+🔄 Նոր քուիզ
+
+</button>
+
+</div>
+`;
+
+}
+
+
+/* ================= HOMEWORK ================= */
+
+function homeworkTool(){
+
+workspace.innerHTML=
+head("Տնային աշխատանք","📚")
++`
+
+<textarea
+id="homeworkInput"
+placeholder="Գրիր քո առաջադրանքը...">
+</textarea>
+
+<button
+class="primary"
+style="margin-top:10px"
+onclick="homeworkAI()">
+
+📚 Բացատրել
+
+</button>
+
+<div
+id="homeworkResult"
+class="result">
+
+AI-ն կբացատրի առաջադրանքը հայերեն։
+
+</div>
+`;
+
+}
+
+async function homeworkAI(){
+
+const text=
+document.getElementById(
+"homeworkInput"
+).value.trim();
+
+const result=
+document.getElementById(
+"homeworkResult"
+);
+
+if(!text){
+
+result.textContent=
+"Գրիր առաջադրանքը։";
+
+return;
+
+}
+
+result.textContent=
+"⏳ Բացատրում եմ...";
+
+try{
+
+const r=
+await fetch(
+"/api/chat",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+message:
+"Դու դպրոցական ուսուցիչ ես։ Պատասխանիր միայն հայերեն։ Բացատրի՛ր առաջադրանքը պարզ քայլերով։ Առաջադրանք՝ "+text
+
+})
+
+});
+
+const d=
+await r.json();
+
+if(!r.ok)throw new Error();
+
+result.textContent=
+d.reply||
+"Պատասխան չկա։";
+
+}catch(e){
+
+result.textContent=
+"❌ AI կապի սխալ։";
+
+}
+
+}
+
+
+/* ================= PROJECT ================= */
+
+function projectTool(){
+
+workspace.innerHTML=
+head(
+"Նախագծային լաբորատորիա",
+"🔬"
+)
++`
+
+<input
+id="projectTopic"
+placeholder="Նախագծի թեմա, օրինակ՝ Դվին">
+
+<input
+id="projectClass"
+style="margin-top:12px"
+placeholder="Դասարան, օրինակ՝ 9-րդ">
+
+<button
+class="primary"
+style="margin-top:12px"
+onclick="projectAI()">
+
+✨ Ստեղծել նախագիծ
+
+</button>
+
+<div
+id="projectResult"
+class="result">
+
+Այստեղ կստեղծվի նախագծային աշխատանք։
+
+</div>
+`;
+
+}
+
+async function projectAI(){
+
+const topic=
+document.getElementById(
+"projectTopic"
+).value.trim();
+
+const cls=
+document.getElementById(
+"projectClass"
+).value.trim();
+
+const result=
+document.getElementById(
+"projectResult"
+);
+
+if(!topic){
+
+result.textContent=
+"Գրիր թեման։";
+
+return;
+
+}
+
+result.textContent=
+"⏳ Ստեղծում եմ նախագիծը...";
+
+try{
+
+const r=
+await fetch(
+"/api/chat",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+message:
+`Ստեղծիր դպրոցական նախագծային աշխատանք միայն հայերենով։
+
+Թեմա՝ ${topic}
+Դասարան՝ ${cls||"միջին դպրոց"}
+
+Ներառիր՝
+
+1. Նպատակ
+2. Հետազոտական հարց
+3. Խնդիրներ
+4. Արդիականություն
+5. Հիմնական բովանդակություն
+6. Հետազոտության ընթացք
+7. Արդյունքներ
+8. Եզրակացություն
+9. Աղբյուրներ`
+
+})
+
+});
+
+const d=
+await r.json();
+
+if(!r.ok)throw new Error();
+
+result.textContent=
+d.reply||
+"Չստացվեց։";
+
+}catch(e){
+
+result.textContent=
+"❌ AI կապի սխալ։";
+
+}
+
+}
+
+
+/* ================= TRANSLATOR ================= */
+
+function translateTool(){
+
+workspace.innerHTML=
+head("Թարգմանիչ","🌐")
++`
+
+<div class="cards">
+
+<div class="card">
+
+<div class="cardImage">
+🇦🇲
+</div>
+
+<select id="fromLang">
+
+<option>Հայերեն</option>
+<option>Անգլերեն</option>
+<option>Ռուսերեն</option>
+
+</select>
+
+</div>
+
+<div class="card">
+
+<div class="cardImage">
+🌐
+</div>
+
+<select id="toLang">
+
+<option>Անգլերեն</option>
+<option>Հայերեն</option>
+<option>Ռուսերեն</option>
+
+</select>
+
+</div>
+
+</div>
+
+<textarea
+id="translateInput"
+style="margin-top:18px"
+placeholder="Գրիր թարգմանվող տեքստը...">
+</textarea>
+
+<button
+class="primary"
+style="margin-top:10px"
+onclick="translateAI()">
+
+🌐 Թարգմանել
+
+</button>
+
+<div
+id="translateResult"
+class="result">
+
+Թարգմանությունը կհայտնվի այստեղ։
+
+</div>
+`;
+
+}
+
+async function translateAI(){
+
+const text=
+document.getElementById(
+"translateInput"
+).value.trim();
+
+const from=
+document.getElementById(
+"fromLang"
+).value;
+
+const to=
+document.getElementById(
+"toLang"
+).value;
+
+const result=
+document.getElementById(
+"translateResult"
+);
+
+if(!text){
+
+result.textContent=
+"Գրիր տեքստ։";
+
+return;
+
+}
+
+result.textContent=
+"⏳ Թարգմանում եմ...";
+
+try{
+
+const r=
+await fetch(
+"/api/chat",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+message:
+`Թարգմանիր այս տեքստը ${from}-ից ${to}։
+
+Մի ավելացրու բացատրություն։
+
+Տեքստ՝ ${text}`
+
+})
+
+});
+
+const d=
+await r.json();
+
+if(!r.ok)throw new Error();
+
+result.textContent=
+d.reply||
+"Թարգմանություն չկա։";
+
+}catch(e){
+
+result.textContent=
+"❌ AI կապի սխալ։";
+
+}
+
+}
 
 </script>
 
 </body>
 </html>
+```
